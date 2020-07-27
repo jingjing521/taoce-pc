@@ -1,0 +1,86 @@
+/************** padding marginn ***************/
+.padding{
+	padding: 20px;
+	box-sizing: border-box;
+}
+.margin{
+    margin: 20px;
+}
+.margin-bottom{
+    margin-bottom: 20px;
+}
+
+/* ==================
+          文本
+ ==================== */
+
+ .text-xs {
+	font-size: 20upx;
+}
+
+.text-sm {
+	font-size: 12px;
+}
+
+.text-df {
+	font-size: 14px;
+}
+
+.text-lg {
+	font-size: 16px;
+}
+
+.text-xl {
+	font-size: 18px;
+}
+
+.text-xxl {
+	font-size: 18px;
+}
+
+.text-sl {
+	font-size: 40px;
+}
+
+.text-xsl {
+	font-size: 60px;
+}
+.text-right{
+    text-align: right;
+}
+
+
+
+
+
+
+
+.bg-white{
+  background-color: #ffffff;
+}
+.bg-blue{
+  background-color: #025ab4;
+}
+
+.justify-start {
+	justify-content: flex-start;
+}
+
+.justify-end {
+	justify-content: flex-end;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.justify-between {
+	justify-content: space-between;
+}
+
+.justify-around {
+	justify-content: space-around;
+}
+
+
+

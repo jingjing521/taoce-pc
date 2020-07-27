@@ -1,0 +1,68 @@
+.weit_xhx{
+    color: #ff3b00;
+}
+.stepBox .tit {
+    font-size: 16px;
+    color: #020308;
+    border-left: 5px solid #006fb3;
+    text-indent: 10px;
+    display: inline-block;
+    text-shadow: 3px 11px 8px rgba(249, 249, 249, 0.6);
+}
+.stepBox .xiangq_ju {
+    width: calc( ( 100% - 120px ) / 3);
+    margin-left: 15px;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px dashed #afafaf;
+    display: inline-block;
+} 
+.stepBox .xiangq_ju .el-input__inner {
+    border: none;
+}
+.stepBox .container_input {
+    width: 62%;
+    height: 38px;
+    border: 0;
+}
+.biaoge_x {
+    border: 1px solid #e0e0e0;
+    height: 48px;
+    padding: 8px;
+}
+.shqrm_c td {
+    height: 48px;
+    padding: 2px 8px 2px 14px;
+  }
+  
+ 
+  .shenqrxq_bt {
+    font-size: 14px;
+    color: #0269a9;
+    margin-right: 8px;
+    line-height: 44px;
+    font-weight: bold;
+  }
+  .agree span {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .address-box .el-card__body {
+    padding: 0;
+  }
+  .address-box .el-card__body .item {
+    line-height: 45px;
+    padding-left: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    text-align: left;
+  }
+  .stepBox .info {
+    font-size: 20px;
+  }
+  .stepBox .info span {
+    color: #fe6603;
+    font-size: 23px;
+  }
+  
