@@ -52,7 +52,7 @@
           <el-menu-item index="/news" class="top_nav_item">新闻中心</el-menu-item>
           <el-menu-item index="/answer" class="top_nav_item">问答集锦</el-menu-item>
           <el-menu-item index="/institution" class="top_nav_item">机构展示</el-menu-item>
-          <el-submenu index="/reportFind" style="width:80px;">
+          <el-submenu index="/reportFind" style="width:100px;">
             <template slot="title">查询</template>
             <el-menu-item index="/reportFind" class="top_nav_item text-center">报告查询</el-menu-item>
             <el-menu-item index="/certificateFind" class="top_nav_item text-center">证书查询</el-menu-item>
@@ -201,5 +201,8 @@ export default {
     padding: 0 20px;
     width: 1px;
     white-space: nowrap;
+}
+#top-nav .el-submenu__title{
+  text-align: center;
 }
 </style>

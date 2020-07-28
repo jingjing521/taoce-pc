@@ -1,19 +1,12 @@
  <template>
   <div class="content main_width" id="goodDetail" v-loading="loading">
     <!-- 产品详情 -->
-    <el-row
-      :gutter="20"
-      class="margin-top bg-white padding-top"
-      style="margin-left:0;margin-right:0"
-    >
+    <el-row :gutter="20" class="margin-top bg-white padding-top" style="margin-left:0;margin-right:0">
       <el-col :span="12">
         <div style="border:1px solid #ccc;">
           <img :src="goodsDetail.goodsImg" alt="" style="width:100%;">
         </div>
-        <div
-          class="bg-white flex justify-between"
-          style="font-size:15px;padding:10px 20px;margin-bottom:10px;"
-        >
+        <div  class="bg-white flex justify-between"  style="font-size:15px;padding:10px 20px;margin-bottom:10px;" >
           <div>
             <span
               style="margin-right:15px;cursor: pointer;"
@@ -129,16 +122,10 @@
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="10">
+    <el-row :gutter="10" style="margin-left:0;margin-right:0">
       <el-col :span="16" class="bg-white padding-top">
         <div class="bg-white padding">
-          <el-table
-            :data="goodsDetail.goodsAddtionServiceEntityList"
-            border=""
-            style="width: 100%"
-            ref="multipleTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="goodsDetail.goodsAddtionServiceEntityList" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column prop="additionalServiceEntity.fwmc" label="附加服务名称" align="center"></el-table-column>
             <el-table-column prop="capabilityLibEntity.bzh" label="送样数量/单" align="center">
@@ -174,27 +161,17 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+        <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" style="margin:20px">
           <el-tab-pane label="服务概述" name="1">
             <div>
               <div class="box-card" shadow="never">
-                <div class="detail-title">
-                  <span>服务简介</span>
-                </div>
+                <div class="detail-title">  <span>服务简介</span> </div>
                 <div class="detail-content">{{goodsDetail.goodsDesc}}</div>
-                <div class="detail-title">
-                  <span>送样信息</span>
-                </div>
+                <div class="detail-title"> <span>送样信息</span> </div>
                 <div class="detail-content">{{goodsDetail.syyq}}</div>
-                <div class="detail-title">
-                  <span>检测项目</span>
-                </div>
+                <div class="detail-title"> <span>检测项目</span> </div>
                 <div class="padding-bottom">
-                  <el-table
-                    :data="goodsDetail.goodsCheckitemEntityList"
-                    border=""
-                    style="width: 100%"
-                  >
+                  <el-table  :data="goodsDetail.goodsCheckitemEntityList" border="" style="width: 100%"  >
                     <el-table-column prop="capabilityLibEntity.jcxm" label="项目名称" align="center"></el-table-column>
                     <el-table-column prop="capabilityLibEntity.bzh" label="项目标准" align="center">
                       <template slot-scope="scope">

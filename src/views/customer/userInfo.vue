@@ -62,7 +62,9 @@ export default {
       	this.$refs["form"].validate(valid => {
 			if (valid) { 
 				_this.disabled = true;
-				this.$post("/api/user/mdUserInfo?email="+_this.userInfo.email,{}).then(response => {
+				this.$post("/api/user/mdUserInfo",{
+					email:_this.userInfo.email
+				}).then(response => {
 					if (response.code == 0) { 
 						_this.$message({ message: '提交成功', type: 'success', duration: 1500, onClose: () => {  _this.disabled = false; }})
 					} else {

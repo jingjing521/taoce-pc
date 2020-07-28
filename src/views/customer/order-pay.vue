@@ -56,7 +56,7 @@
 
       <el-card class="box-card margin-bottom margin-top" v-if="payType == 3">
         <div slot="header" class="clearfix">
-          <span>线上汇款结算流程：</span> 
+          <span>线下汇款结算流程：</span> 
         </div>
         <div class="text item">
           1. 通过专属帐号进行线下汇款充值 > 2. 款项到达账户余额后，对未支付订单进行支付

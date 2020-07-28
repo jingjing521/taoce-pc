@@ -61,13 +61,13 @@
                     </span>
                   </td>
                 </tr>
-                <tr class="tj_dd_a" v-if="item.orderStatus == '3'">
+                <!-- <tr class="tj_dd_a" v-if="item.orderStatus == '3'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
                       <a class="a_btn operate mrxz">查看支付</a>
                     </span>
                   </td>
-                </tr>
+                </tr> -->
                 <tr class="tj_dd_a" v-if="item.orderStatus == '4'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>

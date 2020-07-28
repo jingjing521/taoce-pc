@@ -19,7 +19,7 @@
         <el-radio-group v-model="ruleForm.payType">
           <el-radio label="1" border="" style="display:block;">支付宝</el-radio>
           <el-radio label="2" border="" style="display:block;">微信</el-radio>
-          <el-radio label="3" border="" style="display:block;">线上汇款</el-radio>
+          <el-radio label="3" border="" style="display:block;">线下汇款</el-radio>
         </el-radio-group>
       </div>
       <!-- 线上汇款  -->
@@ -113,7 +113,7 @@ export default {
       var _this = this;
       this.$fetch("/api/user/sendPersonalBankNoToSm", {}).then(response => {
         if (response.code == 0) {
-          var time_count = 60;
+          var time_count = 120;
           if (!_this.timer) {
             _this.sum = time_count;
             _this.show = false;

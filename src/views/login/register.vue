@@ -88,7 +88,7 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' }
           ],
           isagree:[
-            { required: true, message: '请选择是否统一', trigger: 'change' }
+            { required: true, message: '请选择是否同意', trigger: 'change' }
           ]
         }
     };
