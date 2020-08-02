@@ -46,11 +46,11 @@
           <span class="padding-right">消费总金额：100.00元</span> 
         </div>
         <el-table :data="list1" border="" style="width: 100%">
-          <el-table-column prop="orderId" label="订单编号" min-width="280"></el-table-column>
-          <el-table-column prop="orderSn" label="账单流水" min-width="200"></el-table-column>
-          <el-table-column prop="orderAmount" label="订单价格"></el-table-column>
-          <el-table-column prop="goodsName" label="样品名称" min-width="180"></el-table-column>
-          <el-table-column prop="createTime" label="支付方式">
+          <el-table-column prop="orderId" label="订单编号" align="center"></el-table-column>
+          <el-table-column prop="orderSn" label="账单流水" align="center"></el-table-column>
+          <el-table-column prop="orderAmount" label="订单价格" align="center"></el-table-column>
+          <el-table-column prop="goodsName" label="样品名称" align="center"></el-table-column>
+          <el-table-column prop="createTime" label="支付方式" align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.payType == '1'">支付宝</span>
               <span v-if="scope.row.payType == '2'">微信</span>
@@ -58,7 +58,7 @@
               <span v-if="scope.row.payType == '4'">线下支付</span>
             </template>
           </el-table-column>
-          <el-table-column prop="addTime" label="创建时间" min-width="160"></el-table-column>
+          <el-table-column prop="addTime" label="创建时间" align="center"></el-table-column>
         </el-table>
         <div class="padding-top text-right">
           <el-pagination :hide-on-single-page="value" background layout="prev, pager, next" :page-size="limit" :current-page="page" :total="total1" @current-change="handleCurrentChange1"></el-pagination>

@@ -41,7 +41,7 @@
                 <tr class="tj_dd_a" v-if="item.orderStatus == '0'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
-                      <a class="a_btn operate mrxz">编辑</a>
+                      <a class="a_btn operate mrxz" @click="edit(item.orderId)">编辑</a>
                       <a class="a_btn operate mrxz" @click="del">删除</a>
                     </span>
                   </td>
@@ -144,7 +144,8 @@ export default {
         { name: "服务中", tag: "3", num: "" },
         { name: "待签收", tag: "4", num: "" },
         { name: "待评价", tag: "5", num: "" },
-        { name: "已取消", tag: "7", num: "" }
+        { name: "已取消", tag: "7", num: "" },
+        { name: "异常订单", tag: "8", num: "" }
       ],
       dataList: [],
       formLabelWidth: "100px",
@@ -176,14 +177,15 @@ export default {
       this.handleList(this.tag);
     },
     goGoodDetail(item){
-      this.$router.push({
-        path: "/productDetail",
-        query: { id: item.goodsId, shopid: item.shopId }
-      });
+      this.$router.push({ path: "/productDetail", query: { id: item.goodsId, shopid: item.shopId } });
+    },
+    // 编辑订单
+    edit(orderId){
+      this.$router.push({ path: "/orderDetail", query: { orderId: orderId,type:"edit"} });
     },
     // 订单详情
     godetail(orderId) {
-      this.$router.push({ path: "/orderDetail", query: { orderId: orderId } });
+      this.$router.push({ path: "/orderDetail", query: { orderId: orderId,type:"view" } });
     },
     orderCopy(orderId){
       window.localStorage.removeItem("taoce-param");
@@ -261,6 +263,9 @@ export default {
         case 7:
         case "7":
           text = "已取消";
+        case 8:
+        case "8":
+          text = "异常订单";
       }
 
       return text;

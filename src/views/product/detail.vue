@@ -1,12 +1,15 @@
  <template>
   <div class="content main_width" id="goodDetail" v-loading="loading">
     <!-- 产品详情 -->
-    <el-row :gutter="20" class="margin-top bg-white padding-top" style="margin-left:0;margin-right:0">
+    <el-row :gutter="20" class="margin-top bg-white padding-top"  style="margin-left:0;margin-right:0" >
       <el-col :span="12">
         <div style="border:1px solid #ccc;">
-          <img :src="goodsDetail.goodsImg" alt="" style="width:100%;">
+          <img :src="goodsDetail.goodsImg" alt style="width:100%;" />
         </div>
-        <div  class="bg-white flex justify-between"  style="font-size:15px;padding:10px 20px;margin-bottom:10px;" >
+        <div
+          class="bg-white flex justify-between"
+          style="font-size:15px;padding:10px 20px;margin-bottom:10px;"
+        >
           <div>
             <span
               style="margin-right:15px;cursor: pointer;"
@@ -27,56 +30,29 @@
         <div>
           <div class="sp-mc">{{goodsDetail.goodsName}}</div>
           <div class="sp-item">
-            <span>价格</span>
-            <span class="sp-price">¥{{goodsPrice.toFixed(2)}}</span>
+            <span>价格</span>  <span class="sp-price">¥{{goodsPrice.toFixed(2)}}</span>
           </div>
           <div class="sp-item">
-            <span>服务编号</span>
-            <span>{{goodsDetail.goodsSn}}</span>
+            <span>服务编号</span> <span>{{goodsDetail.goodsSn}}</span>
           </div>
           <div class="sp-item">
             <span>报告语言</span>
             <span>
-              <el-button
-                type="text"
-                :class="opt.reportLauguage == '1' ? '':'is-black'"
-                @click="getReportLauguage('1')"
-              >中文报告</el-button>
-              <el-button
-                type="text"
-                :class="opt.reportLauguage == '2' ? '':'is-black'"
-                @click="getReportLauguage('2')"
-              >英文报告</el-button>
-              <el-button
-                type="text"
-                :class="opt.reportLauguage == '3' ? '':'is-black'"
-                @click="getReportLauguage('3')"
-              >中英文报告</el-button>
+              <el-button  type="text"  :class="opt.reportLauguage == '1' ? '':'is-black'" @click="getReportLauguage('1')" >中文报告</el-button>
+              <el-button type="text" :class="opt.reportLauguage == '2' ? '':'is-black'" @click="getReportLauguage('2')" >英文报告</el-button>
+              <el-button  type="text" :class="opt.reportLauguage == '3' ? '':'is-black'"  @click="getReportLauguage('3')"  >中英文报告</el-button>
             </span>
           </div>
           <div class="sp-item">
             <span>报告形式</span>
             <span>
-              <el-button
-                type="text"
-                :class="opt.reportType == '1' ? '':'is-black'"
-                @click="getReportType('1')"
-              >检测报告</el-button>
-              <el-button
-                type="text"
-                :class="opt.reportType == '2' ? '':'is-black'"
-                @click="getReportType('2')"
-              >报告证书</el-button>
+              <el-button type="text" :class="opt.reportType == '1' ? '':'is-black'"  @click="getReportType('1')"  >检测报告</el-button>
+              <el-button type="text"  :class="opt.reportType == '2' ? '':'is-black'" @click="getReportType('2')" >报告证书</el-button>
             </span>
           </div>
           <div class="sp-item">
             <span>加急周期</span>
-            <el-checkbox-group
-              v-model="isJJ"
-              style="display:inline-block"
-              size="small"
-              @change="getJJItem"
-            >
+            <el-checkbox-group v-model="isJJ" style="display:inline-block" size="small" @change="getJJItem" >
               <el-checkbox-button>{{goodsDetail.jjms}}</el-checkbox-button>
             </el-checkbox-group>
           </div>
@@ -105,18 +81,18 @@
             </router-link>
           </div>
           <el-row class="margin-top padding-left">
-            <el-dropdown v-if="kfList.length > 0">
-              <el-button>在线咨询
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
+            <!-- <el-dropdown > -->
+              <el-button  @click.native="goChat()" v-if="kfList.length > 0"> 在线咨询</el-button>
+                <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
+              
+              <!-- <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   v-for="(item,index) in kfList"
                   :key="index"
                   @click.native="goChat(item)"
                 >平台客服{{index+1}}</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+              </el-dropdown-menu> -->
+            <!-- </el-dropdown> -->
             <el-button type="primary" @click="buy">立即购买</el-button>
           </el-row>
         </div>
@@ -130,28 +106,23 @@
             <el-table-column prop="additionalServiceEntity.fwmc" label="附加服务名称" align="center"></el-table-column>
             <el-table-column prop="capabilityLibEntity.bzh" label="送样数量/单" align="center">
               <template slot-scope="scope">
-                <span>{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].price}}</span>
+                <span v-if="scope.row.additionalServiceEntity.priceType == '2'" >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].price}}</span>
+                <span v-if="scope.row.additionalServiceEntity.priceType == '1'" >{{scope.row.additionalServiceEntity.price}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="capabilityLibEntity.jczq" label="价格/单" align="center">
               <template slot-scope="scope">
-                <span>{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].min}}</span>
+                <span  v-if="scope.row.additionalServiceEntity.priceType == '2'" >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].min}}</span>
+                <span v-if="scope.row.additionalServiceEntity.priceType == '1'">1</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="capabilityLibEntity.jczq"
-              label="单"
-              align="center"
-              min-width="100px"
-            >
+            <el-table-column prop="capabilityLibEntity.jczq" label="单" align="center"  min-width="100px"  >
               <template slot-scope="scope">
-                <el-input-number
-                  size="mini"
-                  :min="scope.row.additionalServiceEntity.min"
-                  :max="scope.row.additionalServiceEntity.max"
+                <el-input-number size="mini" :min="scope.row.additionalServiceEntity.min" :max="scope.row.additionalServiceEntity.max"
                   @change="handleChange(scope.row.additionalServiceEntity,scope.row.additionalServiceEntity.isDeleted)"
-                  v-model="scope.row.additionalServiceEntity.isDeleted"
-                ></el-input-number>
+                  v-model="scope.row.additionalServiceEntity.isDeleted" v-if="scope.row.additionalServiceEntity.priceType == '2'" ></el-input-number>
+                <el-input-number size="mini"  :min="z"  @change="handleChange(scope.row.additionalServiceEntity,scope.row.additionalServiceEntity.isDeleted)"
+                  v-model="scope.row.additionalServiceEntity.isDeleted" v-if="scope.row.additionalServiceEntity.priceType == '1'"  ></el-input-number>
               </template>
             </el-table-column>
             <el-table-column prop="capabilityLibEntity.jcjg" align="center">
@@ -161,17 +132,23 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" style="margin:20px">
+        <el-tabs v-model="activeName"  type="border-card"  @tab-click="handleClick"  style="margin:20px">
           <el-tab-pane label="服务概述" name="1">
             <div>
               <div class="box-card" shadow="never">
-                <div class="detail-title">  <span>服务简介</span> </div>
+                <div class="detail-title">
+                  <span>服务简介</span>
+                </div>
                 <div class="detail-content">{{goodsDetail.goodsDesc}}</div>
-                <div class="detail-title"> <span>送样信息</span> </div>
+                <div class="detail-title">
+                  <span>送样信息</span>
+                </div>
                 <div class="detail-content">{{goodsDetail.syyq}}</div>
-                <div class="detail-title"> <span>检测项目</span> </div>
+                <div class="detail-title">
+                  <span>检测项目</span>
+                </div>
                 <div class="padding-bottom">
-                  <el-table  :data="goodsDetail.goodsCheckitemEntityList" border="" style="width: 100%"  >
+                  <el-table :data="goodsDetail.goodsCheckitemEntityList" border style="width: 100%">
                     <el-table-column prop="capabilityLibEntity.jcxm" label="项目名称" align="center"></el-table-column>
                     <el-table-column prop="capabilityLibEntity.bzh" label="项目标准" align="center">
                       <template slot-scope="scope">
@@ -191,7 +168,7 @@
           </el-tab-pane>
           <el-tab-pane label="商品评价" name="2">
             <ul class="padding">
-              <li style="font-size:14px;" v-for="(item,index) in commentList" :key="index">
+              <li style="font-size:14px;" v-for="(item,index) in commentList" :key="index" class="margin-bottom">
                 <div class="flex justify-between" style="line-height：35px;">
                   <div>{{item.createTime}}</div>
                   <div>
@@ -202,14 +179,7 @@
               </li>
             </ul>
             <div class="block" style="text-align:right;margin-top:30px;margin-bottom:30px;">
-              <el-pagination
-                hide-on-single-page
-                :page-size="pageSize"
-                background=""
-                layout="prev, pager, next"
-                :total="total"
-                @current-change="handleCurrentChange"
-              ></el-pagination>
+              <el-pagination  hide-on-single-page :page-size="pageSize" background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange" ></el-pagination>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -224,7 +194,7 @@
             style="cursor: pointer;"
           >
             <div style="text-align:center">
-              <img :src="item.goods_img" alt="" style="width:80%;">
+              <img :src="item.goods_img" alt style="width:80%;" />
             </div>
             <div class="text-center text-df" style="line-height:30px;">{{item.goods_name}}</div>
             <div
@@ -249,12 +219,13 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      z: 1,
       loading: true,
       kfList: [],
       multipleSelection: [],
       num: "",
       adddetail: {
-        additionalServiceEntity: {}
+        additionalServiceEntity: {},
       },
       additionalServicePrice: 0,
       reportPrice: 0,
@@ -274,8 +245,8 @@ export default {
       goodsDetail: {},
       opt: {
         reportLauguage: "1",
-        reportType: "1"
-      }
+        reportType: "1",
+      },
     };
   },
   created() {
@@ -287,37 +258,46 @@ export default {
     // 价格数量
     handleChange(item, value) {
       var fwitem = JSON.parse(item.fwitem);
-      fwitem.forEach(function(v, i) {
-        if (value >= v.min && value <= v.max) {
-          item.priceItem = v.price;
-          item.numItem = value;
-        }
-      });
-      console.log(this.multipleSelection);
-      if (this.multipleSelection.length > 0) {
-        var additionalServicePrice = 0;
-        this.multipleSelection.forEach(function(v, i) {
-          additionalServicePrice +=
-            v.additionalServiceEntity.priceItem *
-            v.additionalServiceEntity.numItem;
+      var _this = this;
+      if (item.priceType == "1") {
+        item.priceItem = item.price;
+        item.numItem = item.isDeleted;
+      } else {
+        fwitem.forEach(function (v, i) {
+          if (value >= v.min && value <= v.max) {
+            item.priceItem = v.price;
+            item.numItem = value;
+          }
         });
-        this.additionalServicePrice = additionalServicePrice;
+      }
+      _this.additionalServicePrice = 0;
+      if (this.multipleSelection.length > 0) {
+        this.multipleSelection.forEach(function (v, i) {
+          if (v.additionalServiceEntity.priceType == "1") {
+            _this.additionalServicePrice += v.additionalServiceEntity.priceItem * v.additionalServiceEntity.numItem;
+          } else {
+            _this.additionalServicePrice += parseFloat(  v.additionalServiceEntity.priceItem );
+          }
+        });
         this.getPrice();
       }
     },
     // 选择附加服务
     handleSelectionChange(val) {
-      console.log(val);
       this.multipleSelection = val;
-      var additionalServicePrice = 0;
-      this.multipleSelection.forEach(function(v, i) {
-        console.log(v);
-        additionalServicePrice +=
-          v.additionalServiceEntity.priceItem *
-          v.additionalServiceEntity.numItem;
+      var _this = this;
+      _this.additionalServicePrice = 0;
+      this.multipleSelection.forEach(function (v, i) {
+        if (v.additionalServiceEntity.priceType == "1") {
+          _this.additionalServicePrice +=
+            v.additionalServiceEntity.priceItem *
+            v.additionalServiceEntity.numItem;
+        } else {
+          _this.additionalServicePrice += parseFloat(
+            v.additionalServiceEntity.priceItem
+          );
+        }
       });
-      this.additionalServicePrice = additionalServicePrice;
-      console.log(this.additionalServicePrice);
       this.getPrice();
     },
     // 价格计算
@@ -334,12 +314,8 @@ export default {
     getKfList() {
       var _this = this;
       this.$fetch("/api/user/kf-list", {
-        cone: "",
-        ctwo: "",
-        limit: 10,
-        page: 1,
-        sid: _this.goodsDetail.shopid
-      }).then(response => {
+        cone: "", ctwo: "", limit: 10, page: 1, sid: _this.goodsDetail.shopid,
+      }).then((response) => {
         if (response.code == 0) {
           _this.kfList = response.data.records;
         } else {
@@ -359,41 +335,27 @@ export default {
     // 商品详情页面
     getGoodDetail() {
       var _this = this;
-      this.$post(
-        "/api/goods/goodsInfo?goods_id=" +
-          this.$route.query.id +
-          "&shopid=" +
-          this.$route.query.shopid,
-        {}
-      ).then(response => {
+      this.$post( "/api/goods/goodsInfo?goods_id=" + this.$route.query.id + "&shopid=" +  this.$route.query.shopid, {} ).then((response) => {
         _this.loading = false;
         if (response.code == 0) {
           this.goodsDetail = response.data;
           var testing = [];
           var serviceLi = [];
-          this.goodsDetail.testingQualificationEntityList.forEach(function(
-            v,
-            i
-          ) {
-            testing.push(v.mc);
-          });
-          this.goodsDetail.serviceEntityList.forEach(function(v, i) {
-            serviceLi.push(v.mc);
-          });
+          this.goodsDetail.testingQualificationEntityList.forEach(function ( v, i  ) {  testing.push(v.mc); });
+          this.goodsDetail.serviceEntityList.forEach(function (v, i) { serviceLi.push(v.mc); });
           this.goodsDetail.testing = testing.toString();
           this.goodsDetail.serviceLi = serviceLi.toString();
-          this.goodsPrice =
-            this.goodsDetail.goodsPrice +
-            this.goodsDetail.zhbgjg +
-            this.goodsDetail.jcbgjg;
+          this.goodsPrice =  this.goodsDetail.goodsPrice + this.goodsDetail.zhbgjg + this.goodsDetail.jcbgjg;
           this.lauguagePrice = this.goodsDetail.zhbgjg;
           this.reportPrice = this.goodsDetail.jcbgjg;
-          this.goodsDetail.goodsAddtionServiceEntityList.forEach(function( v, i ) {
-            v.additionalServiceEntity.min = parseInt( JSON.parse(v.additionalServiceEntity.fwitem)[0].min );
-            v.additionalServiceEntity.numItem = parseInt( JSON.parse(v.additionalServiceEntity.fwitem)[0].min );
-            v.additionalServiceEntity.priceItem = parseFloat( JSON.parse(v.additionalServiceEntity.fwitem)[0].price );
+          this.goodsDetail.goodsAddtionServiceEntityList.forEach(function ( v,  i ) { 
+            v.additionalServiceEntity.min = parseInt(
+              JSON.parse(v.additionalServiceEntity.fwitem)[0].min
+            );
+            v.additionalServiceEntity.numItem = v.additionalServiceEntity.priceType == "2"  ? parseInt(JSON.parse(v.additionalServiceEntity.fwitem)[0].min) : parseInt(_this.z);
+            v.additionalServiceEntity.priceItem = v.additionalServiceEntity.priceType == "2"  ? parseFloat( JSON.parse(v.additionalServiceEntity.fwitem)[0].price ) : parseFloat(v.additionalServiceEntity.price);
             v.additionalServiceEntity.max = parseInt( JSON.parse(v.additionalServiceEntity.fwitem)[ JSON.parse(v.additionalServiceEntity.fwitem).length - 1 ].max );
-            v.additionalServiceEntity.isDeleted = parseInt( v.additionalServiceEntity.min );
+            v.additionalServiceEntity.isDeleted = v.additionalServiceEntity.priceType == "2"  ? parseInt(v.additionalServiceEntity.min)  : parseInt(_this.z);
           });
           _this.getKfList();
         } else {
@@ -410,8 +372,8 @@ export default {
       }
       this.$fetch("/api/user/addUserCollectionGoods", {
         goodsId: _this.goodsDetail.goodsId,
-        shopId: _this.goodsDetail.shopid
-      }).then(response => {
+        shopId: _this.goodsDetail.shopid,
+      }).then((response) => {
         if (response.code == 0) {
           _this.$message({ message: "收藏商品成功", type: "success" });
           _this.getGoodDetail();
@@ -428,8 +390,8 @@ export default {
         return;
       }
       this.$fetch("/api/user/addUserCollectionShop", {
-        id: _this.goodsDetail.shopid
-      }).then(response => {
+        id: _this.goodsDetail.shopid,
+      }).then((response) => {
         if (response.code == 0) {
           _this.$message({ message: "收藏店铺成功", type: "success" });
           _this.getGoodDetail();
@@ -466,7 +428,7 @@ export default {
     getList() {
       this.goodsList = [];
       this.$post("/api/goods/goodsList", { limit: "3", page: "1" }).then(
-        response => {
+        (response) => {
           this.goodsList = response.data.records;
         }
       );
@@ -475,26 +437,19 @@ export default {
       this.reload();
       this.$router.push({
         path: "/productDetail",
-        query: { id: id, shopid: shopid }
+        query: { id: id, shopid: shopid },
       });
     },
 
     handleClick() {},
     handleSizeChange(val) {},
     handleCurrentChange(val) {},
-    goChat(item) {
+    goChat() {
+      var item = this.kfList[0]
       item.name = "username2";
-      var loginname = "username1"
+      var loginname = "username1";
       window.open(
-        "http://kf.dyjcyun.com/contact/" + 
-          item.userName +
-          "/" +
-          loginname +
-          "/" +
-          this.$route.query.id +
-          "/" +
-          this.$route.query.shopid,
-        "_blank"
+        "http://kf.dyjcyun.com/contact/" +  item.userName + "/" + loginname +  "/" +  this.$route.query.id +  "/" +  this.$route.query.shopid, "_blank"
       );
     },
     webIMregister() {
@@ -505,12 +460,12 @@ export default {
         nickname: "nickname",
         appKey: WebIM.config.appkey,
         apiUrl: WebIM.config.apiURL,
-        success: function(res) {
+        success: function (res) {
           _this.unid = res.entities.uuid;
           window.localStorage.setItem("im-userInfo", JSON.stringify(res));
           window.open("http://localhost:8080/contact/username1", "_blank");
         },
-        error: function(res) {}
+        error: function (res) {},
       });
     },
 
@@ -529,14 +484,14 @@ export default {
       }
       this.$fetch(
         "/api/user/userInfo?token=" + window.localStorage.getItem("paoce_token")
-      ).then(response => {
+      ).then((response) => {
         if (response.isrz == "1") {
           this.$router.push({ path: "/step" });
         } else {
           this.$confirm("您还未进行认证, 是否前往认证?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
-            type: "warning"
+            type: "warning",
           })
             .then(() => {
               this.$router.push({ path: "/authentication" });
@@ -552,11 +507,11 @@ export default {
       this.$fetch("/api/goods/goodsCommentList", {
         goods_id: id,
         limit: _this.pageSize,
-        page: _this.currentPage
-      }).then(response => {
+        page: _this.currentPage,
+      }).then((response) => {
         if (response.code == 0) {
           _this.commentList = response.data.records;
-          _this.commentList.forEach(v => {
+          _this.commentList.forEach((v) => {
             v.star = parseInt(v.star);
           });
           _this.total = response.data.total;
@@ -564,8 +519,8 @@ export default {
           _this.$message.error(response.msg);
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

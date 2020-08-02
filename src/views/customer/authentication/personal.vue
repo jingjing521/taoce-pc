@@ -97,6 +97,8 @@ export default {
           if (response.code == 0) {
             if(response.data.length > 0){
               _this.ruleForm = response.data[0];
+              _this.hasFmt = _this.ruleForm.idCover ? true:false;
+              _this.hasFmt1 = _this.ruleForm.idBgCover ? true:false;
             } 
           } else {
             _this.$message.error(response.msg);

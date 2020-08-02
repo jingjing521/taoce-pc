@@ -4,6 +4,7 @@
       <div class="top_nav">
         <div class="main_width flex justify-between">
           <div>
+            <span class="padding-right">{{province + ' ' +city}}</span>
             <span class="padding-right">嗨，欢迎来到</span>
             <router-link to="/login" v-if="!userInfo.username">
               <span class="padding-right">请登录</span>
@@ -90,10 +91,14 @@ export default {
       input1: "",
       input2: "",
       input3: "",
-      select: ""
+      select: "",
+      province:"",
+      city:""
     };
   },
   created() {
+    this.province = window.localStorage.getItem("taoce_province");
+    this.city = window.localStorage.getItem("taoce_city");
     if (window.localStorage.getItem("paoce_token")) {
       this.$fetch(
         "/api/user/userInfo?token=" + window.localStorage.getItem("paoce_token")
@@ -101,9 +106,7 @@ export default {
         this.userInfo = response.data;
       });
     } else {
-      this.userInfo = {
-        username: ""
-      };
+      this.userInfo = { username: "" };
     }
   },
   methods: {

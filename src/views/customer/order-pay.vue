@@ -157,7 +157,16 @@ export default {
         });
       }else if(_this.payType == '2'){
         // 余额支付
-        this.balancePay();
+        this.$confirm("是否要使用余额支付?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          _this.balancePay();
+        })
+        .catch(() => { });
+        
         
       }
       

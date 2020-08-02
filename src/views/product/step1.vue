@@ -280,17 +280,12 @@
           </span>
           <el-card class="box-card" shadow="never" id="address-box">
             <div v-for="item in addressList" :key="item.id" class="text item">
-              <el-radio v-model="param.fpaddrId" :label="item.id">{{item.address }}</el-radio>
+              <el-radio v-model="param.fpaddrId" :label="item.id">{{  item.proAddress + item.address }}</el-radio>
             </div>
           </el-card>
           <div style="margin-top: 15px;">
             <el-button type="primary" size="small" class="margin-left" @click="addAddress">新增地址+</el-button>
-            <el-button
-              type="primary"
-              size="small"
-              class="margin-left"
-              v-if="addressList.length > 1"
-            >更多地址</el-button>
+            <el-button  type="primary" size="small"  class="margin-left"  v-if="addressList.length > 1" >更多地址</el-button>
           </div>
         </div>
       </div>
@@ -321,7 +316,8 @@
 </template>
 
 <script>
-import { isEmpty } from "@/utils";
+import cityList from "@/utils/city.json";
+import { isEmpty ,getDataName,getAllCity,getAllDistrict } from "@/utils";
 import addAddress from "../template/add-address";
 import addOrUpdateInvoice from "../template/add-or-update-invoice";
 import invoiceList from "../template/invoice-list";
@@ -464,6 +460,12 @@ export default {
       var _this = this;
       this.$fetch("/api/user/userConsigneeAddressList").then(response => {
         if (response.code == 0) {
+          response.data.forEach(function(v,i){
+              v.proAddress = 
+              getDataName({dataList:cityList,value:'dm',lable:'name',data:v.province}) + 
+              getDataName({  dataList:getAllCity(cityList),value:'id',lable:'name',data:v.city   })  + 
+              getDataName({  dataList:getAllDistrict(cityList),value:'id',lable:'name',data:v.district })
+          })
           _this.addressList = response.data;
           _this.param.bgaddrId = response.data[0].id;
           _this.param.fpaddrId = response.data[0].id;

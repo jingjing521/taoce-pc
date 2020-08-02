@@ -80,6 +80,7 @@ export default {
       this.type = this.$route.query.type;
       this.ruleForm = this.$route.query.item;
       this.fileList = [{ name: "授权委托书", url: this.ruleForm.pzImg }];
+      this.hasFmt = true;
     }
   },
   methods: {

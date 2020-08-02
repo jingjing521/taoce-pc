@@ -20,5 +20,37 @@ export function starPhone(phoneNum){
     strLen = str.slice(-8,-2);
     return str.replace(strLen,"******");
 }
+export function  getDataName (obj) {
+    let name = obj.data
+    if (Array.isArray(obj.dataList) && obj.dataList.length > 0) {
+      for (let i = 0; i < obj.dataList.length; i++) {
+        if (obj.dataList[i][obj.value] === obj.data) {
+          name = obj.dataList[i][obj.lable]
+        }
+      }
+    }
+    return name
+}
 
+export function  getAllCity (obj) {
+    var arr = []; 
+    obj.forEach((v,i) => {
+        v.ssqdmEntityList.forEach(function(x,y){ 
+            arr.push({id:x.dm,name:x.name})
+        })
+    });
+    return arr
+}
+
+export function  getAllDistrict (obj) {
+    var arr = []; 
+    obj.forEach((v,i) => {
+        v.ssqdmEntityList.forEach(function(x,y){ 
+            x.ssqdmEntityList.forEach(function(x1,y1){ 
+                arr.push({id:x1.dm,name:x1.name})
+            })
+        })
+    });
+    return arr
+}
 
