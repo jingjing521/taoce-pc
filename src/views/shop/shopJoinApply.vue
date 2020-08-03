@@ -111,7 +111,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item label="相关附件上传" style="width: calc(100% - 120px);">
+          <el-form-item label="相关附件上传" style="width: calc(100% - 120px);" class="is-required">
             <div>
               <span>
                 <i class="el-icon-star-on"></i>机构营业执照或身份证复印件（请上传小于2M的图片；机构或企业请上传营业执照）
@@ -637,14 +637,14 @@ export default {
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传图片大小不能超过 2MB!");
       }
       return isLt2M;
     },
     beforeAvatarUpload1(file) {
       const isLt2M = file.size / 1024 / 1024 < 5;
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 5MB!");
+        this.$message.error("上传图片大小不能超过 5MB!");
       }
       return isLt2M;
     },

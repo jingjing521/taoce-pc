@@ -8,7 +8,7 @@
     <div class="user_rt_cont gl2-user_rt_cont bg-white padding">
       <div class="balance-title">
         <span class="margin-right">账户余额</span>
-        <el-link type="primary" @click="goDetail">收支明细</el-link>
+        <el-link type="primary" @click="goDetail">充值明细</el-link>
       </div>
       <div class="flex margin-top">
         <div class="balance">¥{{userInfo.androidBalance}}</div>

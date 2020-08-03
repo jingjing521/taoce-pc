@@ -435,8 +435,7 @@ export default {
     },
     goDetail(id, shopid) {
       this.reload();
-      this.$router.push({
-        path: "/productDetail",
+      this.$router.push({path: "/productDetail",
         query: { id: id, shopid: shopid },
       });
     },
@@ -447,7 +446,7 @@ export default {
     goChat() {
       var item = this.kfList[0]
       item.name = "username2";
-      var loginname = "username1";
+      var loginname = "username2";
       window.open(
         "http://kf.dyjcyun.com/contact/" +  item.userName + "/" + loginname +  "/" +  this.$route.query.id +  "/" +  this.$route.query.shopid, "_blank"
       );
