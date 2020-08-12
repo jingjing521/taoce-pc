@@ -114,7 +114,7 @@
         <span class="tit">接样实验室</span>
       </div>
       <div>
-        <el-radio-group v-model="param.libid">
+        <el-radio-group v-model="param.libid"  @change="getLibItem(param.libid)">
           <el-radio-button v-for="item in goodsDetail.receivingSampleLibEntityList" :key="item.id" :label="item.id">{{item.mc}}</el-radio-button>
         </el-radio-group>
       </div>
@@ -572,6 +572,20 @@ export default {
           this.$message.error(response.msg);
         }
       });
+    },
+
+
+    /**
+     * 接种实验室
+     */
+    getLibItem(id){
+      var _this = this;
+      this.goodsDetail.receivingSampleLibEntityList.forEach(function(v,i){
+        if( v.id == id ){
+          _this.receivingAddress = _this.goodsDetail.receivingSampleLibEntityList[i].addr;
+        }
+      })
+      
     },
 
 
