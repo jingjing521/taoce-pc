@@ -81,17 +81,11 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
-            <div class="grid-content bg-purple" style="height:200px;">
-              <img src="@/assets/99.png" alt="">
+          <el-col :span="12" v-for="(item,index) in adList" :key="index">
+            <div class="grid-content bg-purple" style="height:200px;" @click="getProductIndex(item)">
+              <img :src="item.img" alt="">
             </div>
           </el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple" style="height:200px;">
-              <img src="@/assets/100.png" alt="">
-            </div>
-          </el-col>
-          <!-- <el-col :span="4"></el-col> -->
         </el-row>
       </div>
     </div>
@@ -248,7 +242,8 @@ export default {
       categoryList: [],
       categoryTwoList: [],
       newsList: [],
-      askList: []
+      askList: [],
+      adList:[]
     };
   },
   created() {
@@ -282,8 +277,33 @@ export default {
     this.getAgentList();
     this.getNewsList();
     this.getAskList();
+    this.categoryAd();
   },
   methods: {
+    getProductIndex(item){
+      this.$router.push({
+        path: "/product",
+        query: {
+          cateOne: item.cateOne,
+          cateTwo: item.cateTwo,
+          cateThree: item.cateThree
+        }
+      });
+
+    },
+    // 分类广告
+    categoryAd(){
+      var _this = this;
+      this.$fetch("/api/categoryAd/list", {}).then(response => {
+        console.log(response);
+        _this.loading = false;
+        if (response.code == 0) {
+          _this.adList = response.data;
+        } else {
+          _this.$message.error(response.msg);
+        }
+      });
+    },
     // 一级分类鼠标事件
     selectStyle(id, index) {
       this.dow = true;

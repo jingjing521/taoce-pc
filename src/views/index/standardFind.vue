@@ -7,19 +7,15 @@
     <div class="server-content">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm" >
         <el-form-item label="标准号">
-          <el-input v-model="ruleForm.bzbh" style="width:200px" placeholder="请输入标准号" maxlength="6"></el-input>
+          <el-input v-model="ruleForm.bzbh" style="width:300px" placeholder="请输入标准号" maxlength="6"></el-input>
         </el-form-item>
         <el-form-item label="标准名称">
-          <el-input v-model="ruleForm.bzmc" style="width:200px" placeholder="请输入标准名称" maxlength="11"></el-input>
+          <el-input v-model="ruleForm.bzmc" style="width:300px" placeholder="请输入标准名称" maxlength="11"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="验证码">
-          <el-input v-model="ruleForm.code" style="width:200px" placeholder="请输入验证码" maxlength="6"></el-input>
-          <el-button type="primary">获取验证码</el-button>
-        </el-form-item> -->
+        <el-form-item>
+          <el-button type="primary" @click="search()">搜索</el-button>
+        </el-form-item>
       </el-form>
-      <div class="padding text-center">
-        <el-button type="primary" @click="search()">搜索</el-button>
-      </div>
     </div>
     <div style="padding-top:10px" id="divList" v-loading="loading">
       <ul class="release-a" v-for="(item, index)  in list" :key="index">
@@ -47,8 +43,9 @@
   </div>
 </template>
 <script>
+
 import { isEmpty } from "@/utils";
-export default {
+export default { 
   data() {
     return {
       loading: true,
@@ -65,7 +62,10 @@ export default {
       }
     };
   },
- created() {
+  watch: {
+    "$route": "getList"
+  },
+ created() { 
     this.getList();
   },
   methods: {

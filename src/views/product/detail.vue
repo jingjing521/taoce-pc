@@ -38,27 +38,28 @@
           <div class="sp-item">
             <span>报告语言</span>
             <span>
-              <el-button  type="text"  :class="opt.reportLauguage == '1' ? '':'is-black'" @click="getReportLauguage('1')" >中文报告</el-button>
-              <el-button type="text" :class="opt.reportLauguage == '2' ? '':'is-black'" @click="getReportLauguage('2')" >英文报告</el-button>
-              <el-button  type="text" :class="opt.reportLauguage == '3' ? '':'is-black'"  @click="getReportLauguage('3')"  >中英文报告</el-button>
+              <el-button  type="text" v-if="goodsDetail.zhbgjg != -1" :class="opt.reportLauguage == '1' ? '':'is-black'" @click="getReportLauguage('1')" >中文报告</el-button>
+              <el-button  type="text" v-if="goodsDetail.enbgjg != -1" :class="opt.reportLauguage == '2' ? '':'is-black'" @click="getReportLauguage('2')" >英文报告</el-button>
+              <el-button  type="text" v-if="goodsDetail.zebgjg != -1" :class="opt.reportLauguage == '3' ? '':'is-black'"  @click="getReportLauguage('3')"  >中英文报告</el-button>
             </span>
           </div>
-          <div class="sp-item">
+          <div class="sp-item" v-if="goodsDetail.bgzsjg != -1">
             <span>报告形式</span>
             <span>
               <el-button type="text" :class="opt.reportType == '1' ? '':'is-black'"  @click="getReportType('1')"  >检测报告</el-button>
               <el-button type="text"  :class="opt.reportType == '2' ? '':'is-black'" @click="getReportType('2')" >报告证书</el-button>
             </span>
           </div>
-          <div class="sp-item">
+          <div class="sp-item" v-if="goodsDetail.jjms != 0">
             <span>加急周期</span>
             <el-checkbox-group v-model="isJJ" style="display:inline-block" size="small" @change="getJJItem" >
-              <el-checkbox-button>{{goodsDetail.jjms}}</el-checkbox-button>
+              <el-checkbox-button>{{goodsDetail.jjms}}个工作日</el-checkbox-button>
             </el-checkbox-group>
           </div>
           <div class="sp-item">
             <span>检测周期</span>
-            <span>{{goodsDetail.testPeriod}}</span>
+            <span v-if="isJJ">{{ ( goodsDetail.testPeriod - goodsDetail.jjms)}}个工作日</span>
+            <span v-if="!isJJ">{{goodsDetail.testPeriod}}个工作日</span>
           </div>
           <div class="sp-item">
             <span>业务类型</span>
@@ -98,12 +99,12 @@
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="10" style="margin-left:0;margin-right:0">
+    <el-row :gutter="10" style="margin-left:0;margin-right:0;" v-if="goodsDetail.goodsAddtionServiceEntityList.length > 0  ">
       <el-col :span="16" class="bg-white padding-top">
         <div class="bg-white padding">
           <el-table :data="goodsDetail.goodsAddtionServiceEntityList" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55" align="center"></el-table-column>
-            <el-table-column prop="additionalServiceEntity.fwmc" label="附加服务名称" align="center"></el-table-column>
+            <el-table-column prop="additionalServiceEntity.fwmc" label="套餐服务" align="center"></el-table-column>
             <el-table-column prop="capabilityLibEntity.bzh" label="送样数量/单" align="center">
               <template slot-scope="scope">
                 <span v-if="scope.row.additionalServiceEntity.priceType == '2'" >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].price}}</span>
@@ -125,7 +126,7 @@
                   v-model="scope.row.additionalServiceEntity.isDeleted" v-if="scope.row.additionalServiceEntity.priceType == '1'"  ></el-input-number>
               </template>
             </el-table-column>
-            <el-table-column prop="capabilityLibEntity.jcjg" align="center">
+            <el-table-column prop="capabilityLibEntity.jcjg" align="center" label="套餐内容">
               <template slot-scope="scope">
                 <el-button @click="handleClickDetail(scope.row)" type="text" size="small">详情</el-button>
               </template>
@@ -170,7 +171,7 @@
             <ul class="padding">
               <li style="font-size:14px;" v-for="(item,index) in commentList" :key="index" class="margin-bottom">
                 <div class="flex justify-between" style="line-height：35px;">
-                  <div>{{item.createTime}}</div>
+                  <div>{{item.username}}  {{item.createTime}}</div>
                   <div>
                     <el-rate v-model="item.star" disabled text-color="#ff9900"></el-rate>
                   </div>
@@ -242,10 +243,12 @@ export default {
       pageSize: 10,
       total: 0,
       activeName: "1",
-      goodsDetail: {},
+      goodsDetail: {
+        goodsAddtionServiceEntityList:[]
+      },
       opt: {
         reportLauguage: "1",
-        reportType: "1",
+        reportType: "1"
       },
     };
   },
@@ -253,6 +256,7 @@ export default {
     this.getGoodDetail();
     this.getGoodsCommentList(this.$route.query.id);
     this.getList();
+    this.webIMregister();
   },
   methods: {
     // 价格数量
@@ -325,6 +329,7 @@ export default {
     },
 
     getJJItem(ite) {
+      console.log(ite);
       this.getPrice();
     },
     handleClickDetail(item) {
@@ -345,9 +350,9 @@ export default {
           this.goodsDetail.serviceEntityList.forEach(function (v, i) { serviceLi.push(v.mc); });
           this.goodsDetail.testing = testing.toString();
           this.goodsDetail.serviceLi = serviceLi.toString();
-          this.goodsPrice =  this.goodsDetail.goodsPrice + this.goodsDetail.zhbgjg + this.goodsDetail.jcbgjg;
+          this.goodsPrice =  this.goodsDetail.goodsPrice + this.goodsDetail.zhbgjg ;
           this.lauguagePrice = this.goodsDetail.zhbgjg;
-          this.reportPrice = this.goodsDetail.jcbgjg;
+          this.reportPrice = 0;
           this.goodsDetail.goodsAddtionServiceEntityList.forEach(function ( v,  i ) { 
             v.additionalServiceEntity.min = parseInt(
               JSON.parse(v.additionalServiceEntity.fwitem)[0].min
@@ -417,10 +422,10 @@ export default {
     // 报告形式
     getReportType(type) {
       this.opt.reportType = type;
-      if (type == 1) {
-        this.reportPrice = this.goodsDetail.jcbgjg;
-      } else {
-        this.reportPrice = this.goodsDetail.enbgjg;
+      if(this.opt.reportType == '2'){ 
+        this.reportPrice = this.goodsDetail.bgzsjg;
+      }else{ 
+        this.reportPrice = 0
       }
       this.getPrice();
     },
@@ -435,7 +440,8 @@ export default {
     },
     goDetail(id, shopid) {
       this.reload();
-      this.$router.push({path: "/productDetail",
+      this.$router.push({
+        path: "/productDetail",
         query: { id: id, shopid: shopid },
       });
     },
@@ -444,25 +450,24 @@ export default {
     handleSizeChange(val) {},
     handleCurrentChange(val) {},
     goChat() {
+      console.log(JSON.parse(window.localStorage.getItem("im-userInfo")))
       var item = this.kfList[0]
-      item.name = "username2";
-      var loginname = "username2";
+      var loginname = JSON.parse(window.localStorage.getItem("im-userInfo")).entities[0].username;
       window.open(
-        "http://kf.dyjcyun.com/contact/" +  item.userName + "/" + loginname +  "/" +  this.$route.query.id +  "/" +  this.$route.query.shopid, "_blank"
+        "http://kf.dyjcyun.com/contact/" +  item.userName + "/" + loginname +  "/"+  this.$route.query.id +  "/" +  this.$route.query.shopid, "_blank"
       );
     },
     webIMregister() {
       var _this = this;
       this.$imConn.registerUser({
-        username: "username1",
-        password: "password",
+        username: "u" + Math.random(),
+        password: "123456",
         nickname: "nickname",
         appKey: WebIM.config.appkey,
         apiUrl: WebIM.config.apiURL,
         success: function (res) {
           _this.unid = res.entities.uuid;
           window.localStorage.setItem("im-userInfo", JSON.stringify(res));
-          window.open("http://localhost:8080/contact/username1", "_blank");
         },
         error: function (res) {},
       });
@@ -471,6 +476,8 @@ export default {
     // 立即购买
     buy() {
       this.goodsDetail.opt = this.opt;
+      this.goodsDetail.isJJ = this.isJJ;
+      this.goodsDetail.totalPrice = this.goodsPrice;
       this.goodsDetail.multipleSelection = this.multipleSelection;
       window.localStorage.setItem(
         "paoce_token-detail",

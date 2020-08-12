@@ -97,6 +97,7 @@ export default new Router({
         // 我的订单
         { path: '/order', name: 'Order', component: () => import('@/views/customer/order') },
         { path: '/orderDetail', name: 'OrderDetail', component: () => import('@/views/customer/order-detail') },
+        { path: '/otherDetail', name: 'OtherDetail', component: () => import('@/views/customer/other-detail') },
         {  path: '/orderPay',  name: 'OrderPay', component: () => import('@/views/customer/order-pay') },
         { path: '/payGateWay', name: 'PayGateWay', component: () => import('@/views/customer/payGateWay') },
         // 我的钱包

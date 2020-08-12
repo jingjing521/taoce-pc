@@ -25,6 +25,9 @@ export default {
       list: []
     };
   },
+   watch: {
+    "$route": "getList"
+  },
   created() {
     this.getList();
   },

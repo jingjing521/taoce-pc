@@ -39,9 +39,9 @@
         <el-table-column prop="cpmc" label="产品名称" align="center" min-width="120px"></el-table-column>
         <el-table-column prop="xhgg" label="型号/规格" align="center" min-width="120px"></el-table-column>
         <el-table-column prop="bzmc" label="标准" align="center"></el-table-column>
-        <el-table-column prop="ceStartTime" label="发报日期" align="center" min-width="180px"></el-table-column>
-        <el-table-column prop="ceFirstStartTime" label="首次发报日期" align="center" min-width="180px"></el-table-column>
-        <el-table-column prop="ceEndTime" label="报告截止日期" align="center" min-width="180px"></el-table-column>
+        <el-table-column prop="ceStartTime" label="发证日期" align="center" min-width="180px"></el-table-column>
+        <el-table-column prop="ceFirstStartTime" label="首次签发日期" align="center" min-width="180px"></el-table-column>
+        <el-table-column prop="ceEndTime" label="证书有效期至" align="center" min-width="180px"></el-table-column>
         <el-table-column prop="ceStatus" label="现状态" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.ceStatus == '1'">有效</span>
@@ -49,7 +49,7 @@
             <span v-if="scope.row.ceStatus == '3'">撤销</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ceStatusUpdadeTime" label="报告状态变化时间" align="center" min-width="200px"></el-table-column>
+        <el-table-column prop="ceStatusUpdadeTime" label="发证机构" align="center" min-width="200px"></el-table-column>
         <el-table-column prop="remark" label="原因" align="center"></el-table-column>
         <el-table-column prop="ceFile" label="附件" align="center">
           <template slot-scope="scope">

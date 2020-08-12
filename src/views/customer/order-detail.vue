@@ -31,72 +31,15 @@
           <span style="float: right; padding: 3px 0;font-size:15px;">下单时间：{{orderDetail.addTime}}</span>
         </div>
         <div class="shqrm_c">
-          <div class="xiangq_ju" style="width: 90%;">
+         <div class="xiangq_ju" style="width: 90%;">
             <span class="shenqrxq_bt">订单状态</span>
             <el-input
               class="container_input required"
               maxlength="200"
-              v-model="orderDetail.qxddms"
+              :value="getOrderStatus(orderDetail.orderStatus)"
               disabled
             ></el-input>
           </div>
-        </div>
-      </el-card>
-      <el-card class="box-card margin-bottom" v-if="orderDetail.orderStatus == '8'">
-        <div slot="header" class="clearfix">
-          <span class="tit">订单异常分析</span>
-          <span style="float: right; padding: 3px 0"></span>
-        </div>
-        <div>
-          <ul>
-            <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 2);">
-              <span class="shenqrxq_bt">订单号</span>
-              <el-input v-model="ycms.orderSn" class="container_input required" disabled ></el-input>
-            </li>
-            <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 2);">
-              <span class="shenqrxq_bt">异常报送日期</span>
-              <el-input v-model="ycms.reportDate" class="container_input required" disabled ></el-input>
-            </li>
-            <li class="xiangq_ju" style="width: calc( ( 100% - 120px ));">
-              <span class="shenqrxq_bt">产品类别</span>
-              <el-input v-model="ycms.cplb" class="container_input required" disabled ></el-input>
-            </li>
-            <li class="xiangq_ju" style="width: calc( ( 100% - 120px ));">
-              <span class="shenqrxq_bt">产品名称</span>
-              <el-input v-model="ycms.cpmc" class="container_input required" disabled ></el-input>
-            </li>
-            <li class="xiangq_ju" style="width: calc( ( 100% - 120px ));">
-              <span class="shenqrxq_bt">产品型号</span>
-              <el-input v-model="ycms.cpxh" class="container_input required" disabled ></el-input>
-            </li>
-            <div v-for="(item,index) in ycms.ycitems" :key="index">
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 4);">
-                <span class="shenqrxq_bt">异常{{index+1}}</span>
-                <div class="shenqrxq_bt">数据明细</div>
-              </li>
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 4);">
-                <span class="shenqrxq_bt">项目名称</span>
-                <el-input v-model="item.xmmc" class="container_input required" disabled style="width:100%"></el-input>
-              </li>
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 4);">
-                <span class="shenqrxq_bt">标准值</span>
-                <el-input v-model="item.bzz" class="container_input required" disabled style="width:100%"></el-input>
-              </li>
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ) / 4);">
-                <span class="shenqrxq_bt">实测值</span>
-                <el-input v-model="item.scz" class="container_input required" disabled style="width:100%"></el-input>
-              </li>
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ));margin-top: 20px;">
-                <span class="shenqrxq_bt">异常分析</span>
-                <el-input v-model="item.ycfx" class="container_input required" disabled ></el-input>
-              </li>
-              <li class="xiangq_ju" style="width: calc( ( 100% - 120px ));">
-                <span class="shenqrxq_bt">整改措施和意见</span>
-                <el-input v-model="item.zgcsyj" class="container_input required" disabled ></el-input>
-              </li>
-            </div>
-            
-          </ul>
         </div>
       </el-card>
       <el-card class="box-card margin-bottom">
@@ -589,6 +532,48 @@ export default {
           }
         }
       });
+    },
+    // 获取订单状态
+    getOrderStatus(value) {
+      let text = "";
+      switch (value) {
+        case 0:
+        case "0":
+          text = "草稿待提交";
+          break;
+        case 1:
+        case "1":
+          text = "待送样";
+          break;
+        case 2:
+        case "2":
+          text = "待付款";
+          break;
+        case 3:
+        case "3":
+          text = "服务中";
+          break;
+        case 4:
+        case "4":
+          text = "待签收";
+          break;
+        case 5:
+        case "5":
+          text = "待评价";
+          break;
+        case 6:
+        case "6":
+          text = "已评价";
+          break;
+        case 7:
+        case "7":
+          text = "已取消";
+        case 8:
+        case "8":
+          text = "异常订单";
+      }
+
+      return text;
     },
   },
 };

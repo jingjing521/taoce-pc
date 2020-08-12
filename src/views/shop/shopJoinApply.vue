@@ -23,14 +23,7 @@
         <div class="item">
           <i class="el-icon-notebook-2"></i>机构基本信息
         </div>
-        <el-form
-          :inline="true"
-          :label-position="labelPosition"
-          label-width="80px"
-          :model="form"
-          :rules="rules"
-          ref="form"
-        >
+        <el-form :inline="true"  :label-position="labelPosition"  label-width="80px" :model="form" :rules="rules" ref="form" >
           <el-form-item label="机构或代理商名称" prop="mc">
             <el-input v-model="form.mc" placeholder="请输入机构或代理商名称"></el-input>
           </el-form-item>
@@ -44,12 +37,7 @@
             <el-input v-model="form.legalPerson" placeholder="请输入法定代表人"></el-input>
           </el-form-item>
           <el-form-item label="行政区划" prop="value" style="width: calc(100% - 120px);">
-            <el-cascader
-              v-model="form.value"
-              :options="options"
-              @change="handleChange"
-              style="width: calc(100% - 120px);"
-            ></el-cascader>
+            <el-cascader v-model="form.value" :options="options" @change="handleChange" style="width: calc(100% - 120px);"></el-cascader>
           </el-form-item>
           <el-form-item label="国家中心" style="width: calc((100% - 400px)/3);" prop="isNationLevel">
             <el-radio-group v-model="form.isNationLevel">
@@ -70,51 +58,24 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="简介" style="width: calc(100% - 120px);" prop="intro">
-            <el-input
-              type="textarea"
-              v-model="form.intro"
-              placeholder="请输入简介"
-              maxlength="1000"
-              show-word-limit
-              rows="4"
-            ></el-input>
+            <el-input type="textarea" v-model="form.intro" placeholder="请输入简介" maxlength="1000" show-word-limit rows="4" ></el-input>
           </el-form-item>
           <el-form-item label="机构业务范围" style="width: calc(100% - 120px);" prop="businessScope">
-            <el-input
-              type="textarea"
-              v-model="form.businessScope"
-              placeholder="请输入机构业务范围"
-              maxlength="500"
-              show-word-limit
-              rows="4"
-            ></el-input>
+            <el-input type="textarea" v-model="form.businessScope" placeholder="请输入机构业务范围" maxlength="500" show-word-limit rows="4"></el-input>
           </el-form-item>
           <el-form-item label="备注说明" style="width: calc(100% - 120px);">
-            <el-input
-              type="textarea"
-              v-model="form.remark"
-              placeholder="请输入备注说明"
-              maxlength="500"
-              show-word-limit
-              rows="4"
-            ></el-input>
+            <el-input type="textarea" v-model="form.remark" placeholder="请输入备注说明" maxlength="500" show-word-limit rows="4"></el-input>
           </el-form-item>
           <el-form-item label="logo" style="width: calc(100% - 120px);" prop="imageUrl" ref="image">
-            <el-upload
-              class="avatar-uploader"
-              :action="uploadUrl"
-              :show-file-list="false"
-              :on-success="handlelogoSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
+            <el-upload class="avatar-uploader"  :action="uploadUrl" :show-file-list="false" :on-success="handlelogoSuccess" :before-upload="beforeAvatarUpload">
               <img v-if="logoUrl" :src="logoUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item label="相关附件上传" style="width: calc(100% - 120px);" class="is-required">
+          <el-form-item label="相关附件上传" style="width: calc(100% - 120px);">
             <div>
               <span>
-                <i class="el-icon-star-on"></i>机构营业执照或身份证复印件（请上传小于2M的图片；机构或企业请上传营业执照）
+                <i class="el-icon-star-on" style="color:#F56C6C"></i>机构营业执照或身份证复印件（请上传小于2M的图片；机构或企业请上传营业执照）
               </span>
               <el-upload
                 class="upload-demo"
@@ -135,7 +96,7 @@
             </div>
             <div>
               <span>
-                <i class="el-icon-star-on"></i>入驻“淘测”平台承诺书（可上传扫描件或图片，大小不超过5M）
+                <i class="el-icon-star-on" style="color:#F56C6C"></i>入驻“淘测”平台承诺书（可上传扫描件或图片，大小不超过5M）
               </span>
               <span>
                 <el-link type="primary">模板下载</el-link>
@@ -164,33 +125,18 @@
         </div>
       </div>
       <div v-if="active == '2'">
-        <div class="item">
-          <i class="el-icon-notebook-2"></i>资质证书信息
-        </div>
-        <el-card
-          class="box-card margin-bottom"
-          v-for="(item,index) in joinCertificateFromList"
-          :key="index"
-        >
+        <div class="item"> <i class="el-icon-notebook-2"></i>资质证书信息 </div>
+        <el-card class="box-card margin-bottom" v-for="(item,index) in joinCertificateFromList" :key="index">
           <div slot="header" class="clearfix">
-            <span style="font-size:15px;">资质证书{{index+1}}</span>
+            <span style="font-size:18px;font-weight:bold">资质证书{{index+1}}</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="del(index)">删除</el-button>
-            <el-button
-              style="float: right; padding: 3px 0"
-              class="margin-right"
-              type="text"
-              @click="hide(index,item.isHide)"
-            >{{ item.isHide ? '隐藏':'展示' }}</el-button>
+            <el-button style="float: right; padding: 3px 0" class="margin-right" type="text" @click="hide(index,item.isHide)">{{ item.isHide ? '隐藏':'展示' }}</el-button>
           </div>
           <div v-if="item.isHide">
             <el-form :label-position="labelPosition" label-width="80px" :model="form">
               <el-form-item label="证书性质">
                 <el-radio-group v-model="item.ceQt">
-                  <el-radio
-                    v-for="item1 in testingQualificationList"
-                    :label="item1.id"
-                    :key="item1.id"
-                  >{{item1.mc}}</el-radio>
+                  <el-radio  v-for="item1 in testingQualificationList" :label="item1.id" :key="item1.id" >{{item1.mc}}</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="证书资质">
@@ -216,7 +162,7 @@
               <el-form-item label="相关附件上传" style="width: calc(100% - 120px);">
                 <div>
                   <span>
-                    <i class="el-icon-star-on"></i>检验检测资质证书（请上传小于2M的图片）
+                    <i class="el-icon-star-on" style="color:#F56C6C"></i>检验检测资质证书（请上传小于2M的图片）
                   </span>
                   <el-upload
                     class="upload-demo"
@@ -237,7 +183,7 @@
                 </div>
                 <div>
                   <span>
-                    <i class="el-icon-star-on"></i>能力附表（可上传小于4M的图片或pdf）
+                    <i class="el-icon-star-on" style="color:#F56C6C"></i>能力附表（可上传小于4M的图片或pdf）
                   </span>
                   <el-upload
                     class="upload-demo"
@@ -462,7 +408,12 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           console.log("第一步：", _this.form);
-          _this.active = 2;
+          if(_this.form.isNationLevel == '1' || _this.form.isProvinceLevel == '1' ){
+            _this.active = 2;
+          }else{
+            _this.active = 3;
+          }
+          
         } else {
           console.log("error submit!!");
           return false;
@@ -484,7 +435,11 @@ export default {
       this.active = 1;
     },
     next1() {
-      this.active = 2;
+      if( this.form.isNationLevel == '1' || this.form.isProvinceLevel == '1' ){
+        this.active = 2;
+      }else{
+        this.active = 1;
+      } 
     },
     // 第二步中的下一步
     three() {
@@ -517,6 +472,7 @@ export default {
       this.active = 3;
     },
     handlelogoSuccess(res, file) {
+      console.log(res);
       this.hasFmt = true;
       this.logoUrl = res.data;
       this.form.logo = res.data;
@@ -615,7 +571,7 @@ export default {
         contactUser: _this.info.contactUser,
         email: _this.info.email,
         yzm: _this.info.yzm,
-        logo: "string"
+        logo:  _this.form.logo
       }).then(response => {
         console.log(response);
         if (response.code == 0) {
@@ -637,14 +593,14 @@ export default {
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 2MB!");
+        this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isLt2M;
     },
     beforeAvatarUpload1(file) {
       const isLt2M = file.size / 1024 / 1024 < 5;
       if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 5MB!");
+        this.$message.error("上传头像图片大小不能超过 5MB!");
       }
       return isLt2M;
     },

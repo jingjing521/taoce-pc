@@ -58,6 +58,7 @@ export function fetch(url, params = {}) {
   }else{
     url = url + "?n="+encodeURIComponent(Math.random())
   }
+  console.log(params);
   return new Promise((resolve, reject) => {
     axios.get(url, { params: params })
       .then(response => { resolve(response.data); })

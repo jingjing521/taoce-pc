@@ -37,18 +37,18 @@
         <el-table-column prop="scsdwmc" label="生产商" align="center"></el-table-column>
         <el-table-column prop="cpmc" label="产品名称" align="center"></el-table-column>
         <el-table-column prop="xhgg" label="型号/规格" align="center" min-width="120px"></el-table-column>
-        <el-table-column prop="bzmc" label="标准" align="center"></el-table-column>
-        <el-table-column prop="reStartTime" label="发报日期" align="center" min-width="180px"></el-table-column>
-        <el-table-column prop="reFirstStartTime" label="首次发报日期" align="center" min-width="180px"></el-table-column>
-        <el-table-column prop="reEndTime" label="报告截止日期" align="center" min-width="180px"></el-table-column>
-        <el-table-column prop="reStatus" label="现状态" align="center">
+        <el-table-column prop="bzmc" label="检测标准" align="center"></el-table-column>
+        <el-table-column prop="reStartTime" label="签发日期" align="center" min-width="180px"></el-table-column>
+        <el-table-column prop="reFirstStartTime" label="首次签发日期" align="center" min-width="180px"></el-table-column>
+        <!-- <el-table-column prop="reEndTime" label="报告截止日期" align="center" min-width="180px"></el-table-column> -->
+        <!-- <el-table-column prop="reStatus" label="现状态" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.reStatus == '1'">有效</span>
             <span v-if="scope.row.reStatus == '2'">过期</span>
           </template>
         </el-table-column>
         <el-table-column prop="reStatusUpdadeTime" label="报告状态变化时间" align="center" min-width="200px"></el-table-column>
-        <el-table-column prop="remark" label="原因" align="center"></el-table-column>
+        <el-table-column prop="remark" label="原因" align="center"></el-table-column> -->
         <el-table-column prop="ceFile" label="附件" align="center">
           <template slot-scope="scope">
             <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">

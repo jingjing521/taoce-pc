@@ -22,26 +22,28 @@
                 <div class="dpth_xx gl2-dpth_xx">
                   <a class="ord_dd gl2-ord_dd-userimg gl2-logo-liname" style="max-width:300px;">{{item.shopName}}</a>
                 </div>
-                <a class="ord_dd operate ord_dxq gl2-ord_dxq" @click="godetail(item.orderId)">订单详情</a>
-                <a class="ord_dd operate ord_dxq gl2-ord_dxq" @click="orderCopy(item.orderId)">订单复制</a>
+                <a class="ord_dd operate ord_dxq gl2-ord_dxq" @click="godetail(item)">订单详情</a>
+                <a class="ord_dd operate ord_dxq gl2-ord_dxq" @click="orderCopy(item)">订单复制</a>
               </caption>
               <tbody>
                 <tr class="dd_wt">
-                  <td class="center ord_gd gl2-center" @click="goGoodDetail(item)">
+                  <td class="center ord_gd gl2-center" @click="goGoodDetail(item)" style="cursor: pointer;">
                     <img src="@/assets/logo/logo.png" alt="" v-if="!item.goodsImg" width="80px" height="80px">
                     <img v-if="item.goodsImg" :src="item.goodsImg" width="80px" height="80px">
                   </td>
                   <td class="qymc_dd gl2-companyname" @click="goGoodDetail(item)">{{item.goodsName ? item.goodsName : "自定义委托订单" }}</td>
-                  <td class="ord_bk_z gl2-ord_bk_z"></td>
+                  <td class=""></td>
                   <td class="ord_bk_z">
                     <b class="ord_jg gl2-ord_jg">{{item.orderAmount  != 0? '￥'+item.orderAmount : '待评估'}}</b>
                   </td>
-                  <td class="ord_bk ord_bk_z"> <span class="ddzt_zt">{{getOrderStatus(item.orderStatus)}}</span> </td>
+                  <td class="ord_bk ord_bk_z"> 
+                    <span class="ddzt_zt">{{getOrderStatus(item.orderStatus)}}</span>  
+                  </td>
                 </tr>
                 <tr class="tj_dd_a" v-if="item.orderStatus == '0'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
-                      <a class="a_btn operate mrxz" @click="edit(item.orderId)">编辑</a>
+                      <a class="a_btn operate mrxz" @click="edit(item)">编辑</a>
                       <a class="a_btn operate mrxz" @click="del">删除</a>
                     </span>
                   </td>
@@ -57,17 +59,17 @@
                 <tr class="tj_dd_a" v-if="item.orderStatus == '2'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
-                      <a class="a_btn operate mrxz" @click="gopay(item.orderId,item.orderSn)">去支付</a>
+                      <a class="a_btn operate mrxz" @click="gopay(item.orderId,item.orderSn,item.orderAmount)">去支付</a>
                     </span>
                   </td>
                 </tr>
-                <!-- <tr class="tj_dd_a" v-if="item.orderStatus == '3'">
+                <tr class="tj_dd_a" v-if="item.orderStatus == '8'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
-                      <a class="a_btn operate mrxz">查看支付</a>
+                      <a class="a_btn operate mrxz" @click="goOtherDetail(item)">异常信息</a>
                     </span>
                   </td>
-                </tr> -->
+                </tr>
                 <tr class="tj_dd_a" v-if="item.orderStatus == '4'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
@@ -98,8 +100,22 @@
     <!-- 录入送样 -->
     <samples-info v-if="samplesStatus" ref="samplesinfo" @getList="getList"/>
     <!-- 查看物流 -->
-    <el-dialog title="查看物流" :visible.sync="logisticsVisible" width="30%">
-      <span v-if="orderDetail.orderFfbgxxEntity">{{orderDetail.orderFfbgxxEntity.kddh}}</span>
+    <el-dialog title="查看物流" :visible.sync="logisticsVisible" width="30%"> 
+      <el-form :model="appraiseform" style="width:500px;">
+        <el-form-item label="寄件人地址" :label-width="formLabelWidth">
+          <el-input v-model="orderDetail.orderFfbgxxEntity.jjrdz" autocomplete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="快递公司" :label-width="formLabelWidth">
+          <el-input v-model="orderDetail.orderFfbgxxEntity.kdgs" autocomplete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="快递单号" :label-width="formLabelWidth">
+          <el-input v-model="orderDetail.orderFfbgxxEntity.kddh" autocomplete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="报告备注" :label-width="formLabelWidth">
+          <el-input v-model="orderDetail.orderFfbgxxEntity.bgbz" autocomplete="off" disabled></el-input>
+        </el-form-item>
+         
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="logisticsVisible = false">确 定</el-button>
       </span>
@@ -161,7 +177,9 @@ export default {
       page: "1",
       limit: "10",
       total: null,
-      orderDetail: {}
+      orderDetail: {
+        orderFfbgxxEntity:{}
+      }
     };
   },
   created() {
@@ -180,17 +198,30 @@ export default {
       this.$router.push({ path: "/productDetail", query: { id: item.goodsId, shopid: item.shopId } });
     },
     // 编辑订单
-    edit(orderId){
-      this.$router.push({ path: "/orderDetail", query: { orderId: orderId,type:"edit"} });
+    edit(item){
+      console.log(item)  
+      if(item.goodsId){
+        this.$router.push({ path: "/step", query: { orderId: item.orderId ,type:"edit" } });
+      }else{
+        this.$router.push({ path: "/addorder", query: { orderId: item.orderId ,type:"edit" } });
+      }  
     },
     // 订单详情
-    godetail(orderId) {
-      this.$router.push({ path: "/orderDetail", query: { orderId: orderId,type:"view" } });
+    godetail(item) {
+      console.log(item) 
+      this.$router.push({ path: "/orderDetail", query: { orderId: item.orderId} });
     },
-    orderCopy(orderId){
+    goOtherDetail(item){
+      this.$router.push({ path: "/otherDetail", query: { orderId: item.orderId} });
+    },
+    orderCopy(item){ 
       window.localStorage.removeItem("taoce-param");
       window.localStorage.removeItem("paoce_token-detail");
-      this.$router.push({ path: "/step", query: { orderId: orderId } });
+      if(item.goodsId){
+        this.$router.push({ path: "/step", query: { orderId: item.orderId ,type:"view" } });
+      }else{
+        this.$router.push({ path: "/addorder", query: { orderId: item.orderId ,type:"view" } });
+      }  
     },
     // 查看物流
     viewLogistics(orderId) {
@@ -302,7 +333,11 @@ export default {
         .catch(() => {});
     },
     // 去支付
-    gopay(orderId, orderSn) {
+    gopay(orderId, orderSn,orderAmount) {
+      if(orderAmount == 0){
+        this.$message({ type: "info", message: "系统正在评估价格，请耐心等候" });
+        return;
+      }
       this.$router.push({
         path: "/orderPay",
         query: { orderId: orderId, orderSn: orderSn }

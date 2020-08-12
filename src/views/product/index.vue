@@ -12,11 +12,11 @@
           <i class="el-icon-arrow-right"></i>
         </span>
         <el-tag
-          v-for="tag in tags"
+          v-for="(tag,index) in tags"
           :key="tag.name"
           size="small"
           closable
-          @close="delTag(tag)"
+          @close="delTag(tag,index)"
         >{{tag.name}}</el-tag>
       </div>
       <div class="filter" style="min-width:50px;">
@@ -27,12 +27,9 @@
           </el-col>
           <el-col :span="1">
             <div>
-              <el-link
-                style="margin-right:0"
-                :underline="false"
-                @click="getCategory('')"
+              <el-link style="margin-right:0" :underline="false" @click="getCategory('')"
                 :class="param.cateOne == '' ? 'on':''"
-              >不限</el-link>
+              >全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -103,7 +100,7 @@
                 style="margin-right:0"
                 :class="param.fwxq == '' ? 'on':''"
                 @click="getserverId('')"
-              >不限</el-link>
+              >全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -130,7 +127,7 @@
                 style="margin-right:0"
                 @click="getStandard('')"
                 :class=" param.xgbz == '' ? 'on':''"
-              >不限</el-link>
+              >全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -169,7 +166,7 @@
                 style="margin-right:0"
                 :class=" param.xgzb == '' ? 'on':''"
                 @click="getStandard1('')"
-              >不限</el-link>
+              >全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -184,8 +181,8 @@
                 style="margin-bottom:2px;"
               >{{item.mc}}</el-link>
               <div class="filter-input">
-                <el-input placeholder="请输入相关指标" class="input-with-select" size="small">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入相关指标" class="input-with-select" size="small" v-model="xgzbInput">
+                  <el-button slot="append" icon="el-icon-search" @click="searchxgzb()"></el-button>
                 </el-input>
               </div>
             </div>
@@ -198,12 +195,7 @@
           </el-col>
           <el-col :span="1">
             <div style="width:80px">
-              <el-link
-                :underline="false"
-                style="margin-right:0"
-                :class=" param.jyzz == '' ? 'on':''"
-                @click="getjyzz('')"
-              >不限</el-link>
+              <el-link :underline="false"  style="margin-right:0"  :class=" param.jyzz == '' ? 'on':''" @click="getjyzz('')">全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -213,7 +205,7 @@
                 v-for="item in testingQualificationList"
                 :key="item.id"
                 :class=" param.jyzz == item.id ? 'on':''"
-                @click="getjyzz(item.id)"
+                @click="getjyzz(item.id,item.mc)"
               >{{item.mc}}</el-link>
             </div>
           </el-col>
@@ -234,8 +226,8 @@
          
         </div>
         <div>
-          <el-input placeholder="请输入服务名称" class="input-with-select">
-            <el-button slot="append">搜索</el-button>
+          <el-input placeholder="请输入服务名称" class="input-with-select" v-model="param.mc">
+            <el-button slot="append" @click="getList">搜索</el-button>
           </el-input>
         </div>
       </div>
@@ -273,6 +265,7 @@ export default {
         jyzz: "", // 检验资质
         xgzb: "", // 相关指标
         xgbz: "", // 相关标准
+        mc:"",
         limit: "1000",
       },
       categoryList: [],
@@ -284,6 +277,7 @@ export default {
       cateStandardList: [],
       goodsList: [],
       xgbzInput: "",
+      xgzbInput: "",
 
       loading: true,
       count: 10,
@@ -292,21 +286,7 @@ export default {
       value:""
     };
   },
-  created() {
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
+  created() { 
     this.param.cateOne = this.$route.query.cateOne || "";
     this.param.cateTwo = this.$route.query.cateTwo || "";
     this.param.cateThree = this.$route.query.cateThree || "";
@@ -347,6 +327,9 @@ export default {
     this.getCategoryStandard();
     this.getTestingQualificationList();
     this.getList();
+  },
+  watch: {
+    "$route": "getList"
   },
   methods: {
     handleChange(value) {
@@ -418,7 +401,8 @@ export default {
       this.param.cateThree = "";
       this.param.fwxq = "";
       this.param.xgbz = "";
-      this.tags = [];
+      this.tags = []; 
+      this.threeStatus = false;
       if (this.param.cateTwo) {
         this.tags[0] = { name: name, type: "" };
         this.getCategoryTwoList(id, "2");
@@ -544,13 +528,13 @@ export default {
       });
     },
     getjyzz(id, name) {
+      console.log(id,name);
       this.param.jyzz = id;
       var a = true;
       if (this.param.jyzz) {
         this.tags.forEach((v) => {
           if (v.type == "jyzz") {
-            a = false;
-            v.name = name;
+            a = false; v.name = name;
             return;
           }
         });
@@ -561,16 +545,66 @@ export default {
       this.getList();
     },
     // 搜索相关标准
-    searchxgbz() {
-      // this.xgbzInput
-      console.log(this.xgbzInput);
+    searchxgbz() { 
+      var _this = this;
+      this.$fetch("/api/categoryStandard/lisAll", {
+        cone: this.param.cateOne,
+        ctwo: this.param.cateTwo,
+        cthree: this.param.cateThree, 
+        mc:this.xgbzInput
+      }).then((response) => {
+        console.log(response);
+        if (response.code == 0) {
+           if(response.data.length > 0){ 
+              // _this.cateStandardList.unshift(response.data[0]);
+              // console.log(_this.cateStandardList)
+              // _this.xgbzInput = "";
+              // _this.getStandard(response.data[0].id, response.data[0].mc) 
+           }else{
+              _this.$message.error("未检测到相关标准");
+           }
+        } else {
+          
+        }
+      });
+    },
+    searchxgzb() { 
+      var _this = this;
+      this.$fetch("/api/standardIndex/lisAll", {
+        cone: this.param.cateOne,
+        ctwo: this.param.cateTwo,
+        cthree: this.param.cateThree,
+        stid: this.param.xgbz,
+        mc:this.xgzbInput
+      }).then((response) => { 
+        if (response.code == 0) {
+           if(response.data.length > 0){
+              // _this.standardList.unshift(response.data[0]);
+              // _this.xgzbInput = "";
+              // _this.getStandard1(response.data[0].id, response.data[0].mc)
+           }else{
+            _this.$message.error("未检测到相关指标");
+           }
+        } else {
+          
+        }
+      });
     },
     getpx(item) {
       this.param.px = item;
       this.getList();
     },
-    delTag(tag) {
-      console.log(tag);
+    delTag(tag,index) {
+      this.tags.splice(index,1)
+      this.param[tag.type] = "";
+      if(tag.type == ''){
+        this.param.cateOne = "";
+        this.param.cateTwo = "";
+        this.param.cateThree = "";
+        this.twoStatus = false; // 二级分类隐藏
+        this.threeStatus = false; // 二级分类隐藏
+      }
+      this.getList();
     },
   },
 };

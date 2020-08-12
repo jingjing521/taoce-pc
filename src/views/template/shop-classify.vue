@@ -73,9 +73,14 @@ export default {
       options: []
     };
   },
+  props: {
+    shopid: String 
+  },
   created() {
+    console.log("THIS",this.shopid);
     var _this = this;
-    this.$fetch("/api/category/oms/shopCategoryList", { shopId: "4028b88171af205f0171b16a5bde003b" }).then(response => { 
+    this.$fetch("/api/category/oms/shopCategoryList", { 
+      shopId: this.shopid }).then(response => { 
       if (response.code == 0) {
         _this.categoryList = response.data;
         _this.param.cateOne = response.data[0].cat_one;
@@ -89,7 +94,7 @@ export default {
     getCategory1() {
       var _this = this;
       this.$fetch("/api/category/oms/shopCategoryThreeListDown", {
-        shopId: "4028b88171af205f0171b16a5bde003b",
+        shopId: this.shopid,
         cateTwo: _this.param.cateTwo
       }).then(response => {
         if (response.code == 0) {

@@ -8,11 +8,11 @@
           </div>
         </div>
         <div class="block"> 
-          <el-date-picker v-model="value1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <el-date-picker v-model="value1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
           <el-button type="primary" style="margin-left:20px;">查询</el-button>
         </div>
         <div class="padding-top padding-bottom" style="font-size:16px;"> 
-          <span>充值总金额：200.00元</span>
+          <span>充值总金额：{{moneytotal}}元</span>
         </div>
         <el-table :data="list" style="width: 100%" stripe border v-loading="loading">
           <el-table-column label="序号" type="index" align="center" width="60"></el-table-column>
@@ -39,11 +39,11 @@
           </div>
         </div>
         <div class="block"> 
-          <el-date-picker v-model="value1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <el-date-picker v-model="value2" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
           <el-button type="primary" style="margin-left:20px;">查询</el-button>
         </div>
         <div class="padding-top padding-bottom" style="font-size:16px;">
-          <span class="padding-right">消费总金额：100.00元</span> 
+          <span class="padding-right">消费总金额：{{moneytotal1}}元</span> 
         </div>
         <el-table :data="list1" border="" style="width: 100%">
           <el-table-column prop="orderId" label="订单编号" align="center"></el-table-column>
@@ -68,10 +68,14 @@
   </div>
 </template>
 <script>
+import { UTF_DATE_START_MONTH,UTF_DATE_END} from '@/utils'
 export default {
   data() {
     return {
-      value1:'',
+      moneytotal:"",moneytotal1:"",
+
+      value1: [new Date().UTF_DATE_START_MONTH(), new Date().UTF_DATE_END()],
+      value2: [new Date().UTF_DATE_START_MONTH(), new Date().UTF_DATE_END()],
       value:true,
       loading:true,
       activeName: "account",
@@ -104,9 +108,17 @@ export default {
     },
     // 充值明细
     handleList() {
+      console.log(this.value1[0]);
+      
       var _this = this;
-      this.$fetch("/api/order/chargeOrder", { limit: _this.limit, page: _this.page  }).then(response => { 
+      this.$fetch("/api/order/chargeOrder", { 
+        limit: _this.limit, 
+        page: _this.page,
+        startTime:_this.value1[0],
+        endTime:_this.value1[1],
+      }).then(response => { 
         _this.loading = false;
+        _this.moneytotal = response.total;
         if (response.code == 0) {
           _this.list = response.data.records;
           _this.total = response.data.total;
@@ -121,9 +133,12 @@ export default {
       this.$fetch("/api/order/userOrderList", {
         limit: _this.limit,
         page: _this.page,
-        payStatus:'1'
+        payStatus:'1',
+        startTime:_this.value2[0],
+        endTime:_this.value2[1]
       }).then(response => { 
         _this.loading = false;
+        _this.moneytotal = response.total;
         if (response.code == 0) {
           _this.list1 = response.data.records;
           _this.total1 = response.data.total;

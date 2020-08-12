@@ -82,8 +82,9 @@ export default {
           var obj = JSON.parse(JSON.stringify(item));
           this.form = obj;
         }else{
-          this.form = {}
-          this.form.fplx = '1'
+          this.form = {
+            fplx:'1'
+          }
           this.clearValidate('form')
         } 
       });

@@ -2,6 +2,10 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill'
 
+import IM from '../webIm.config'
+console.log(IM);
+Vue.use(IM)
+
 import Vue from 'vue'
 import App from './App'
 import router from './router'

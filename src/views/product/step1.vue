@@ -17,77 +17,35 @@
     </el-card>
     <!-- 样品信息 -->
     <el-card class="box-card margin-bottom">
-      <div slot="header" class="clearfix">
-        <span class="tit">样品信息</span>
-      </div>
+      <div slot="header" class="clearfix"> <span class="tit">样品信息</span> </div>
       <div>
         <ul class="shqrm_c" id="ulSampleMain">
           <ul id="ulSampleTypeOne">
             <li class="xiangq_ju">
-              <span class="shenqrxq_bt">
-                样品名称
-                <span class="weit_xhx" v-if="param.reportLauguage != '2'">*</span>
-              </span>
-              <el-input
-                v-model="param.ypmc"
-                placeholder="请输入样品名称"
-                class="container_input required"
-                maxlength="50"
-              ></el-input>
+              <span class="shenqrxq_bt"> 样品名称 <span class="weit_xhx" v-if="param.reportLauguage != '2'">*</span> </span>
+              <el-input v-model="param.ypmc" placeholder="请输入样品名称" class="container_input required"  maxlength="50" ></el-input>
             </li>
             <li class="xiangq_ju">
-              <span class="shenqrxq_bt">
-                样品英文名称
-                <span class="weit_xhx" v-if="param.reportLauguage != '1'">*</span>
-              </span>
-              <el-input
-                v-model="param.ypenmc"
-                placeholder="请输入样品英文名称"
-                class="container_input required"
-                maxlength="50"
-              ></el-input>
+              <span class="shenqrxq_bt"> 样品英文名称 <span class="weit_xhx" v-if="param.reportLauguage != '1'">*</span> </span>
+              <el-input  v-model="param.ypenmc" placeholder="请输入样品英文名称" class="container_input required" maxlength="50"></el-input>
             </li>
             <li class="xiangq_ju">
-              <span class="shenqrxq_bt">
-                样品数量
-                <span class="weit_xhx">*</span>
-              </span>
-              <el-input
-                v-model="param.ypsl"
-                placeholder="请输入样品数量"
-                class="container_input required"
-                maxlength="50"
-              ></el-input>
+              <span class="shenqrxq_bt"> 样品数量 <span class="weit_xhx">*</span> </span>
+              <el-input v-model="param.ypsl" placeholder="请输入样品数量" class="container_input required" maxlength="50" ></el-input>
             </li>
             <li class="xiangq_ju">
               <span class="shenqrxq_bt">样品商标</span>
-              <el-input
-                v-model="param.ypsbmc"
-                placeholder="如为图片等格式，可以附件形式上传"
-                class="container_input required"
-                maxlength="50"
-                style="width:73%;"
-              ></el-input>
+              <el-input v-model="param.ypsbmc" placeholder="如为图片等格式，可以附件形式上传" class="container_input required" maxlength="50" style="width:73%;" ></el-input>
             </li>
             <li class="xiangq_ju">
               <span class="shenqrxq_bt">保密要求</span>
               <el-select v-model="param.ypbmyq" placeholder="请选择">
-                <el-option
-                  v-for="item in ypbmyqList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in ypbmyqList" :key="item.value" :label="item.label" :value="item.value" ></el-option>
               </el-select>
             </li>
             <li class="xiangq_ju">
               <span class="shenqrxq_bt">型号规格</span>
-              <el-input
-                v-model="param.ypxhgg"
-                placeholder="请输入型号规格"
-                class="container_input required"
-                maxlength="50"
-              ></el-input>
+              <el-input  v-model="param.ypxhgg" placeholder="请输入型号规格" class="container_input required" maxlength="50" ></el-input>
             </li>
             <li class="xiangq_ju">
               <span class="shenqrxq_bt">
@@ -95,12 +53,7 @@
                 <span class="weit_xhx">*</span>
               </span>
               <el-select v-model="param.ypthfs" placeholder="请选择">
-                <el-option
-                  v-for="item in ypthfsList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in ypthfsList" :key="item.value" :label="item.label" :value="item.value" ></el-option>
               </el-select>
             </li>
           </ul>
@@ -113,12 +66,10 @@
         <span class="tit">附加服务</span>
       </div>
       <div>
-        <el-checkbox v-model="checked">加 急</el-checkbox>
+        <el-checkbox v-model="checked" @change="getJJPrice">加 急</el-checkbox>
         <div style="margin-top:10px;">
-          说明：1、加急服务缩短检测周期，检测周期加急后为
-          <span>{{goodsDetail.jjms}}</span>；
-          2、加急服务会额外收取
-          <span>{{goodsDetail.jjjg}}</span>元的服务费用
+          说明：1、加急服务缩短检测周期，检测周期加急后为 <span>{{ ( goodsDetail.testPeriod - goodsDetail.jjms)}}个工作日</span>；
+          2、加急服务会额外收取  <span>{{goodsDetail.jjjg}}</span>元的服务费用
         </div>
       </div>
     </el-card>
@@ -127,11 +78,7 @@
         <span class="tit">检测项目</span>
       </div>
       <div>
-        <el-table 
-          :data="goodsDetail.goodsCheckitemEntityList"
-          tooltip-effect="dark"
-          style="width: 100%" 
-        > 
+        <el-table :data="goodsDetail.goodsCheckitemEntityList" tooltip-effect="dark" style="width: 100%"> 
           <el-table-column label="项目名称" prop="capabilityLibEntity.jcxm"></el-table-column>
           <el-table-column prop="capabilityLibEntity.bzhmc" label="检测标准"></el-table-column>
           <el-table-column prop="capabilityLibEntity.bzh" label="检测标准号"></el-table-column>
@@ -149,21 +96,7 @@
       <div class="shqrm_c">
         <li class="xiangq_ju gl2-xiangq_ju-fu" style="width: 90%;">
           <span class="shenqrxq_bt gl2-shenq-fujian">附件</span>
-          <el-upload
-            style="display: inline;"
-            class="upload-demo"
-            multiple
-            :limit="1"
-            :action="uploadUrl"
-            :show-file-list="true"
-            :on-success="handleAvatarSuccess"
-            :file-list="fileList"
-            :on-preview="handlePreview"
-            :before-upload="beforeAvatarUpload"
-            :on-exceed="handleExceed"
-            :before-remove="beforeRemove"
-            :on-remove="handleRemove"
-          >
+          <el-upload style="display: inline;" class="upload-demo" multiple :limit="1" :action="uploadUrl" :show-file-list="true" :on-success="handleAvatarSuccess" :file-list="fileList" :on-preview="handlePreview"  :before-upload="beforeAvatarUpload" :on-exceed="handleExceed" :before-remove="beforeRemove" :on-remove="handleRemove">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </li>
@@ -182,11 +115,7 @@
       </div>
       <div>
         <el-radio-group v-model="param.libid">
-          <el-radio-button
-            v-for="item in goodsDetail.receivingSampleLibEntityList"
-            :key="item.id"
-            :label="item.id"
-          >{{item.mc}}</el-radio-button>
+          <el-radio-button v-for="item in goodsDetail.receivingSampleLibEntityList" :key="item.id" :label="item.id">{{item.mc}}</el-radio-button>
         </el-radio-group>
       </div>
       <div style="line-height:35px;">
@@ -205,79 +134,41 @@
         </el-radio-group>
       </div>
       <div class="margin-top" v-if="param.isFp == '1'">
-        <el-button
-          type="primary"
-          size="small"
-          class="margin-left"
-          v-if="invoiceList.length > 0"
-          @click="optInvoice"
-        >选择发票+</el-button>
+        <el-button type="primary" size="small" class="margin-left" v-if="invoiceList.length > 0"  @click="optInvoice" >选择发票+</el-button>
         <el-button type="primary" size="small" class="margin-left" @click="addInvoice">新增发票+</el-button>
         <ul class="shqrm_c">
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              发票抬头
-              <span class="weit_xhx">*</span>
-            </span>
+            <span class="shenqrxq_bt"> 发票抬头 <span class="weit_xhx">*</span> </span>
             <el-input placeholder="请输入发票抬头" class="container_input required" v-model="param.fptt"></el-input>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              纳税人识别号
-              <span class="weit_xhx">*</span>
-            </span>
-            <el-input
-              placeholder="请输入纳税人识别号"
-              class="container_input required"
-              v-model="param.nsrsbh"
-            ></el-input>
+            <span class="shenqrxq_bt"> 纳税人识别号 <span class="weit_xhx">*</span> </span>
+            <el-input placeholder="请输入纳税人识别号" class="container_input required" v-model="param.nsrsbh"></el-input>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              发票类型
-              <span class="weit_xhx">*</span>
-            </span>
+            <span class="shenqrxq_bt"> 发票类型 <span class="weit_xhx">*</span> </span>
             <el-radio v-model="param.fplx" label="1">专用发票</el-radio>
             <el-radio v-model="param.fplx" label="2">普通发票</el-radio>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              注册地址
-              <span class="weit_xhx">*</span>
-            </span>
+            <span class="shenqrxq_bt"> 注册地址 <span class="weit_xhx">*</span> </span>
             <el-input placeholder="请输入注册地址" class="container_input required" v-model="param.dwzcdz"></el-input>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              开户银行
-              <span class="weit_xhx">*</span>
-            </span>
+            <span class="shenqrxq_bt"> 开户银行 <span class="weit_xhx">*</span> </span>
             <el-input placeholder="请输入开户银行" class="container_input required" v-model="param.dwkhyh"></el-input>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              银行账户
-              <span class="weit_xhx">*</span>
-            </span>
+            <span class="shenqrxq_bt"> 银行账户 <span class="weit_xhx">*</span> </span>
             <el-input placeholder="请输入银行账户" class="container_input required" v-model="param.dwyhzh"></el-input>
           </li>
           <li class="xiangq_ju">
-            <span class="shenqrxq_bt">
-              注册电话号码
-              <span class="weit_xhx">*</span>
-            </span>
-            <el-input
-              placeholder="请输入注册电话号码"
-              class="container_input required"
-              v-model="param.dwzcdh"
-            ></el-input>
+            <span class="shenqrxq_bt"> 注册电话号码 <span class="weit_xhx">*</span> </span>
+            <el-input placeholder="请输入注册电话号码" class="container_input required"  v-model="param.dwzcdh"></el-input>
           </li>
         </ul>
-        <div class="xiangq_ju" style="border-bottom: none;">
-          <span class="shenqrxq_bt">
-            发票邮寄地址
-            <span class="weit_xhx">*</span>
-          </span>
+        <div class="xiangq_ju" style="border-bottom: none;width:calc( ( 100% - 120px ));">
+          <span class="shenqrxq_bt"> 发票邮寄地址 <span class="weit_xhx">*</span> </span>
           <el-card class="box-card" shadow="never" id="address-box">
             <div v-for="item in addressList" :key="item.id" class="text item">
               <el-radio v-model="param.fpaddrId" :label="item.id">{{  item.proAddress + item.address }}</el-radio>
@@ -292,17 +183,15 @@
     </el-card>
     <el-card class="box-card margin-bottom">
       <div class="info">
-        已选择
-        <span>{{ multipleSelection.length }}</span>项服务 价格:
-        <span>￥{{orderPrice.toFixed(2)}}</span>
+        已选择 <span>{{ goodsDetail.goodsCheckitemEntityList.length }}</span>项服务 价格: <span>￥{{orderPrice}}</span>
       </div>
       <div class="text-right">
-        <router-link to="/step">
-          <el-button style="margin-top: 12px;">上一步</el-button>
-        </router-link>
-        <router-link to="/step1">
+        
+        <el-button style="margin-top: 12px;" @click="pre()">上一步</el-button> 
+         
+         
           <el-button style="margin-top: 12px;" type="info" @click="sub('1')">存草稿</el-button>
-        </router-link>
+        
         <el-button style="margin-top: 12px;" type="primary" @click="sub('2')">提交订单</el-button>
       </div>
     </el-card>
@@ -344,8 +233,8 @@ export default {
         ypxhgg: "",
         ypthfs: "代为处理",
         isFp: "2",
-        fwItemIds: "",
-        isJj: "2",
+        fwItemIds: "", 
+         
         libid: "",
 
         fptt: "", // 发票抬头
@@ -382,9 +271,7 @@ export default {
     };
   },
   mounted() {
-    var goodsDetail = JSON.parse(
-      window.localStorage.getItem("paoce_token-detail")
-    );
+    var goodsDetail = JSON.parse(  window.localStorage.getItem("paoce_token-detail") );
     this.goodsDetail = goodsDetail;
 
     this.deviceTableData = [];
@@ -404,14 +291,18 @@ export default {
     this.goodsDetail = goodsDetail; 
     Object.assign( this.param, JSON.parse(window.localStorage.getItem("taoce-param")) );
     var _this = this;
-    this.goodsDetail.goodsCheckitemEntityList.forEach(function(v, i) { 
-      _this.param.fwItemIds += v.checkId + ","; 
-    });
+    this.goodsDetail.goodsCheckitemEntityList.forEach(function(v, i) {  _this.param.fwItemIds += v.checkId + ",";  });
     console.log("ssss",this.param);
 
     this.param.libid = this.goodsDetail.receivingSampleLibEntityList[0].id;
     this.receivingAddress = this.goodsDetail.receivingSampleLibEntityList[0].addr;
-    this.getOrderPrcie();
+    this.checked = this.param.isJj == '1' ? true : false;
+    if(this.param.id){
+      this.getOrderPrcie1();
+    }else{
+      this.getOrderPrcie();
+    }
+    
   },
   methods: {
     first(rows) {
@@ -423,26 +314,14 @@ export default {
     },
 
     getOrderPrcie() {
-      var additionalServicePrice = 0;
-      var lauguagePrice = 0;
-      var reportPrice = 0;
-      if (this.goodsDetail.multipleSelection.length > 0) {
-        this.goodsDetail.multipleSelection.forEach(function(v, i) {
-          additionalServicePrice +=
-            v.additionalServiceEntity.priceItem *
-            v.additionalServiceEntity.numItem;
-        });
-      } 
-      console.log(this.param.reportLauguage);
-      if(this.param.reportLauguage == '1'){ lauguagePrice =  this.goodsDetail.zhbgjg;  }
-      if(this.param.reportLauguage == '2'){  lauguagePrice =  this.goodsDetail.enbgjg;  }
-      if(this.param.reportLauguage == '3'){  lauguagePrice =  this.goodsDetail.zebgjg; }
-      if(this.param.reportType == '1'){ 
-        reportPrice = this.goodsDetail.jcbgjg; }else{
-        reportPrice = this.goodsDetail.enbgjg;
-      }
-      console.log(this.goodsDetail.goodsPrice , additionalServicePrice ,lauguagePrice ,reportPrice )
-      this.orderPrice = this.goodsDetail.goodsPrice + additionalServicePrice + lauguagePrice + reportPrice; 
+      this.orderPrice = this.goodsDetail.totalPrice.toFixed(2);
+    },
+    getOrderPrcie1(){
+       this.orderPrice = this.param.orderAmount
+    },
+    getJJPrice(){
+      console.log(this.checked);
+      this.orderPrice = this.checked ? ( parseFloat( this.orderPrice) + parseFloat(this.goodsDetail.jjjg)).toFixed(2) : (this.orderPrice - this.goodsDetail.jjjg).toFixed(2)
     },
 
     // 发票列表
@@ -514,31 +393,18 @@ export default {
       });
       console.log(this.param.fwItemIds);
     },
-    sub(type) {
-      console.log(this.param.fjxx);
+    sub(type) { 
       this.param.isJj = this.checked ? "1" : "2";
-      this.param.fwItemIds = this.param.fwItemIds.slice(
-        0,
-        this.param.fwItemIds.length - 1
-      );
+      this.param.fwItemIds = this.param.fwItemIds.slice( 0, this.param.fwItemIds.length - 1 );
       this.param.isCg = type;
-      this.param.isAggree = "1";
-
-      console.log(this.param.fwItemIds);
-
-      if (
-        this.param.reportLauguage == "1" ||
-        this.param.reportLauguage == "3"
-      ) {
+      this.param.isAggree = "1";  
+      if ( this.param.reportLauguage == "1" || this.param.reportLauguage == "3" ) {
         if (isEmpty(this.param.ypmc)) {
           this.$message.error("请输入样品名称");
           return;
         }
       }
-      if (
-        this.param.reportLauguage == "2" ||
-        this.param.reportLauguage == "3"
-      ) {
+      if ( this.param.reportLauguage == "2" || this.param.reportLauguage == "3"  ) {
         if (isEmpty(this.param.ypenmc)) {
           this.$message.error("请输入样品英文名称");
           return;
@@ -586,7 +452,116 @@ export default {
           return;
         }
       }
-      this.$post("/api/order/addCommonOrder", this.param).then(response => {
+
+      if(this.$route.query.type == "edit"){
+        this.editCommonOrder();
+      }else{
+        this.$post("/api/order/addCommonOrder", this.param).then(response => {
+          console.log(response);
+          if (response.code == 0) {
+            window.localStorage.removeItem("taoce-param");
+            window.localStorage.removeItem("paoce_token-detail");
+            this.$message("提交成功");
+            this.$router.push({ path: "/order" });
+          } else {
+            this.$message.error(response.msg);
+          }
+        });
+      }
+
+
+
+      
+    },
+    pre(){
+      this.$router.go(-1);
+    },
+    // 参数的获取
+    getParam(){
+      var param = [];
+      this.param.orderItemEntityList.forEach((v,i) => {
+        param.push(v.checkIdd) 
+      })
+      var param = {  
+        fwItemIds:param.toString(), // 商品信息
+        goodsAddtionalItemList:[], // 附加服务信息
+        agentId:this.param.agentId, // 代理商id 
+        jgid:this.param.jgid, //  机构ID
+        goodsId:this.param.goodsId, //  商品ID
+        orderId:this.param.id ? this.param.id : '' , //  订单ID
+        /**
+         * 委托客户信息
+         */ 
+        wtdwmc:this.param.wtdwmc, //  委托单位名称 
+        wtdwenmc:this.param.wtdwenmc, //  委托单位英文名称
+        wtdwAddress:this.param.wtdwAddress, //  委托单位地址 
+        wtdwEnAddress:this.param.wtdwEnAddress, //  委托单位英文地址
+        isScwtYz:this.param.isScwtYz, //  生产商与委托单位一致 1是 2否 
+        isZzwtYz:this.param.isZzwtYz, //  制造商与委托单位一致 1是 2否
+        scsdwdz:this.param.scsdwdz, //  生产商地址 
+        scsdwmc:this.param.scsdwmc, //  生产商名称 
+        zzsdwdz:this.param.zzsdwdz, //  制造商单位地址 
+        zzsdwmc:this.param.zzsdwmc, //  制造商单位名称
+        creditCode:this.param.creditCode, //  信用代码
+        phone:this.param.phone, //  手机
+        consignee:this.param.consignee, //  联系人
+        
+        /**
+         * 报告信息
+         */
+        bgaddrId:this.param.bgaddrId,// 报告地址ID 
+        bgbz:this.param.bgbz, //  报告备注
+        bgemail:this.param.bgemail, // 	报告收取邮箱 
+        bgfsxs:this.param.bgfsxs, // 发放方式  
+        bgyt:this.param.bgyt, //  报告用途
+        bgsl:this.param.bgsl, //  报告数量
+        cqcno	:this.param.cqcno, //  CQC申请编号 
+        reportLauguage:this.param.reportLauguage, //  报告语言 1中文报告 2英文报告 3 中英文报告 
+        reportType:this.param.reportType, //  报告形式 1检测报告 2报告证书  
+        jlxs:this.param.jlxs, //  结论形式 
+        /**
+         * 接种实验室
+         */
+        libid:this.param.libid, //  接样实验室 
+        nsrsbh:this.param.nsrsbh, //  纳税人识别号
+        /**
+         * 样品信息
+         */
+        ypmc:this.param.ypmc, //  样品名称 
+        ypenmc:this.param.ypenmc, //  样品英文名称
+        ypsl:this.param.ypsl, //  样品数量
+        ypsbmc:this.param.ypsbmc, //  样品商标名称
+        ypbmyq:this.param.ypbmyq, //  保密要求
+        ypthfs:this.param.ypthfs, //  样品退还方式 
+        ypxhgg:this.param.ypxhgg, //  样品型号规格
+        ypscrq:"", //  生产日期
+
+        isJj: this.param.isJj, //  是否加急 1是 2否
+        xygtnr:this.param.xygtnr, //  需要沟通的其他内容
+        fjxx:this.param.fjxx, //  附件
+
+        /**
+         * 发票信息
+         */
+        isFp:this.param.isFp, //  是否需要发票 1是 2否
+        fpaddrId:this.param.fpaddrId, //  发票地址ID 
+        fpid:this.param.fpid, //  发票ID 
+        fplx:this.param.fplx, //  发票类型 1专用发票2普通发票 
+        fptt:this.param.fptt, //  发票抬头  
+        dwkhyh:this.param.dwkhyh, //  单位开户银行 
+        dwyhzh:this.param.dwyhzh, //  单位银行账户 
+        dwzcdh:this.param.dwzcdh, //  单位注册电话 
+        dwzcdz:this.param.dwzcdz, //  单位注册地址 
+        dwzclxr:this.param.dwzclxr, //  注册联系人
+
+        isAggree:this.param.isAggree, //  同意协议 1是 2否 
+        isCg:'2', //  是否草稿 1是 2否
+      } 
+      return param
+    },
+    //  订单编辑
+    editCommonOrder(){
+      this.$post("/api/order/editCommonOrder",this.getParam()).then(response => {
         console.log(response);
         if (response.code == 0) {
           window.localStorage.removeItem("taoce-param");
@@ -598,6 +573,14 @@ export default {
         }
       });
     },
+
+
+
+
+
+
+
+
     handleAvatarSuccess(res, file) {
       this.fileList = [];
       this.param.fjxx = res.data;

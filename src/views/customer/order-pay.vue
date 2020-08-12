@@ -44,7 +44,7 @@
           <el-radio-group v-model="payType" @change="getPayType">
             <el-radio-button :label="1">在线支付</el-radio-button>
             <el-radio-button :label="2">账户余额</el-radio-button>
-            <el-radio-button :label="3">线下汇款</el-radio-button>
+            <!-- <el-radio-button :label="3">线下汇款</el-radio-button> -->
           </el-radio-group>
         </div>
         <div style="line-height:80px;" v-if="payType == '1'">

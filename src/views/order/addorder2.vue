@@ -70,11 +70,11 @@
                         <span class="shenqrxq_bt">报告收取邮箱</span>
                         <el-input v-model="param.bgemail" placeholder="报告收取邮箱" class="container_input required" maxlength="50" ></el-input>
                     </div>
-                    <div class="xiangq_ju" style="border-bottom: none;display:block;height:auto;" v-if="param.bgfsxs.indexOf('快递速运') > -1">
+                    <div class="xiangq_ju" style="border-bottom: none;display:block;height:auto;width:calc( ( 100% - 120px ));" v-if="param.bgfsxs.indexOf('快递速运') > -1">
                         <span class="shenqrxq_bt"> 报告邮寄地址 <span class="weit_xhx">*</span> </span>
                         <el-card class="box-card" shadow="never" id="address-box">
                             <div v-for="item in addressList" :key="item.id" class="text item">
-                                <el-radio v-model="param.bgaddrId" :label="item.id" @change="opt" >{{item.address }}</el-radio>
+                                <el-radio v-model="param.bgaddrId" :label="item.id" @change="opt" >{{item.proAddress + item.address }}</el-radio>
                             </div>
                         </el-card>
                         <div style="margin-top: 15px;">
@@ -197,14 +197,14 @@
               <el-input placeholder="请输入注册电话号码" class="container_input required" v-model="param.dwzcdh"></el-input>
             </li>
         </ul>
-        <div class="xiangq_ju" style="border-bottom: none;">
+        <div class="xiangq_ju" style="border-bottom: none;width:calc( ( 100% - 120px ));">
           <span class="shenqrxq_bt">
             发票邮寄地址
             <span class="weit_xhx">*</span>
           </span>
           <el-card class="box-card" shadow="never" id="address-box">
               <div v-for="item in addressList" :key="item.id" class="text item">
-                  <el-radio v-model="param.fpaddrId" :label="item.id">{{item.address }}</el-radio>
+                  <el-radio v-model="param.fpaddrId" :label="item.id">{{item.proAddress + item.address }}</el-radio>
               </div>
           </el-card>
           <div style="margin-top: 15px;">
@@ -230,7 +230,8 @@
 </template>
 
 <script>
-import { isEmpty } from "@/utils";
+import cityList from "@/utils/city.json";
+import { isEmpty ,getDataName,getAllCity,getAllDistrict } from "@/utils";
 import addAddress from "../template/add-address";
 import addOrUpdateInvoice from "../template/add-or-update-invoice";
 import invoiceList from "../template/invoice-list";
@@ -288,7 +289,7 @@ export default {
   created() {
     this.getAddressList();
     this.getInvoiceList();
-    Object.assign(this.param,JSON.parse(window.localStorage.getItem("taoce-param")));
+    Object.assign(this.param,JSON.parse(window.localStorage.getItem("taoce-param-other")));
   },
   methods: {
     // 发票列表
@@ -308,6 +309,12 @@ export default {
       var _this = this;
       this.$fetch("/api/user/userConsigneeAddressList").then(response => {
         if (response.code == 0) {
+          response.data.forEach(function(v,i){
+              v.proAddress = 
+              getDataName({dataList:cityList,value:'dm',lable:'name',data:v.province}) + 
+              getDataName({  dataList:getAllCity(cityList),value:'id',lable:'name',data:v.city   })  + 
+              getDataName({  dataList:getAllDistrict(cityList),value:'id',lable:'name',data:v.district })
+          })
           _this.addressList = response.data;
           _this.param.bgaddrId = response.data[0].id;
           _this.param.fpaddrId = response.data[0].id;
@@ -394,12 +401,32 @@ export default {
       this.param.isCg = type;
       this.param.isAggree = '1';
 
-      this.$post("/api/order/addSpecialOrder", this.param).then(response => {
+      if(this.$route.query.type == "edit"){
+        this.editCommonOrder();
+      }else{
+        this.$post("/api/order/addSpecialOrder", this.param).then(response => {
         console.log(response);
         if(response.code == 0){
           this.$message('提交成功');
           this.$router.push({ path: "/order" });
         }else{
+          this.$message.error(response.msg);
+        }
+      });
+      }
+
+      
+    },
+    editCommonOrder(){
+      this.param.orderId = this.param.id;
+      this.$post("/api/order/editSpecialOrder",this.param).then(response => {
+        console.log(response);
+        if (response.code == 0) {
+          window.localStorage.removeItem("taoce-param");
+          window.localStorage.removeItem("paoce_token-detail");
+          this.$message("提交成功");
+          this.$router.push({ path: "/order" });
+        } else {
           this.$message.error(response.msg);
         }
       });

@@ -1,11 +1,7 @@
-
-
 <template>
   <div class="main_width addorderBox">
     <el-card class="box-card margin-bottom">
-      <div slot="header" class="clearfix">
-        <span class="tit">订单服务流程</span>
-      </div>
+      <div slot="header" class="clearfix"><span class="tit">订单服务流程</span></div>
       <div>
         <el-steps :active="active" align-center>
           <el-step title="在线委托"></el-step>
@@ -18,9 +14,7 @@
       </div>
     </el-card>
     <el-card class="box-card margin-bottom">
-      <div slot="header" class="clearfix">
-        <span class="tit">样品信息</span>
-      </div>
+      <div slot="header" class="clearfix"><span class="tit">样品信息</span></div>
       <div>
         <ul class="shqrm_c" id="ulSampleMain">
           <ul id="ulSampleTypeOne">
@@ -76,12 +70,12 @@
           <el-checkbox-button v-for="item in serviceDemandList" :label="item.id" :key="item.id" >{{item.mc}}</el-checkbox-button>
         </el-checkbox-group>
       </div>
-      <div style="margin:20px 0;">
+      <!-- <div style="margin:20px 0;">
         <el-radio v-model="param.sqlx" label="1">新申请</el-radio>
         <el-radio v-model="param.sqlx" label="2">变更</el-radio>
         <el-radio v-model="param.sqlx" label="3">派生</el-radio>
-      </div>
-      <div>
+      </div> -->
+      <!-- <div>
         <el-radio-group v-model="param.ypxh">
           <el-radio-button label="1">单型号</el-radio-button>
           <el-radio-button label="2">多型号</el-radio-button>
@@ -90,17 +84,17 @@
       <div>
         <span style="line-height: 40px;font-size: 18px; font-weight: 400; margin: 15px 0;">型号数量 <span class="weit_xhx">*</span> </span>
         <el-input v-model="param.ypxhsl" class="container_input required input-order" style="width:100px;" size="small"></el-input> 个
-      </div>
-      <div class="server-title">差异描述</div>
+      </div> -->
+      <!-- <div class="server-title">差异描述</div>
       <div>
         <el-input type="textarea" v-model="param.ypxhcyms"></el-input>
-      </div>
+      </div> -->
       <!-- ypsl -->
       <div class="server-title">机构</div>
       <el-radio-group v-model="param.jgid" @change="getLibListByJg(param.jgid)">
         <el-radio-button v-for="item in agencyList" :key="item.jid" :label="item.jid">{{item.jmc}}</el-radio-button>
       </el-radio-group>
-      <div class="server-title">接种实验室</div>
+      <div class="server-title">接样实验室</div>
       <div>
         <el-radio-group v-model="param.libid">
           <el-radio-button v-for="item in receivingSampleLibList" :key="item.id" :label="item.id" >{{item.mc}}</el-radio-button>
@@ -155,7 +149,7 @@
     <!-- 检测标准 -->
     <test v-if="testStatus" ref="test"/>
     <!-- 店铺产品分类 -->
-    <shop-classify v-if="classStatus" ref="shopclassify" @getClass="getClass($event)" :shopid="param.jgid"/>
+    <shop-classify v-if="classStatus && param.agentId" ref="shopclassify" @getClass="getClass($event)" :shopid="param.agentId"/>
   </div>
 </template>
 
@@ -189,11 +183,13 @@ export default {
         cateThree:"", // 三级分类
         cateTwo:"", // 二级分类
 
+
+        agentId:"",
         fwxq1:[],
         fwxq:[], // 服务需求
         sqlx: "1", // 默认新申请
         ypxh:"1", // 默认单型号
-        ypxhsl:"", // 型号数量
+        ypxhsl:"1", // 型号数量
         ypxhcyms:"", // 差异描述
         jgid:"", // 机构id
         libid:"", // 接种实验室
@@ -201,6 +197,7 @@ export default {
         fjxx:"",// 附近
         fwItemIds:"" // 检测标准
       },
+      hasSelectList:[],
       ypbmyqList: [
         { value: "一般保密", label: "一般保密" },
         { value: "严格保密", label: "严格保密" }
@@ -225,22 +222,160 @@ export default {
       this.$router.push({ path: "/login" });
       return;
     }
-    this.getServiceDemand();
-    this.getAgencyList();
+
+
+
+    
+    
     if(window.localStorage.getItem("taoce-param")){
       this.param = JSON.parse(window.localStorage.getItem("taoce-param"));
       this.param.isJj == '2' ? this.checked == false : this.checked == true;
       this.fileList = [{ name: "附件", url: this.param.fjxx }];
-      this.multipleSelection = this.param.fwItemIds.split();
-      // this.$refs.multipleTable.toggleRowSelection(this.multipleSelection);
+      this.multipleSelection = this.param.fwItemIds.split(); 
+    } 
+
+    this.getServiceDemand();
+    if(this.$route.query.orderId){
+      this.getOrderInfo(this.$route.query.orderId); 
+       this.param.agentId = this.$route.query.shopid;
+    }else{
+      this.param.agentId = this.$route.query.shopid;
+      this.getAgencyList();
+      
     }
-    console.log(this.multipleSelection);
+    
+    
     
     
   
   },
   mounted() {},
   methods: { 
+    /**
+     * 获取订单详情
+     */
+    getOrderInfo(orderId) {
+      var _this = this;
+      this.$fetch("/api/order/orderInfo", { orderId: orderId }).then(response => {
+        if (response.code == 0) {
+          _this.param = response.data; 
+          _this.param.fwxq1 = response.data.fwxq.split(",");
+
+          _this.multipleSelection = response.data.orderItemEntityList
+
+
+          response.data.orderItemEntityList.forEach(function(v,i){
+            _this.hasSelectList.push(v.checkId)
+          })
+
+          _this.getAgencyList();
+        }
+      });
+    }, 
+    /**
+     * 选择分类
+     */
+    getClass(data){
+      this.param.cateOne	= data.cateOne ;
+      this.param.cateTwo	= data.cateTwo ;
+      this.param.cateThree	= data.cateThree 
+      this.getListCheckItem();
+    },
+    
+ 
+    /**
+     * 获取服务需求
+     */
+    getServiceDemand() {
+      this.$fetch("/api/serviceDemand/listAll", {}).then(response => {
+        if (response.code == 0) {
+          this.serviceDemandList = response.data;
+        }
+      });
+    },
+    /**
+     * 获取商户下的机构列表
+     */
+    getAgencyList() {
+      this.$fetch("/api/order/agencyListByShop", {
+        shopId: this.param.agentId
+      }).then(response => {
+        console.log(response);
+        if (response.code == 0) {
+          this.agencyList = response.data;
+          if(window.localStorage.getItem("taoce-param")){ 
+            this.param.jgid = JSON.parse(window.localStorage.getItem("taoce-param")).jgid;
+            this.getLibList(this.param.jgid);
+          }else{
+            this.param.jgid = response.data[0].jid;
+            this.getLibList(response.data[0].jid);
+          } 
+        }
+      });
+    },
+    /**
+     * 机构下的接种实验室和检查标准
+     */
+    getLibListByJg(id){ 
+      this.param.jgid = id;
+      this.receivingSampleLibList = [];
+      this.getListCheckItem();
+      this.getLibList(id);
+    },
+    // 获取接种实验室
+    getLibList(id) {
+      this.$fetch("/api/order/receivingSampleLibList", { jgId: id  }).then(response => { 
+        if (response.code == 0) {
+          this.receivingSampleLibList = response.data;
+          this.param.libid = response.data[0].id;
+        }
+      });
+    },
+    /**
+     * 获取服务项目 - 检查标准
+     */
+    getListCheckItem() {
+      var _this = this;
+      this.$fetch("/api/capabilityLib/listCheckItem", {
+        cone: this.param.cateOne,cthree: this.param.cateThree,ctwo: this.param.cateTwo,jid: this.param.jgid,
+        limit: "10",
+        page: "1"
+      }).then(response => {
+        console.log("获取服务项目", response.data.records);
+        if (response.code == 0) {
+          _this.listCheckItemList = response.data.records;
+          console.log(_this.hasSelectList)
+
+          if(_this.hasSelectList.length > 0){
+            _this.$nextTick(()=>{
+              _this.listCheckItemList.forEach(row => {
+                console.log(row)
+                if(_this.hasSelectList.indexOf(row.id) >= 0){
+                  _this.$refs.multipleTable.toggleRowSelection(row,true);
+                }
+              })
+            })
+          }
+
+          
+        }
+      });
+    },
+    /**
+     * 检查项目的选择
+     */
+    handleSelectionChange(val) {  
+      this.param.fwItemIds = "";
+      var arr = [];
+      this.multipleSelection = val; 
+      this.multipleSelection.forEach(function(v, i) {
+        arr.push(v.id); 
+      });
+      this.param.fwItemIds = arr.toString();
+    },
+    /**
+     * 附件的上传
+     */
     handleAvatarSuccess(res, file){ 
       this.fileList = []
       this.param.fjxx = res.data;
@@ -266,137 +401,35 @@ export default {
       this.fileList = []
       this.param.fjxx = '';
     },
-
-
-
-
-
-
-
-
-
-
-    // 获取分类
-    getClass(data){
-      this.param.cateOne	= data.cateOne ;
-      this.param.cateTwo	= data.cateTwo ;
-      this.param.cateThree	= data.cateThree 
-      this.getListCheckItem();
-	 
-
-
-    },
-    // 获取服务项目 /api/capabilityLib/listCheckItem
-    getListCheckItem() {
-      var _this = this;
-      this.$fetch("/api/capabilityLib/listCheckItem", {
-        cone: this.param.cateOne,
-        cthree: this.param.cateThree,
-        ctwo: this.param.cateTwo,
-        jid: this.param.jgid,
-        limit: "10",
-        page: "1"
-      }).then(response => {
-        console.log("获取服务项目", response.data.records);
-        if (response.code == 0) {
-          _this.listCheckItemList = response.data.records;
-        }
-      });
-    },
-    handleSelectionChange(val) {
-      console.log(val);
-      var _this = this;
-      this.param.fwItemIds = "";
-      this.multipleSelection = val;
-
-      this.multipleSelection.forEach(function(v, i) {
-        _this.param.fwItemIds += v.id + ",";
-      });
-      console.log(this.param.fwItemIds);
-    },
-    //  获取服务需求
-    getServiceDemand() {
-      this.$fetch("/api/serviceDemand/listAll", {}).then(response => {
-        if (response.code == 0) {
-          this.serviceDemandList = response.data;
-        }
-      });
-    },
-    // 获取商户下的机构列表
-    getAgencyList() {
-      this.$fetch("/api/order/agencyListByShop", {
-        shopId: this.$route.query.shopid
-      }).then(response => {
-        console.log(response);
-        if (response.code == 0) {
-          this.agencyList = response.data;
-          if(window.localStorage.getItem("taoce-param")){ 
-            this.param.jgid = JSON.parse(window.localStorage.getItem("taoce-param")).jgid;
-            this.getLibList(this.param.jgid);
-          }else{
-            this.param.jgid = response.data[0].jid;
-            this.getLibList(response.data[0].jid);
-          } 
-        }
-      });
-    },
-    getLibListByJg(id){
-      console.log(id);
-      this.param.jgid = id;
-      this.receivingSampleLibList = [];
-      this.getListCheckItem();
-      this.getLibList(id);
-    },
-    // 获取接种实验室
-    getLibList(id) {
-      this.$fetch("/api/order/receivingSampleLibList", {
-        jgId: id
-      }).then(response => {
-        console.log(response);
-        if (response.code == 0) {
-          this.receivingSampleLibList = response.data;
-          this.param.libid = response.data[0].id;
-        }
-      });
-    },
-
+    /**
+     * 点击下一步
+     */
     next() { 
-      // if (isEmpty(this.param.ypmc)) {
-      //   this.$message.error("请输入样品名称");
-      //   return;
-      // }
-      // if (isEmpty(this.param.ypsl)) {
-      //   this.$message.error("请输入样品数量");
-      //   return;
-      // }
-      console.log(this.param.fwxq1.length);
+      if (isEmpty(this.param.ypmc)) {
+        this.$message.error("请输入样品名称");
+        return;
+      }
+      if (isEmpty(this.param.ypsl)) {
+        this.$message.error("请输入样品数量");
+        return;
+      } 
       if (this.param.fwxq1.length < 1) {
         this.$message.error("请选择服务需求");
         return;
       } 
-      if (isEmpty(this.param.ypxhsl)) {
-        this.$message.error("请输入型号数量");
-        return;
-      }
+      // if (isEmpty(this.param.ypxhsl)) {
+      //   this.$message.error("请输入型号数量");
+      //   return;
+      // }
       if (isEmpty(this.param.fwItemIds)) {
         this.$message.error("请选择检测标准");
         return;
       }
       this.param.fwxq = this.param.fwxq1.toString(); 
-      this.param.agentId = this.$route.query.shopid
-      this.param.fwItemIds = this.param.fwItemIds.slice( 0, this.param.fwItemIds.length - 1 );
-      window.localStorage.setItem("taoce-param", JSON.stringify(this.param));
-      console.log(this.param);
-   
-      this.$router.push({ path: "/addorder2" });
-    },
-    // 新增检测标准
-    addTest() {
-      this.testStatus = true;
-      this.$nextTick(() => {
-        this.$refs.test.init();
-      });
-    }
+     
+      window.localStorage.setItem("taoce-param-other", JSON.stringify(this.param));  
+      this.$router.push({ path: "/addorder2",query: { type :this.$route.query.type ? this.$route.query.type : "" } });
+    }  
   }
 };
 </script>

@@ -6,13 +6,13 @@
 					<a href="/" target="_parent" class="logo_img">
 						<img src="@/assets/logo/logo.png" alt="" width="100px" class="f_left">
 					</a>
-					<div class="global_nav">
+					<!-- <div class="global_nav">
 						<div style="width:500px;margin-left:50px;margin-top:5px;">
 							<el-input placeholder="请输入内容" class="input-with-select">
 								<el-button slot="append">搜索</el-button>
 							</el-input>
 						</div>
-					</div>
+					</div> -->
 					<ul style="text-align: right;line-height: 60px;" id="navList">
 						<router-link to="/customer" v-if="userInfo.username">
 							<span class="padding-right">用户名：{{userInfo.username}}</span>

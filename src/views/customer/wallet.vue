@@ -8,7 +8,7 @@
     <div class="user_rt_cont gl2-user_rt_cont bg-white padding">
       <div class="balance-title">
         <span class="margin-right">账户余额</span>
-        <el-link type="primary" @click="goDetail">充值明细</el-link>
+        <el-link type="primary" @click="goDetail">充值记录</el-link>
       </div>
       <div class="flex margin-top">
         <div class="balance">¥{{userInfo.androidBalance}}</div>
@@ -36,9 +36,11 @@ export default {
       return;
     }
     this.getUserInfo();
+    this.myConsumptionStatistics();
   },
   mounted() {
-    this.initCharts();
+    
+    
   },
   methods: {
     getUserInfo() {
@@ -46,6 +48,26 @@ export default {
       this.$fetch("/api/user/userInfo").then(response => {
         if (response.code == 0) {
           _this.userInfo = response.data;
+        }
+      });
+    },
+    // 统计
+    myConsumptionStatistics(){
+      var _this = this;
+      this.$fetch("/api/order/myConsumptionStatistics").then(response => {
+        console.log(response);
+        if (response.code == 0) {
+          var chargeList = [];
+          var orderList = [];
+          for (var i in response.data.chargeList[0]) { 
+            console.log(i);
+            chargeList.push(response.data.chargeList[0][i])
+          }
+          for (var x in response.data.orderList[0]) { 
+            orderList.push(response.data.orderList[0][x])
+          }
+          console.log(chargeList,orderList)
+          _this.initCharts(chargeList,orderList);
         }
       });
     },
@@ -58,7 +80,7 @@ export default {
     widthdraw() {
       this.$router.push({ path: "/widthdraw" });
     },
-    initCharts() {
+    initCharts(chargeList,orderList) {
       let myChart = this.$echarts.init(this.$refs.chart);
       myChart.setOption({
         title: {
@@ -89,13 +111,13 @@ export default {
             name: "充值金额",
             type: "line",
             stack: "总量",
-            data: [120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+            data: chargeList
           },
           {
             name: "消费金额",
             type: "line",
             stack: "总量",
-            data: [220, 182, 191, 234, 290, 330, 310,120, 132, 101, 134, 90]
+            data: orderList
           }
         ]
       });

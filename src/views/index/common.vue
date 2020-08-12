@@ -33,9 +33,9 @@
       </div>
       <div class="logo_nav main_width flex" style="margin:10px auto" id="logo_nav">
         <div class="text-center" style="margin-top: 15px;">
-          <img src="@/assets/logo/logo.png" alt="" width="100px" class="text-center">
+          <a href="/"><img src="@/assets/logo/logo.png" alt="" width="100px" class="text-center"></a>
         </div>
-        <div style="width:500px;margin-left:230px;margin-top:5px;">
+        <div style="width:680px;margin-left:230px;margin-top:5px;">
           <div class="aliyun-common-search-tab"> 
             <div :class=" selectType == '1' ? 'aliyun-common-search-tab-item active':'aliyun-common-search-tab-item'" @click="getSelectType('1')" style="margin-left:3px;">服务</div>
             <div :class=" selectType == '2' ? 'aliyun-common-search-tab-item active':'aliyun-common-search-tab-item'" @click="getSelectType('2')">机构</div>
@@ -79,6 +79,7 @@
 <script>
 import foot from "../template/foot";
 export default {
+  inject: ["reload"],
   components: { foot },
   data() {
     return {
@@ -96,7 +97,11 @@ export default {
       city:""
     };
   },
-  created() {
+  mounted(){
+    console.log(this.$route.path)
+  },
+  created() { 
+
     this.province = window.localStorage.getItem("taoce_province");
     this.city = window.localStorage.getItem("taoce_city");
     if (window.localStorage.getItem("paoce_token")) {
@@ -120,24 +125,27 @@ export default {
     goUrl1(url) {
       this.$router.push({ path: url });
     },
-    loginout() {
-      window.localStorage.clear();
+    loginout() { 
+      window.localStorage.removeItem('paoce_token');
+      window.localStorage.removeItem('taoce-param-other');
+      window.localStorage.removeItem('paoce_token-detail');
       this.$router.push({ path: "/login" });
     },
     getSelectType(type){
       this.selectType = type;
     },
     search(){
+      
       this.activeIndex2 = ""; 
       if(this.selectType == '2'){
-        this.activeIndex2 = "/institution";
-        this.$router.push({ path: "/institution",query: { mc: this.input } });
+        this.activeIndex2 = "/institution"; 
+        this.$router.push({ path: "/institution?v="+Math.random(),query: { mc: this.input } });
       } else if(this.selectType == '1'){
-        this.activeIndex2 = "/";
-        this.$router.push({ path: "/product",query: { mc: this.input } });
+        this.activeIndex2 = "/"; 
+        this.$router.push({ path: "/product?v="+Math.random(),query: { mc: this.input } });
       } else if(this.selectType == '3'){
         this.activeIndex2 = "/standardFind";
-        this.$router.push({ path: "/standardFind",query: { mc: this.input } });
+        this.$router.push({ path: "/standardFind?v="+Math.random(),query: { mc: this.input } });
       }
       console.log(this.selectType);
     }
