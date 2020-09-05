@@ -44,7 +44,7 @@
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
                       <a class="a_btn operate mrxz" @click="edit(item)">编辑</a>
-                      <a class="a_btn operate mrxz" @click="del">删除</a>
+                      <a class="a_btn operate mrxz" @click="del(item.orderId)">删除</a>
                     </span>
                   </td>
                 </tr>
@@ -63,10 +63,10 @@
                     </span>
                   </td>
                 </tr>
-                <tr class="tj_dd_a" v-if="item.orderStatus == '8'">
+                <tr class="tj_dd_a" v-if="item.ycms == '1'">
                   <td colspan="5" style="text-align: right;padding-right:15px">
                     <span>
-                      <a class="a_btn operate mrxz" @click="goOtherDetail(item)">异常信息</a>
+                       <a class="a_btn operate mrxz" @click="goOtherDetail(item)">异常信息</a>
                     </span>
                   </td>
                 </tr>
@@ -371,17 +371,22 @@ export default {
       this.page = val;
       this.handleList();
     },
-    del() {
+    del(id) {
+      var _this = this;
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+         this.$fetch("/api/order/deleteUserOrder", { id: id }).then(
+            response => {
+              if (response.code == 0) {
+                this.$message({ type: "success", message: "删除成功!" });
+                _this.handleList(_this.tag);
+              }
+            }
+          );
         })
         .catch(() => {
           this.$message({

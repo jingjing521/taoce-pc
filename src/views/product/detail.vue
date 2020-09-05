@@ -41,7 +41,10 @@
             <span>服务编号</span>
             <span>{{goodsDetail.goodsSn}}</span>
           </div>
-          <div class="sp-item">
+          <div
+            class="sp-item"
+            v-if="goodsDetail.zhbgjg  != -1 && goodsDetail.enbgjg != -1 && goodsDetail.zebgjg != -1"
+          >
             <span>报告语言</span>
             <span>
               <el-button
@@ -79,7 +82,7 @@
               >报告证书</el-button>
             </span>
           </div>
-          <div class="sp-item" v-if="goodsDetail.jjms != 0">
+          <div class="sp-item" v-if="goodsDetail.jjms != -1">
             <span>加急周期</span>
             <el-checkbox-group
               v-model="isJJ"
@@ -133,71 +136,72 @@
         </div>
       </el-col>
     </el-row>
-    <el-row
-      :gutter="10"
-      style="margin-left:0;margin-right:0;"
-      v-if="goodsDetail.goodsAddtionServiceEntityList.length > 0  "
-    >
+
+    <el-row :gutter="10" style="margin-left:0;margin-right:0;">
       <el-col :span="16" class="bg-white padding-top">
-        <div class="bg-white padding">
-          <el-table
-            :data="goodsDetail.goodsAddtionServiceEntityList"
-            border
-            style="width: 100%"
-            ref="multipleTable"
-            @selection-change="handleSelectionChange"
-          >
-            <el-table-column type="selection" width="55" align="center"></el-table-column>
-            <el-table-column prop="additionalServiceEntity.fwmc" label="套餐服务" align="center"></el-table-column>
-            <el-table-column prop="capabilityLibEntity.bzh" label="送样数量/单" align="center">
-              <template slot-scope="scope">
-                <span
-                  v-if="scope.row.additionalServiceEntity.priceType == '2'"
-                >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].price}}</span>
-                <span
-                  v-if="scope.row.additionalServiceEntity.priceType == '1'"
-                >{{scope.row.additionalServiceEntity.price}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="capabilityLibEntity.jczq" label="价格/单" align="center">
-              <template slot-scope="scope">
-                <span
-                  v-if="scope.row.additionalServiceEntity.priceType == '2'"
-                >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].min}}</span>
-                <span v-if="scope.row.additionalServiceEntity.priceType == '1'">1</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="capabilityLibEntity.jczq"
-              label="单"
-              align="center"
-              min-width="100px"
+        <div v-if="goodsDetail.goodsAddtionServiceEntityList.length > 0  ">
+          <div style="color:red;padding-left: 20px;font-size: 15px;">温馨提示：请勾选您需要的套餐服务;</div>
+          <div class="bg-white padding">
+            <el-table
+              :data="goodsDetail.goodsAddtionServiceEntityList"
+              border
+              style="width: 100%"
+              ref="multipleTable"
+              @selection-change="handleSelectionChange"
             >
-              <template slot-scope="scope">
-                <el-input-number
-                  size="mini"
-                  :min="scope.row.additionalServiceEntity.min"
-                  :max="scope.row.additionalServiceEntity.max"
-                  @change="handleChange(scope.row.additionalServiceEntity,scope.row.additionalServiceEntity.isDeleted)"
-                  v-model="scope.row.additionalServiceEntity.isDeleted"
-                  v-if="scope.row.additionalServiceEntity.priceType == '2'"
-                ></el-input-number>
-                <el-input-number
-                  size="mini"
-                  :min="z"
-                  @change="handleChange(scope.row.additionalServiceEntity,scope.row.additionalServiceEntity.isDeleted)"
-                  v-model="scope.row.additionalServiceEntity.isDeleted"
-                  v-if="scope.row.additionalServiceEntity.priceType == '1'"
-                ></el-input-number>
-              </template>
-            </el-table-column>
-            <el-table-column prop="capabilityLibEntity.jcjg" align="center" label="套餐内容">
-              <template slot-scope="scope">
-                <el-button @click="handleClickDetail(scope.row)" type="text" size="small">详情</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column type="selection" width="55" align="center"></el-table-column>
+              <el-table-column prop="additionalServiceEntity.fwmc" label="套餐服务" align="center"></el-table-column>
+              <el-table-column prop="capabilityLibEntity.bzh" label="价格/单" align="center">
+                <template slot-scope="scope">
+                  <span
+                    v-if="scope.row.agentGoodsAdditionalServiceEntity.priceType == '2'"
+                  >{{ JSON.parse(scope.row.agentGoodsAdditionalServiceEntity.fwitem)[0].dprice}}</span>
+                  <span
+                    v-if="scope.row.agentGoodsAdditionalServiceEntity.priceType == '1'"
+                  >{{scope.row.agentGoodsAdditionalServiceEntity.dprice}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="capabilityLibEntity.jczq" label="送样数量/单" align="center">
+                <template slot-scope="scope">
+                  <span
+                    v-if="scope.row.additionalServiceEntity.priceType == '2'"
+                  >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].min}}</span>
+                  <span v-if="scope.row.additionalServiceEntity.priceType == '1'">1</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="capabilityLibEntity.jczq"
+                label="单"
+                align="center"
+                min-width="100px"
+              >
+                <template slot-scope="scope">
+                  <el-input-number
+                    size="mini"
+                    :min="scope.row.agentGoodsAdditionalServiceEntity.min"
+                    :max="scope.row.agentGoodsAdditionalServiceEntity.max"
+                    @change="handleChange(scope.row,scope.row.agentGoodsAdditionalServiceEntity,scope.row.agentGoodsAdditionalServiceEntity.isDeleted)"
+                    v-model="scope.row.agentGoodsAdditionalServiceEntity.isDeleted"
+                    v-if="scope.row.agentGoodsAdditionalServiceEntity.priceType == '2'"
+                  ></el-input-number>
+                  <el-input-number
+                    size="mini"
+                    :min="z"
+                    @change="handleChange(scope.row,scope.row.agentGoodsAdditionalServiceEntity,scope.row.agentGoodsAdditionalServiceEntity.isDeleted)"
+                    v-model="scope.row.agentGoodsAdditionalServiceEntity.isDeleted"
+                    v-if="scope.row.agentGoodsAdditionalServiceEntity.priceType == '1'"
+                  ></el-input-number>
+                </template>
+              </el-table-column>
+              <el-table-column prop="capabilityLibEntity.jcjg" align="center" label="套餐内容">
+                <template slot-scope="scope">
+                  <el-button @click="handleClickDetail(scope.row)" type="text" size="small">详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </div>
+
         <el-tabs
           v-model="activeName"
           type="border-card"
@@ -345,16 +349,22 @@ export default {
   },
   methods: {
     // 价格数量
-    handleChange(item, value) {
-      var fwitem = JSON.parse(item.fwitem);
+    handleChange(row, item, value) {
       var _this = this;
+
+      _this.$nextTick(() => {
+        _this.$refs.multipleTable.toggleRowSelection(row, true);
+      });
+
+      var fwitem = JSON.parse(item.fwitem);
+
       if (item.priceType == "1") {
-        item.priceItem = item.price;
+        item.priceItem = item.dprice;
         item.numItem = item.isDeleted;
       } else {
         fwitem.forEach(function (v, i) {
           if (value >= v.min && value <= v.max) {
-            item.priceItem = v.price;
+            item.priceItem = v.dprice;
             item.numItem = value;
           }
         });
@@ -362,13 +372,13 @@ export default {
       _this.additionalServicePrice = 0;
       if (this.multipleSelection.length > 0) {
         this.multipleSelection.forEach(function (v, i) {
-          if (v.additionalServiceEntity.priceType == "1") {
+          if (v.agentGoodsAdditionalServiceEntity.priceType == "1") {
             _this.additionalServicePrice +=
-              v.additionalServiceEntity.priceItem *
-              v.additionalServiceEntity.numItem;
+              v.agentGoodsAdditionalServiceEntity.priceItem *
+              v.agentGoodsAdditionalServiceEntity.numItem;
           } else {
             _this.additionalServicePrice += parseFloat(
-              v.additionalServiceEntity.priceItem
+              v.agentGoodsAdditionalServiceEntity.priceItem
             );
           }
         });
@@ -381,13 +391,13 @@ export default {
       var _this = this;
       _this.additionalServicePrice = 0;
       this.multipleSelection.forEach(function (v, i) {
-        if (v.additionalServiceEntity.priceType == "1") {
+        if (v.agentGoodsAdditionalServiceEntity.priceType == "1") {
           _this.additionalServicePrice +=
-            v.additionalServiceEntity.priceItem *
-            v.additionalServiceEntity.numItem;
+            v.agentGoodsAdditionalServiceEntity.priceItem *
+            v.agentGoodsAdditionalServiceEntity.numItem;
         } else {
           _this.additionalServicePrice += parseFloat(
-            v.additionalServiceEntity.priceItem
+            v.agentGoodsAdditionalServiceEntity.priceItem
           );
         }
       });
@@ -397,7 +407,7 @@ export default {
     getPrice() {
       this.goodsPrice =
         this.goodsDetail.goodsPrice +
-        this.additionalServicePrice +
+        (this.additionalServicePrice > 0 ? this.additionalServicePrice : 0) +
         this.reportPrice +
         this.lauguagePrice +
         (this.isJJ ? this.goodsDetail.jjjg : 0);
@@ -456,37 +466,18 @@ export default {
           });
           this.goodsDetail.testing = testing.toString();
           this.goodsDetail.serviceLi = serviceLi.toString();
-          this.goodsPrice =
-            this.goodsDetail.goodsPrice + this.goodsDetail.zhbgjg;
-          this.lauguagePrice = this.goodsDetail.zhbgjg;
+          // this.goodsPrice = this.goodsDetail.goodsPrice + this.goodsDetail.zhbgjg;
+          this.lauguagePrice =
+            this.goodsDetail.zhbgjg == -1 ? 0 : this.goodsDetail.zhbgjg;
           this.reportPrice = 0;
-          this.goodsDetail.goodsAddtionServiceEntityList.forEach(function (
-            v,
-            i
-          ) {
-            v.additionalServiceEntity.min = parseInt(
-              JSON.parse(v.additionalServiceEntity.fwitem)[0].min
-            );
-            v.additionalServiceEntity.numItem =
-              v.additionalServiceEntity.priceType == "2"
-                ? parseInt(JSON.parse(v.additionalServiceEntity.fwitem)[0].min)
-                : parseInt(_this.z);
-            v.additionalServiceEntity.priceItem =
-              v.additionalServiceEntity.priceType == "2"
-                ? parseFloat(
-                    JSON.parse(v.additionalServiceEntity.fwitem)[0].price
-                  )
-                : parseFloat(v.additionalServiceEntity.price);
-            v.additionalServiceEntity.max = parseInt(
-              JSON.parse(v.additionalServiceEntity.fwitem)[
-                JSON.parse(v.additionalServiceEntity.fwitem).length - 1
-              ].max
-            );
-            v.additionalServiceEntity.isDeleted =
-              v.additionalServiceEntity.priceType == "2"
-                ? parseInt(v.additionalServiceEntity.min)
-                : parseInt(_this.z);
+          this.goodsDetail.goodsAddtionServiceEntityList.forEach(function (  v, i  ) {
+            v.agentGoodsAdditionalServiceEntity.min = parseInt( JSON.parse(v.agentGoodsAdditionalServiceEntity.fwitem)[0].min );
+            v.agentGoodsAdditionalServiceEntity.numItem = v.agentGoodsAdditionalServiceEntity.priceType == "2"  ? parseInt(JSON.parse(v.agentGoodsAdditionalServiceEntity.fwitem)[0].min) : parseInt(_this.z);
+            v.agentGoodsAdditionalServiceEntity.priceItem = v.agentGoodsAdditionalServiceEntity.priceType == "2"  ? parseFloat(JSON.parse(v.agentGoodsAdditionalServiceEntity.fwitem)[0].dprice) : parseFloat(v.agentGoodsAdditionalServiceEntity.dprice);
+            v.agentGoodsAdditionalServiceEntity.max = parseInt(  JSON.parse(v.agentGoodsAdditionalServiceEntity.fwitem)[ JSON.parse(v.agentGoodsAdditionalServiceEntity.fwitem).length - 1 ].max);
+            v.agentGoodsAdditionalServiceEntity.isDeleted = v.agentGoodsAdditionalServiceEntity.priceType == "2" ? parseInt(v.agentGoodsAdditionalServiceEntity.min)  : parseInt(_this.z);
           });
+          _this.getPrice();
           _this.getKfList();
         } else {
           this.$message.error(response.msg);

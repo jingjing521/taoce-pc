@@ -62,13 +62,13 @@
             <el-table-column label="附加服务名称" align="center" prop="additionalServiceEntity.fwmc"></el-table-column>
             <el-table-column prop="name" label="送样数量/单" align="center"> 
               <template slot-scope="scope">
-                <span v-if="scope.row.additionalServiceEntity.priceType == '2'" >{{ JSON.parse(scope.row.additionalServiceEntity.fwitem)[0].price}}</span>
-                <span v-if="scope.row.additionalServiceEntity.priceType == '1'" >{{scope.row.additionalServiceEntity.price}}</span>
+                <span v-if="scope.row.additionalServiceEntity.priceType == '2'" >{{ JSON.parse(scope.row.agentGoodsAdditionalServiceEntity.fwitem)[0].dprice}}</span>
+                <span v-if="scope.row.additionalServiceEntity.priceType == '1'" >{{scope.row.agentGoodsAdditionalServiceEntity.dprice}}</span>
               </template>
             </el-table-column>
             <el-table-column label="数量" align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.additionalServiceEntity.numItem}}</span>
+                <span>{{scope.row.agentGoodsAdditionalServiceEntity.numItem}}</span>
               </template>
             </el-table-column>
             <el-table-column label="说明" align="center">
@@ -373,7 +373,7 @@ export default {
         this.addServerList.forEach(function(v,i){
           _this.param.goodsAddtionalItemList.push({ 
             "fwid": v.fwId ,
-            "jcsl": v.additionalServiceEntity.numItem
+            "jcsl": v.agentGoodsAdditionalServiceEntity.numItem
      
           })
         })

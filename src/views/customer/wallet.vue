@@ -9,12 +9,13 @@
       <div class="balance-title">
         <span class="margin-right">账户余额</span>
         <el-link type="primary" @click="goDetail">充值记录</el-link>
+        <el-link type="primary" @click="goDetail1">提现记录</el-link>
       </div>
       <div class="flex margin-top">
         <div class="balance">¥{{userInfo.androidBalance}}</div>
         <div>
           <el-button type="primary" size="small" @click="recharge">充值</el-button>
-          <!-- <el-button type="primary" size="small" @click="widthdraw">提现</el-button> -->
+          <el-button type="primary" size="small" @click="widthdraw">提现</el-button>
         </div>
       </div>
     </div>
@@ -73,6 +74,9 @@ export default {
     },
     goDetail() {
       this.$router.push({ path: "/rechargeDetail" });
+    },
+    goDetail1() {
+      this.$router.push({ path: "/widthdrawDetail" });
     },
     recharge() {
       this.$router.push({ path: "/recharge" });

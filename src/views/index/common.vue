@@ -22,12 +22,14 @@
             <span class="padding-right cursor-pointer" @click="goUrl1('/shopJoinApply')">我要开店</span>
             <span class="padding-right cursor-pointer" @click="goUrl('/order')">草稿箱</span>
             <span class="padding-right cursor-pointer" @click="goUrl('/collection')">收藏夹</span>
+            <span class="padding-right cursor-pointer" @click="goChat()">平台客服</span>
             <el-popover placement="top-start" width="100" trigger="hover">
               <div>
                 <img src="@/assets/logo/code.png" alt="" width="150px">
               </div>
               <el-button slot="reference" type="text" size="small" style="color:#3E3E3E;">手机端</el-button>
             </el-popover>
+            
           </div>
         </div>
       </div>
@@ -100,6 +102,19 @@ export default {
   mounted(){
     console.log(this.$route.path)
   },
+  watch: {
+    "$route": function(val){
+        console.log(val);
+      if(val.path.indexOf('server') >= 0 || val.path.indexOf('institution')  >= 0  ){
+        this.activeIndex2 = "/institution"
+      }else if(val.path.indexOf('news')  >= 0 || val.path.indexOf('news-detail')  >= 0 ){
+        this.activeIndex2 = "/news"
+      }else if(val.path.indexOf('answer')  >= 0 || val.path.indexOf('ask-detail')  >= 0 ){
+        this.activeIndex2 = "/answer"
+      }
+
+    }
+  },
   created() { 
 
     this.province = window.localStorage.getItem("taoce_province");
@@ -148,6 +163,9 @@ export default {
         this.$router.push({ path: "/standardFind?v="+Math.random(),query: { mc: this.input } });
       }
       console.log(this.selectType);
+    },
+    goChat(){
+
     }
   }
 };

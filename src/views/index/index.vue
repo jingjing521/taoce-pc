@@ -62,7 +62,7 @@
             <div class="bg-white">
               <el-row :gutter="10" style="padding:10px">
                 <el-col :span="5" v-for="(item,index) in list" :key="index">
-                  <div class="text-center" @click="goDetail(item.goods_id,item.shopid)">
+                  <div class="text-center" @click="goDetail(item.goods_id,item.shopid)" style="min-height:200px;">
                     <div style="overflow: hidden;">
                       <img
                         :src="item.goods_img"
@@ -97,40 +97,15 @@
         </div>
       </div>
       <el-row :gutter="20">
-        <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/11.jpg" alt="" style="width:120px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">上海纺织集团检测</div>
+        <el-col :span="4"  v-for="(item,index) in list1" :key="index"  >
+          <div class="grid-content text-center" style="padding-top:10px;min-height: 90px;" @click="goADetail(item.id)">
+            <img :src="item.logo" alt="" style="width:120px;height:50px;margin:auto;">
+            <div class="text-center text-df" style="line-height:50px">{{item.mc}}</div>
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/22.jpg" alt="" style="width:120px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">重庆市计量质量检测研究院</div>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/33.jpg" alt="" style="width:100px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">广州检验检测认证集团</div>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/44.jpg" alt="" style="width:100px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">谱尼测试集团股份有限公司</div>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/55.jpg" alt="" style="width:100px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">深圳市计量质量检测研究院</div>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content text-center" style="padding-top:10px;">
-            <img src="@/assets/66.jpg" alt="" style="width:100px;height:50px;margin:auto;">
-            <div class="text-center text-df" style="line-height:50px">中纺标检验认证股份有限公司</div>
+          <div class="grid-content text-center" style="padding-top:10px;min-height: 90px;line-height:90px;font-size: 16px;"  @click="goAllList()">
+             查看更多
           </div>
         </el-col>
       </el-row>
@@ -140,10 +115,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <div
-                class="cu-bar justify-center bg-white text-center margin"
-                style="padding-bottom:50px"
-              >
+              <div class="cu-bar justify-center bg-white text-center margin" style="padding-bottom:50px">
                 <div class="action border-title">
                   <span class="text-xl text-bold">新闻中心</span>
                   <span class="bg-red"></span>
@@ -191,7 +163,7 @@
                   style="margin-bottom:15px;padding-left:15px;cursor: pointer;"
                   v-for="(item,index) in askList"
                   :key="index"
-                  @click="goNewDetail(item.id)"
+                  @click="goAskDetail(item.id)"
                 >
                   <div class="padding-right text-center" style="width:80px;">
                     <div class="text-xl">{{item.createTime.slice(8,10)}}</div>
@@ -204,7 +176,7 @@
                 </li>
               </ul>
               <div class="padding text-center">
-                <router-link to="news">
+                <router-link to="answer">
                   <el-button type="primary">查看更多</el-button>
                 </router-link>
               </div>
@@ -239,6 +211,7 @@ export default {
       type: "1",
       dow: true,
       list: [],
+      list1: [],
       categoryList: [],
       categoryTwoList: [],
       newsList: [],
@@ -278,8 +251,23 @@ export default {
     this.getNewsList();
     this.getAskList();
     this.categoryAd();
+    this.getAList();
   },
   methods: {
+    // 获取机构列表  
+    getAList() {
+      var _this = this;
+      this.$fetch("/api/user/agencyList", {
+        limit: 11,
+        page: 1
+      }).then(response => {
+        if (response.code == 0) {
+          _this.list1 = response.data.records;
+        }else{
+          _this.$message.error(response.msg);
+        }
+      });
+    },
     getProductIndex(item){
       this.$router.push({
         path: "/product",
@@ -323,6 +311,9 @@ export default {
         }
       });
     },
+    goADetail(id){
+      this.$router.push({ path: "/server", query: { id: id } });
+    },
     goNewDetail(id) {
       this.$router.push({ path: "/news-detail", query: { id: id } });
     },
@@ -341,7 +332,9 @@ export default {
     goAskDetail(id) {
       this.$router.push({ path: "/ask-detail", query: { id: id } });
     },
-
+    goAllList(){
+      this.$router.push({ path: "/institution" });
+    },
     // 代理商列表
     getAgentList() {
       this.$fetch("/api/user/agentList", { limit: "10", page: "1" }).then(

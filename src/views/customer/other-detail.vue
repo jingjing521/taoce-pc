@@ -5,12 +5,12 @@
         <strong>异常信息</strong>
       </div>
       <!-- <div>
-        <el-button type="primary">打印</el-button>
+        <el-button type="primary">打印</el-button> 
         <el-button type="primary">导出</el-button>
       </div> -->
     </div>
     <div>
-      <el-card class="box-card margin-bottom" v-if="orderDetail.orderStatus == '8'">
+      <el-card class="box-card margin-bottom">
         <div slot="header" class="clearfix">
           <span class="tit">订单异常分析</span>
           <span style="float: right; padding: 3px 0"></span>

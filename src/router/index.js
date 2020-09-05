@@ -102,8 +102,12 @@ export default new Router({
         { path: '/payGateWay', name: 'PayGateWay', component: () => import('@/views/customer/payGateWay') },
         // 我的钱包
         { path: '/wallet', name: 'Wallet', component: () => import('@/views/customer/wallet')},
+        { path: '/bankList', name: 'BankList', component: () => import('@/views/customer/bankList')},
         { path: '/rechargeDetail', name: 'RechargeDetail', component: () => import('@/views/customer/rechargeDetail') },
         { path: '/recharge', name: 'Recharge', component: () => import('@/views/customer/recharge')},
+        { path: '/widthdrawDetail', name: 'WidthdrawDetail', component: () => import('@/views/customer/widthdrawDetail') },
+        { path: '/widthdraw', name: 'Widthdraw', component: () => import('@/views/customer/widthdraw')},
+        
         // 用户信息
         { path: '/userInfo', component: () => import('@/views/customer/userInfo'), name: 'userInfo'}, 
         // 用户认证

@@ -108,6 +108,10 @@ export default {
     this.getPersonalBankNo();
   },
   methods: {
+    handleClick(item){
+       console.log(item) 
+      this.$router.push({ path: "/orderDetail", query: { orderId: this.$route.query.orderId} });
+    },
      getPersonalBankNo(){
       var _this = this;
       this.$fetch( "/api/user/getPersonalBankNo", {}).then(response => {
