@@ -35,7 +35,7 @@
       </div>
       <div class="logo_nav main_width flex" style="margin:10px auto" id="logo_nav">
         <div class="text-center" style="margin-top: 15px;">
-          <a href="/"><img src="@/assets/logo/logo.png" alt="" width="100px" class="text-center"></a>
+          <a href="/"><img src="@/assets/logo/logo.png" alt="" style="width:100px;" class="text-center"></a>
         </div>
         <div style="width:680px;margin-left:230px;margin-top:5px;">
           <div class="aliyun-common-search-tab"> 

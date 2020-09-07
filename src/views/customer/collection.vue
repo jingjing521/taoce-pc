@@ -156,7 +156,12 @@ export default {
       this.handleList();
     },
     goDetail(id, shopid) {
-      this.$router.push({ path: "/productDetail", query: { id: id, shopid: shopid } });
+      let { href } = this.$router.resolve({
+        path: "/productDetail",
+        query: { id: id, shopid: shopid },
+      });
+      window.open(href, "_blank");
+      // this.$router.push({ path: "/productDetail", query: { id: id, shopid: shopid } });
     }
   }
 };

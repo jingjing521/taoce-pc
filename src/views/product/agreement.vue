@@ -4,7 +4,7 @@
       <div class="dl_zn">
         <div>
           <a href="/">
-            <img src="@/assets/logo/logo1.png" width="161" height="39" alt="">
+            <img src="@/assets/logo/logo1.png" style="width:100px;" alt="">
           </a>
           <span class="descs">欢迎</span>
         </div>

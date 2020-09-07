@@ -4,7 +4,7 @@
     <div class="dl_td">
       <div class="dl_zn">
         <div>
-          <a href="/"> <img src="@/assets/logo/logo1.png" width="161" height="39" alt=""> </a>
+          <a href="/"> <img src="@/assets/logo/logo1.png" style="width:100px;"> </a>
           <span class="descs">欢迎登录</span>
         </div>
         <a href="/" class="dl_zn_f">返回首页</a>

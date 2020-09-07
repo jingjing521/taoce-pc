@@ -2,7 +2,7 @@
     <div id="register" class="login-contain">
         <div class="dl_td">
             <div class="dl_zn">
-                <a href="/"> <img src="@/assets/logo/logo1.png" width="161" height="39" alt=""> </a>
+                <a href="/"> <img src="@/assets/logo/logo1.png" style="width:100px;" alt=""> </a>
                 <div class="descs">欢迎注册</div>
                 <a href="/" class="dl_zn_f">返回首页</a>
                 <router-link to="/login" class="dl_zn_f" style="margin-right:20px">

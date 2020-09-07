@@ -195,7 +195,12 @@ export default {
       this.handleList(this.tag);
     },
     goGoodDetail(item){
-      this.$router.push({ path: "/productDetail", query: { id: item.goodsId, shopid: item.shopId } });
+      let { href } = this.$router.resolve({
+        path: "/productDetail",
+        query: { id: item.goodsId, shopid: item.shopId },
+      });
+      window.open(href, "_blank");
+      // this.$router.push({ path: "/productDetail", query: { id: item.goodsId, shopid: item.shopId } });
     },
     // 编辑订单
     edit(item){

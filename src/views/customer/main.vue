@@ -5,7 +5,7 @@
 				<div class="header_wrap fix_header bg-blue">
 					<section class="header_content main_width clear_fix">
 						<a href="/" target="_parent" class="logo_img">
-							<img src="@/assets/logo/logo.png" alt="" width="100px" class="f_left">
+							<img src="@/assets/logo/logo.png" alt="" width="100px" class="f_left" style="width:100px;">
 						</a>
 						<!-- <div class="global_nav">
 							<div style="width:500px;margin-left:50px;margin-top:5px;">

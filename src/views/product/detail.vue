@@ -7,8 +7,8 @@
       style="margin-left:0;margin-right:0"
     >
       <el-col :span="12">
-        <div style="border:1px solid #ccc;">
-          <img :src="goodsDetail.goodsImg" alt style="width:100%;" />
+        <div style="border:1px solid #ccc;heigth:500px">
+          <img :src="goodsDetail.goodsImg" alt style="width:100%;height:100%;" />
         </div>
         <div
           class="bg-white flex justify-between"
@@ -556,10 +556,15 @@ export default {
     },
     goDetail(id, shopid) {
       this.reload();
-      this.$router.push({
+      let { href } = this.$router.resolve({
         path: "/productDetail",
         query: { id: id, shopid: shopid },
       });
+      window.open(href, "_blank");
+      // this.$router.push({
+      //   path: "/productDetail",
+      //   query: { id: id, shopid: shopid },
+      // });
     },
 
     handleClick() {},
@@ -571,7 +576,7 @@ export default {
       var loginname = JSON.parse(window.localStorage.getItem("im-userInfo"))
         .entities[0].username;
       window.open(
-        "http://kf.dyjcyun.com/contact/" +
+        "http://kf.taoce.cn/contact/" +
           item.userName +
           "/" +
           loginname +

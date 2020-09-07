@@ -200,7 +200,10 @@
                 </el-select>
               </li>
               <li class="xiangq_ju">
-                <span class="shenqrxq_bt">CQC申请编号</span>
+                <span class="shenqrxq_bt" style="width: 99px;display: inline-block;height: 50px;line-height: 12px;margin:auto">
+                   <i>CQC申请编号</i> 
+                   <i>www.baidu.com</i> 
+                </span>
                 <el-input v-model="param.cqcno" placeholder="请输入CQC申请编号" class="container_input required" maxlength="50" ></el-input>
               </li>
               <li class="xiangq_ju">

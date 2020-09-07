@@ -27,7 +27,10 @@
           </el-col>
           <el-col :span="1">
             <div>
-              <el-link style="margin-right:0" :underline="false" @click="getCategory('')"
+              <el-link
+                style="margin-right:0"
+                :underline="false"
+                @click="getCategory('')"
                 :class="param.cateOne == '' ? 'on':''"
               >全部</el-link>
             </div>
@@ -181,7 +184,12 @@
                 style="margin-bottom:2px;"
               >{{item.mc}}</el-link>
               <div class="filter-input">
-                <el-input placeholder="请输入相关指标" class="input-with-select" size="small" v-model="xgzbInput">
+                <el-input
+                  placeholder="请输入相关指标"
+                  class="input-with-select"
+                  size="small"
+                  v-model="xgzbInput"
+                >
                   <el-button slot="append" icon="el-icon-search" @click="searchxgzb()"></el-button>
                 </el-input>
               </div>
@@ -195,7 +203,12 @@
           </el-col>
           <el-col :span="1">
             <div style="width:80px">
-              <el-link :underline="false"  style="margin-right:0"  :class=" param.jyzz == '' ? 'on':''" @click="getjyzz('')">全部</el-link>
+              <el-link
+                :underline="false"
+                style="margin-right:0"
+                :class=" param.jyzz == '' ? 'on':''"
+                @click="getjyzz('')"
+              >全部</el-link>
             </div>
           </el-col>
           <el-col :span="21" class="filter-select">
@@ -221,9 +234,15 @@
             <el-radio-button label="2">服务量</el-radio-button>
             <el-radio-button label="3">评价</el-radio-button>
             <el-radio-button label="4">服务周期</el-radio-button>
-          </el-radio-group> 
-          <el-cascader  v-model="param.value"  :props="{ checkStrictly: true }" :options="options" @change="handleChange" style="width: 250px;" size="mini"></el-cascader>
-         
+          </el-radio-group>
+          <el-cascader
+            v-model="param.value"
+            :props="{ checkStrictly: true }"
+            :options="options"
+            @change="handleChange"
+            style="width: 250px;"
+            size="mini"
+          ></el-cascader>
         </div>
         <div>
           <el-input placeholder="请输入服务名称" class="input-with-select" v-model="param.mc">
@@ -265,7 +284,7 @@ export default {
         jyzz: "", // 检验资质
         xgzb: "", // 相关指标
         xgbz: "", // 相关标准
-        mc:"",
+        mc: "",
         limit: "1000",
       },
       categoryList: [],
@@ -283,10 +302,10 @@ export default {
       count: 10,
       currentPage: 1,
       options: [],
-      value:""
+      value: "",
     };
   },
-  created() { 
+  created() {
     this.param.cateOne = this.$route.query.cateOne || "";
     this.param.cateTwo = this.$route.query.cateTwo || "";
     this.param.cateThree = this.$route.query.cateThree || "";
@@ -329,22 +348,23 @@ export default {
     this.getList();
   },
   watch: {
-    "$route": "getList"
+    $route: "getList",
   },
   methods: {
     handleChange(value) {
       this.value = value;
       console.log(value);
       this.param.province = this.value[0];
-      this.param.city =  this.value[1];
+      this.param.city = this.value[1];
       this.param.district = this.value[2];
       this.getList();
     },
     goDetail(id, shopid) {
-      this.$router.push({
+      let { href } = this.$router.resolve({
         path: "/productDetail",
         query: { id: id, shopid: shopid },
       });
+      window.open(href, "_blank");
     },
     getList() {
       this.goodsList = [];
@@ -401,7 +421,7 @@ export default {
       this.param.cateThree = "";
       this.param.fwxq = "";
       this.param.xgbz = "";
-      this.tags = []; 
+      this.tags = [];
       this.threeStatus = false;
       if (this.param.cateTwo) {
         this.tags[0] = { name: name, type: "" };
@@ -528,13 +548,14 @@ export default {
       });
     },
     getjyzz(id, name) {
-      console.log(id,name);
+      console.log(id, name);
       this.param.jyzz = id;
       var a = true;
       if (this.param.jyzz) {
         this.tags.forEach((v) => {
           if (v.type == "jyzz") {
-            a = false; v.name = name;
+            a = false;
+            v.name = name;
             return;
           }
         });
@@ -545,48 +566,46 @@ export default {
       this.getList();
     },
     // 搜索相关标准
-    searchxgbz() { 
+    searchxgbz() {
       var _this = this;
       this.$fetch("/api/categoryStandard/lisAll", {
         cone: this.param.cateOne,
         ctwo: this.param.cateTwo,
-        cthree: this.param.cateThree, 
-        mc:this.xgbzInput
+        cthree: this.param.cateThree,
+        mc: this.xgbzInput,
       }).then((response) => {
         console.log(response);
         if (response.code == 0) {
-           if(response.data.length > 0){ 
-              // _this.cateStandardList.unshift(response.data[0]);
-              // console.log(_this.cateStandardList)
-              // _this.xgbzInput = "";
-              // _this.getStandard(response.data[0].id, response.data[0].mc) 
-           }else{
-              _this.$message.error("未检测到相关标准");
-           }
+          if (response.data.length > 0) {
+            // _this.cateStandardList.unshift(response.data[0]);
+            // console.log(_this.cateStandardList)
+            // _this.xgbzInput = "";
+            // _this.getStandard(response.data[0].id, response.data[0].mc)
+          } else {
+            _this.$message.error("未检测到相关标准");
+          }
         } else {
-          
         }
       });
     },
-    searchxgzb() { 
+    searchxgzb() {
       var _this = this;
       this.$fetch("/api/standardIndex/lisAll", {
         cone: this.param.cateOne,
         ctwo: this.param.cateTwo,
         cthree: this.param.cateThree,
         stid: this.param.xgbz,
-        mc:this.xgzbInput
-      }).then((response) => { 
+        mc: this.xgzbInput,
+      }).then((response) => {
         if (response.code == 0) {
-           if(response.data.length > 0){
-              // _this.standardList.unshift(response.data[0]);
-              // _this.xgzbInput = "";
-              // _this.getStandard1(response.data[0].id, response.data[0].mc)
-           }else{
+          if (response.data.length > 0) {
+            // _this.standardList.unshift(response.data[0]);
+            // _this.xgzbInput = "";
+            // _this.getStandard1(response.data[0].id, response.data[0].mc)
+          } else {
             _this.$message.error("未检测到相关指标");
-           }
+          }
         } else {
-          
         }
       });
     },
@@ -594,10 +613,10 @@ export default {
       this.param.px = item;
       this.getList();
     },
-    delTag(tag,index) {
-      this.tags.splice(index,1)
+    delTag(tag, index) {
+      this.tags.splice(index, 1);
       this.param[tag.type] = "";
-      if(tag.type == ''){
+      if (tag.type == "") {
         this.param.cateOne = "";
         this.param.cateTwo = "";
         this.param.cateThree = "";
@@ -634,7 +653,7 @@ export default {
   margin-left: 10px;
 }
 .el-divider--horizontal {
-  margin: 16px 0 !important;
+  margin: 10px 0 !important;
 }
 .el-divider {
   background: none !important;
@@ -654,8 +673,8 @@ export default {
   padding: 0;
 }
 .on {
-  background: #409eff;
-  color: #fff !important;
+  /* background: #409eff; */
+  color: #409eff !important;
   border-radius: 30px;
   padding: 0 4px 0 3px !important;
   box-sizing: border-box;

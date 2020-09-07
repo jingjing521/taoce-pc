@@ -377,10 +377,16 @@ export default {
       );
     },
     goDetail(id, shopid) {
-      this.$router.push({
+       let { href } = this.$router.resolve({
         path: "/productDetail",
-        query: { id: id, shopid: shopid }
+        query: { id: id, shopid: shopid },
       });
+      window.open(href, "_blank");
+      // this.$router.push({
+      //   path: "/productDetail",
+      //   query: { id: id, shopid: shopid }
+      // });
+      
     }
   }
 };
