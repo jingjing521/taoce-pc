@@ -4,7 +4,7 @@
       <el-row :gutter="20" style="padding:20px 0;">
         <el-col :span="3">
           <div>
-            <img src="@/assets/logo/logo.png" alt="" style="width:150px;height:120px;" class="text-center">
+            <img src="@/assets/logo/logo1.png" alt="" style="width:250px;" class="text-center">
           </div>
         </el-col>
         <el-col :span="15" class="text-center">

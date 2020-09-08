@@ -1,40 +1,84 @@
 <template>
   <div class="main_width customer" id="balance-box">
-    <div class="gl2-wddd_d"><div class="top_title"><strong>提现</strong></div></div>
+    <div class="gl2-wddd_d">
+      <div class="top_title">
+        <strong>提现</strong>
+      </div>
+    </div>
     <div class="bg-white padding" style="font-size:14px;">
       <div class="margin-bottom">当前余额：¥{{userInfo.androidBalance}}</div>
-       
-       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" style="width:500px;">
+
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+        style="width:500px;"
+      >
         <el-form-item label="提现金额" prop="rechargeAmount">
           <el-input placeholder="请输入提现金额" v-model="ruleForm.rechargeAmount"></el-input>
         </el-form-item>
         <el-form-item label="选择银行卡">
-          <el-radio-group v-model="ruleForm.bank">
-            <el-radio  border="" style="display:block;" v-for="(item) in list" :key="item.id" :label="item">{{item.bankName}}({{item.bankCardNo}})</el-radio>
+          <el-radio-group v-model="ruleForm.bank" v-if="list.length > 0">
+            <el-radio
+              border
+              style="display:block;"
+              v-for="(item) in list"
+              :key="item.id"
+              :label="item"
+            >{{item.bankName}}({{item.bankCardNo}})</el-radio>
           </el-radio-group>
+          <div v-else @click="goAddBnank">
+            <el-button size="mini" type="primary">添加银行卡</el-button>
+          </div>
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="phone" placeholder="请输入手机号" maxlength="11" disabled></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="code">
-          <el-input v-model="ruleForm.code" placeholder="请输入验证码" style="width: 250px;" maxlength="6"></el-input>
-          <el-button type="primary" style="display:inline-block;float: right;" @click="getCode" v-show="show">获取验证码</el-button>
-          <el-button type="info" style="display:inline-block;float: right;" v-show="!show">{{sum}}s重新发送</el-button>
-        </el-form-item> 
+          <el-input
+            v-model="ruleForm.code"
+            placeholder="请输入验证码"
+            style="width: 250px;"
+            maxlength="6"
+          ></el-input>
+          <el-button
+            type="primary"
+            style="display:inline-block;float: right;"
+            @click="getCode"
+            v-show="show"
+          >获取验证码</el-button>
+          <el-button
+            type="info"
+            style="display:inline-block;float: right;"
+            v-show="!show"
+          >{{sum}}s重新发送</el-button>
+        </el-form-item>
         <el-form-item>
           <el-button type="info" size="small" @click="back">取消提现</el-button>
-          <el-button type="primary" size="small" @click="submitForm('ruleForm')" :disabled="disabled">提现</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            @click="submitForm('ruleForm')"
+            :disabled="disabled"
+          >提现</el-button>
         </el-form-item>
-      </el-form>  
-    </div> 
+      </el-form>
+    </div>
+
+    <!-- 新增或者编辑地址 -->
+    <add-bank v-if="status" ref="addbank" @refreshDataList="handleList" />
   </div>
 </template>
-<script> 
+<script>
+import addBank from "../template/add-bank";
 import vueQr from "vue-qr";
 import { isEmpty } from "@/utils";
 export default {
   components: {
-    vueQr
+    vueQr,
+    addBank,
   },
   data() {
     var validateMoney = (rule, value, callback) => {
@@ -42,37 +86,40 @@ export default {
         callback(new Error("请输入正确的提现金额"));
       } else if (value < 500) {
         callback(new Error("提现金额至少500元"));
-      } else  {
+      } else {
         callback();
       }
     };
     return {
-      phone:'',
-      disabled:false,
-      list:[],
+      status: false,
+      phone: "",
+      disabled: false,
+      list: [],
       show: true,
       sum: "",
       timer: null,
       ruleForm: {
         device: 2,
         rechargeAmount: "",
-        bank: "0"
+        bank: "0",
       },
       html: "",
       dialogVisible: false,
       codeUrl: "",
       imageUrl: "",
       userInfo: {},
-      personalBankNo:{},
+      personalBankNo: {},
       rules: {
-        rechargeAmount: [{ required: true, message: "请输入提现金额", trigger: "blur" } ,{
+        rechargeAmount: [
+          { required: true, message: "请输入提现金额", trigger: "blur" },
+          {
             required: true,
             validator: validateMoney,
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
-      }
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -84,12 +131,18 @@ export default {
     this.handleList();
   },
   methods: {
-     getCode() {
+    goAddBank() {
+      this.status = true;
+      this.$nextTick(() => {
+        this.$refs.addbank.init();
+      });
+    },
+    getCode() {
       var _this = this;
       this.$fetch("/api/user/getVerifyCode", {
         phone: _this.userInfo.mobile,
-        type: "6"
-      }).then(response => {
+        type: "6",
+      }).then((response) => {
         if (response.code == 0) {
           var time_count = 60;
           if (!_this.timer) {
@@ -114,25 +167,29 @@ export default {
     // 修改密码
     submitForm(formName) {
       var _this = this;
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           _this.disabled = true;
           this.$put("/api/user/userWithdraw", {
             code: _this.ruleForm.code,
             mobile: _this.userInfo.mobile,
             amount: _this.ruleForm.rechargeAmount,
-            bankCardNo:	_this.ruleForm.bank.bankCardNo,
-            bankName:	_this.ruleForm.bank.bankName,
-            bankUserName:	_this.ruleForm.bank.bankUserName,
-            branchName:_this.ruleForm.bank.branchName,
-          }).then(response => {
+            bankCardNo: _this.ruleForm.bank.bankCardNo,
+            bankName: _this.ruleForm.bank.bankName,
+            bankUserName: _this.ruleForm.bank.bankUserName,
+            branchName: _this.ruleForm.bank.branchName,
+          }).then((response) => {
             if (response.code == 0) {
-                _this.$message({ message: '提现申请成功', type: 'success', duration: 1500, onClose: () => { 
-                    _this.disabled = false;
-                    _this.$router.go(-1);
-                     
-                }})
-            }else{
+              _this.$message({
+                message: "提现申请成功",
+                type: "success",
+                duration: 1500,
+                onClose: () => {
+                  _this.disabled = false;
+                  _this.$router.go(-1);
+                },
+              });
+            } else {
               _this.disabled = false;
               _this.$message.error(response.msg);
             }
@@ -144,15 +201,10 @@ export default {
       });
     },
 
-
-
-
-
-    
     // 发送短信
-    sendPersonalBankNoToSm(){
+    sendPersonalBankNoToSm() {
       var _this = this;
-      this.$fetch("/api/user/sendPersonalBankNoToSm", {}).then(response => {
+      this.$fetch("/api/user/sendPersonalBankNoToSm", {}).then((response) => {
         if (response.code == 0) {
           var time_count = 120;
           if (!_this.timer) {
@@ -175,20 +227,22 @@ export default {
       });
     },
 
-
-    back(){
+    back() {
       this.$router.go(-1);
     },
-    wxSave(){
+    wxSave() {
       this.dialogVisible = false;
-      this.ruleForm =  { device: 2, rechargeAmount: "", payType: "1" }
+      this.ruleForm = { device: 2, rechargeAmount: "", payType: "1" };
     },
     getUserInfo() {
       var _this = this;
-      this.$fetch("/api/user/userInfo").then(response => {
+      this.$fetch("/api/user/userInfo").then((response) => {
         if (response.code == 0) {
           _this.userInfo = response.data;
-          _this.phone = response.data.mobile.slice(0,3)+"****"+response.data.mobile.slice(7)
+          _this.phone =
+            response.data.mobile.slice(0, 3) +
+            "****" +
+            response.data.mobile.slice(7);
         } else {
           _this.$message.error(response.msg);
         }
@@ -197,7 +251,7 @@ export default {
     // 充值
     recharge() {
       var _this = this;
-      if(isEmpty(_this.ruleForm.rechargeAmount)){
+      if (isEmpty(_this.ruleForm.rechargeAmount)) {
         _this.$message.error("请输入充值");
         return;
       }
@@ -205,7 +259,7 @@ export default {
         _this.$message.info("线下汇款功能暂未开发");
         return;
       }
-      this.$put("/api/order/chargeOrder", this.ruleForm).then(response => { 
+      this.$put("/api/order/chargeOrder", this.ruleForm).then((response) => {
         if (response.code == 0) {
           if (_this.ruleForm.payType != "3") {
             _this.rechargeOrder(response.data);
@@ -217,12 +271,20 @@ export default {
     },
     rechargeOrder(orderSn) {
       var _this = this;
-      this.$fetch( "/api/order/chargeOrderPay?device=web&orderSn=" + orderSn + "&payType=" + this.ruleForm.payType,
-        {}).then(response => {
+      this.$fetch(
+        "/api/order/chargeOrderPay?device=web&orderSn=" +
+          orderSn +
+          "&payType=" +
+          this.ruleForm.payType,
+        {}
+      ).then((response) => {
         console.log(response);
         if (_this.ruleForm.payType == "1") {
           _this.html = response;
-          let routerData = this.$router.resolve({ path: "/payGateWay", query: { htmlData: response } }); 
+          let routerData = this.$router.resolve({
+            path: "/payGateWay",
+            query: { htmlData: response },
+          });
           window.open(routerData.href, "_blank");
         }
         if (response.code == 0) {
@@ -238,17 +300,17 @@ export default {
     },
     handleList() {
       var _this = this;
-      this.$fetch("/api/user/userBankCardInfoList").then(response => { 
-        _this.loading = false
+      this.$fetch("/api/user/userBankCardInfoList").then((response) => {
+        _this.loading = false;
         if (response.code == 0) {
           _this.list = response.data;
           _this.ruleForm.bank = response.data[0];
-        }else {
+        } else {
           _this.$message.error(response.msg);
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
@@ -273,15 +335,15 @@ export default {
   width: 600px;
   height: 50px;
 }
-#balance-box .item{
+#balance-box .item {
   line-height: 35px;
   font-size: 15px;
 }
-#balance-box .item1{
+#balance-box .item1 {
   margin-left: 70px;
   color: #999;
 }
-#balance-box .item1 input{
+#balance-box .item1 input {
   color: #999;
 }
 </style>

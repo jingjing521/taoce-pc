@@ -32,8 +32,8 @@
                                 </div>
                                 <a href="javascript:;" class="index-menu-bottom-btn" @click="viewAll">查看全部</a>
                               </div>
-                              <!-- -->
-                              <div class="index-menu-content"  v-if="dow">
+                              <!--  -->
+                              <div class="index-menu-content" v-if="dow" >
                                 <div class="sub-menu">
                                   <div class="sub-menu-box" >
                                     <div class="sub-menu-item-box simple-sub-menu" v-for="item in categoryTwoList" :key="item.id" style="display: flex;align-items: center;">
@@ -92,7 +92,7 @@
     <div class=" main_home max_width main main_width max_width" style="background:#f5f5f5">
       <div class="cu-bar justify-center text-center margin">
         <div class="action border-title">
-          <span class="text-xl text-bold">检测机构</span>
+          <span class="text-xl text-bold">明星店铺</span>
           <span class="bg-red"></span>
         </div>
       </div>
@@ -103,11 +103,11 @@
             <div class="text-center text-df" style="line-height:50px">{{item.mc}}</div>
           </div>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <div class="grid-content text-center" style="padding-top:10px;min-height: 90px;line-height:90px;font-size: 16px;"  @click="goAllList()">
              查看更多
           </div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <div class="bg-white">
@@ -257,7 +257,7 @@ export default {
     // 获取机构列表  
     getAList() {
       var _this = this;
-      this.$fetch("/api/user/agencyList", {
+      this.$fetch("/api/user/agentList", {
         limit: 11,
         page: 1
       }).then(response => {
@@ -312,7 +312,7 @@ export default {
       });
     },
     goADetail(id){
-      this.$router.push({ path: "/server", query: { id: id } });
+      this.$router.push({ path: "/potal", query: { id: id } });
     },
     goNewDetail(id) {
       this.$router.push({ path: "/news-detail", query: { id: id } });
@@ -623,8 +623,9 @@ export default {
     height: 16px;
     line-height: 16px;
     white-space: nowrap;
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
+    width: 100px; */
 }
 .index-menu-content .sub-menu .sub-menu-box .sub-menu-item-box .sub-menu-list .sub-menu-item { 
     text-decoration: none;

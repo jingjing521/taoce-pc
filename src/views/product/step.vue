@@ -184,8 +184,12 @@
               </li>
               <li class="xiangq_ju">
                 <span class="shenqrxq_bt"> 报告数量  <span class="weit_xhx">*</span> </span>
-                <el-input v-model="param.bgsl" placeholder="请输入报告数量" class="container_input required" maxlength="50" ></el-input>
-                <span>份</span>
+                <el-input v-model="param.bgsl" placeholder="请输入报告数量" class="container_input required" maxlength="50" disabled></el-input>
+                <span>份 
+                  <el-tooltip class="item" effect="dark" content="报告数量只支持一份，如果需要多份，请联系平台客服" placement="top-start">
+                    <el-button type="text">说明</el-button>
+                  </el-tooltip>
+                </span>
               </li>
               <li class="xiangq_ju">
                 <span class="shenqrxq_bt">报告语言</span>
@@ -202,7 +206,7 @@
               <li class="xiangq_ju">
                 <span class="shenqrxq_bt" style="width: 99px;display: inline-block;height: 50px;line-height: 12px;margin:auto">
                    <i>CQC申请编号</i> 
-                   <i>www.baidu.com</i> 
+                   <i>www.cqc.com.cn</i> 
                 </span>
                 <el-input v-model="param.cqcno" placeholder="请输入CQC申请编号" class="container_input required" maxlength="50" ></el-input>
               </li>
@@ -307,7 +311,7 @@ export default {
          * 报告信息
          */ 
         bgyt: "社会证明", // 报告用途
-        bgsl:"", //  报告数量
+        bgsl:"1", //  报告数量
         jlxs: "实测数据", // 结论形式
         bgfsxs: "快递速运", // 发放方式
         reportLauguage: "", // 报告语言

@@ -100,7 +100,7 @@
     <!-- 录入送样 -->
     <samples-info v-if="samplesStatus" ref="samplesinfo" @getList="getList"/>
     <!-- 查看物流 -->
-    <el-dialog title="查看物流" :visible.sync="logisticsVisible" width="30%"> 
+    <el-dialog title="查看物流" :visible.sync="logisticsVisible" width="50%"> 
       <el-form :model="appraiseform" style="width:500px;">
         <el-form-item label="寄件人地址" :label-width="formLabelWidth">
           <el-input v-model="orderDetail.orderFfbgxxEntity.jjrdz" autocomplete="off" disabled></el-input>
