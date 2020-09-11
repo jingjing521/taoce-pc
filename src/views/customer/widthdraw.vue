@@ -20,49 +20,25 @@
           <el-input placeholder="请输入提现金额" v-model="ruleForm.rechargeAmount"></el-input>
         </el-form-item>
         <el-form-item label="选择银行卡">
-          <el-radio-group v-model="ruleForm.bank" v-if="list.length > 0">
-            <el-radio
-              border
-              style="display:block;"
-              v-for="(item) in list"
-              :key="item.id"
-              :label="item"
-            >{{item.bankName}}({{item.bankCardNo}})</el-radio>
-          </el-radio-group>
-          <div v-else @click="goAddBnank">
+          <div @click="goAddBnank">
             <el-button size="mini" type="primary">添加银行卡</el-button>
           </div>
+          <el-radio-group v-model="ruleForm.bank" v-if="list.length > 0">
+            <el-radio border  style="display:block;" v-for="(item) in list"  :key="item.id" :label="item">{{item.bankName}}({{item.bankCardNo}})</el-radio>
+          </el-radio-group>
+          
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="phone" placeholder="请输入手机号" maxlength="11" disabled></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="code">
-          <el-input
-            v-model="ruleForm.code"
-            placeholder="请输入验证码"
-            style="width: 250px;"
-            maxlength="6"
-          ></el-input>
-          <el-button
-            type="primary"
-            style="display:inline-block;float: right;"
-            @click="getCode"
-            v-show="show"
-          >获取验证码</el-button>
-          <el-button
-            type="info"
-            style="display:inline-block;float: right;"
-            v-show="!show"
-          >{{sum}}s重新发送</el-button>
+          <el-input v-model="ruleForm.code" placeholder="请输入验证码" style="width: 250px;" maxlength="6"></el-input>
+          <el-button type="primary" style="display:inline-block;float: right;" @click="getCode" v-show="show">获取验证码</el-button>
+          <el-button type="info" style="display:inline-block;float: right;"  v-show="!show" >{{sum}}s重新发送</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="info" size="small" @click="back">取消提现</el-button>
-          <el-button
-            type="primary"
-            size="small"
-            @click="submitForm('ruleForm')"
-            :disabled="disabled"
-          >提现</el-button>
+          <el-button type="primary" size="small" @click="submitForm('ruleForm')" :disabled="disabled">提现</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -131,7 +107,7 @@ export default {
     this.handleList();
   },
   methods: {
-    goAddBank() {
+    goAddBnank() {
       this.status = true;
       this.$nextTick(() => {
         this.$refs.addbank.init();

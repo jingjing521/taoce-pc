@@ -5,7 +5,7 @@
         <div class="main_width flex justify-between">
           <div>
             <span class="padding-right">{{province + ' ' +city}}</span>
-            <span class="padding-right">嗨，欢迎来到</span>
+            <span class="padding-right">嗨，欢迎来到淘测</span>
             <router-link to="/login" v-if="!userInfo.username">
               <span class="padding-right">请登录</span>
             </router-link>
@@ -13,14 +13,12 @@
               <span class="padding-right">免费注册</span>
             </router-link>
             <router-link to="/customer" v-if="userInfo.username">
-              <span class="padding-right">用户名：{{userInfo.username}}</span>
+              <span class="padding-right">  {{userInfo.username}}</span>
             </router-link>
-            <span
-              class="padding-right"
-              @click="loginout"
-              v-if="userInfo.username"
-              style="cursor: pointer;"
-            >退出</span>
+            <span  class="padding-right" @click="loginout"  v-if="userInfo.username" style="cursor: pointer;" >退出</span>
+          </div>
+          <div>
+            hhhhhhh
           </div>
           <div>
             <span class="padding-right cursor-pointer" @click="goUrl('/product')">我要检测</span>

@@ -4,7 +4,7 @@
       <el-row :gutter="20" style="padding:20px 0;">
         <el-col :span="3">
           <div>
-            <img src="@/assets/logo/logo1.png" alt="" style="width:250px;" class="text-center">
+            <img src="@/assets/logo/foot.png" alt="" style="width:250px;" class="text-center">
           </div>
         </el-col>
         <el-col :span="15" class="text-center">
@@ -87,7 +87,7 @@
       </div>
       <div class="link-list">
         <span>友情链接</span>
-        <span v-for="(item, index)  in friendLink" :key="index"><a :href="item.url" target="_blank">{{item.url}}</a></span> 
+        <span v-for="(item, index)  in friendLink" :key="index"><a :href="item.url" target="_blank">{{item.name}}</a></span> 
       </div>
     </div>
   </div>
@@ -156,11 +156,15 @@ export default {
 #footer ul li{
   font-size: 12px;
   line-height: 25px;
+  text-align: left;
+  padding-left: 15px;
 }
 #footer .st{
   font-size: 14px;
   font-weight: bold;
   line-height: 35px;
+  text-align: left;
+  padding-left: 15px;
 }
 #footer .footer-item {
   border-top: 1px solid #f1f1f1;
