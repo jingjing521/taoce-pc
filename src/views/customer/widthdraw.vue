@@ -6,8 +6,7 @@
       </div>
     </div>
     <div class="bg-white padding" style="font-size:14px;">
-      <div class="margin-bottom">当前余额：¥{{userInfo.androidBalance}}</div>
-
+      <div class="margin-bottom">当前余额：¥{{userInfo.androidBalance || 0}}</div>
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -19,9 +18,9 @@
         <el-form-item label="提现金额" prop="rechargeAmount">
           <el-input placeholder="请输入提现金额" v-model="ruleForm.rechargeAmount"></el-input>
         </el-form-item>
-        <el-form-item label="选择银行卡">
+        <el-form-item label="选择账户">
           <div @click="goAddBnank">
-            <el-button size="mini" type="primary">添加银行卡</el-button>
+            <el-button size="mini" type="primary">添加账户</el-button>
           </div>
           <el-radio-group v-model="ruleForm.bank" v-if="list.length > 0">
             <el-radio border  style="display:block;" v-for="(item) in list"  :key="item.id" :label="item">{{item.bankName}}({{item.bankCardNo}})</el-radio>
@@ -41,6 +40,12 @@
           <el-button type="primary" size="small" @click="submitForm('ruleForm')" :disabled="disabled">提现</el-button>
         </el-form-item>
       </el-form>
+      <div>
+        <div>提现提醒：</div>
+        <div>1）提现金额应不超过原途径充值金额 ，若提现金额超过原途径充值金额，则提现失败，需修改提现金额后重新发起提现；</div>
+        <div>2）提现金额于3-30个工作日内到账，请您耐心等待。</div>
+      </div>
+
     </div>
 
     <!-- 新增或者编辑地址 -->
@@ -87,12 +92,7 @@ export default {
       personalBankNo: {},
       rules: {
         rechargeAmount: [
-          { required: true, message: "请输入提现金额", trigger: "blur" },
-          {
-            required: true,
-            validator: validateMoney,
-            trigger: "blur",
-          },
+          { required: true, message: "请输入提现金额", trigger: "blur" }
         ],
         code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },

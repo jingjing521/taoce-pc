@@ -38,7 +38,7 @@
 						<el-submenu index="2">
 							<template slot="title">资金管理</template>
 							<el-menu-item index="/wallet">我的钱包</el-menu-item>
-							<el-menu-item index="/bankList">我的银行卡</el-menu-item>
+							<el-menu-item index="/bankList">我的账户</el-menu-item>
 						</el-submenu>
 						<el-submenu index="3">
 							<template slot="title">设置</template>

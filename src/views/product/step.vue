@@ -527,7 +527,7 @@ export default {
     getClientData(item) { 
       this.param.wtdwmc = item.dwmc;
       this.param.creditCode = item.creditCode;
-      this.param.consignee = item.legalPerson;
+      // this.param.consignee = item.legalPerson;
 
       if(this.param.isScwtYz == '1'){
         this.param.scsdwmc = this.param.wtdwmc;

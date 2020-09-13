@@ -18,7 +18,7 @@
             <span  class="padding-right" @click="loginout"  v-if="userInfo.username" style="cursor: pointer;" >退出</span>
           </div>
           <div>
-            hhhhhhh
+            共发布服务方案 xx条  累计成交量xx单   已入驻机构xx家  
           </div>
           <div>
             <span class="padding-right cursor-pointer" @click="goUrl('/product')">我要检测</span>
