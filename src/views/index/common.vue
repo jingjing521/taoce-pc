@@ -13,12 +13,20 @@
               <span class="padding-right">免费注册</span>
             </router-link>
             <router-link to="/customer" v-if="userInfo.username">
-              <span class="padding-right">  {{userInfo.username}}</span>
+              <span class="padding-right">{{userInfo.username}}</span>
             </router-link>
-            <span  class="padding-right" @click="loginout"  v-if="userInfo.username" style="cursor: pointer;" >退出</span>
+            <span
+              class="padding-right"
+              @click="loginout"
+              v-if="userInfo.username"
+              style="cursor: pointer;"
+            >退出</span>
           </div>
-          <div>
+          <!-- <div>
             共发布服务方案 xx条  累计成交量xx单   已入驻机构xx家  
+          </div>-->
+          <div>
+            <demo :lists="lists"></demo>
           </div>
           <div>
             <span class="padding-right cursor-pointer" @click="goUrl('/product')">我要检测</span>
@@ -102,11 +110,13 @@
 
 <script>
 import foot from "../template/foot";
+import demo from "../../components/demo";
 export default {
   inject: ["reload"],
-  components: { foot },
+  components: { foot, demo },
   data() {
     return {
+      lists: [], //轮播中的文字
       input: "",
       selectType: "1",
       activeIndex2: "/",
@@ -160,8 +170,22 @@ export default {
     } else {
       this.userInfo = { username: "" };
     }
+    this.getStatisticsIndex();
   },
   methods: {
+    /**
+     * 获取首页统计数据
+     */
+    getStatisticsIndex() {
+      var _this = this;
+      this.$fetch(  "/api/order/statisticsIndex",{} ).then((response) => {
+        console.log(response)
+        if(response.code == '0'){
+          _this.lists = [ "共发布服务方案" + response.fbfws + "条,累计成交量" + response.onum +"单,已入驻机构"+response.rzjgs+"家"]
+        }
+      });
+    },
+
     webIMregister() {
       var _this = this;
       this.$imConn.registerUser({
