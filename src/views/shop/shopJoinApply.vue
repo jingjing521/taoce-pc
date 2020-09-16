@@ -24,7 +24,8 @@
           <i class="el-icon-notebook-2"></i>机构基本信息
         </div>
         <el-form :inline="true"  :label-position="labelPosition"  label-width="80px" :model="form" :rules="rules" ref="form" >
-          <el-form-item label="机构或代理商名称" prop="mc">
+          <el-form-item prop="mc">
+             <span slot="label">机构或代理商名称 <span style="color:red">（如代理商是个人则需填写店铺名称）</span> </span>
             <el-input v-model="form.mc" placeholder="请输入机构或代理商名称"></el-input>
           </el-form-item>
           <el-form-item label="统一社会信用代码或个人身份证号" prop="creditCode">
@@ -33,7 +34,8 @@
           <el-form-item label="注册地址或身份证地址" prop="addr">
             <el-input v-model="form.addr" placeholder="注册地址或身份证地址"></el-input>
           </el-form-item>
-          <el-form-item label="法定代表人" prop="legalPerson">
+          <el-form-item label="" prop="legalPerson">
+            <span slot="label">法定代表人 <span style="color:red">（如是个人开店则为身份证上名字）</span> </span>
             <el-input v-model="form.legalPerson" placeholder="请输入法定代表人"></el-input>
           </el-form-item>
           <el-form-item label="行政区划" prop="value" style="width: calc(100% - 120px);">
@@ -60,13 +62,14 @@
           <el-form-item label="简介" style="width: calc(100% - 120px);" prop="intro">
             <el-input type="textarea" v-model="form.intro" placeholder="请输入简介" maxlength="1000" show-word-limit rows="4" ></el-input>
           </el-form-item>
-          <el-form-item label="机构业务范围" style="width: calc(100% - 120px);" prop="businessScope">
+          <el-form-item label="业务范围" style="width: calc(100% - 120px);" prop="businessScope">
             <el-input type="textarea" v-model="form.businessScope" placeholder="请输入机构业务范围" maxlength="500" show-word-limit rows="4"></el-input>
           </el-form-item>
           <el-form-item label="备注说明" style="width: calc(100% - 120px);">
             <el-input type="textarea" v-model="form.remark" placeholder="请输入备注说明" maxlength="500" show-word-limit rows="4"></el-input>
           </el-form-item>
-          <el-form-item label="logo" style="width: calc(100% - 120px);" prop="imageUrl" ref="image">
+          <el-form-item style="width: calc(100% - 120px);" prop="imageUrl" ref="image">
+            <span slot="label">logo<span style="color:red">（机构或代理商店铺形象图片）</span> </span>
             <el-upload class="avatar-uploader"  :action="uploadUrl" :show-file-list="false" :on-success="handlelogoSuccess" :before-upload="beforeAvatarUpload">
               <img v-if="logoUrl" :src="logoUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -75,7 +78,7 @@
           <el-form-item label="相关附件上传" style="width: calc(100% - 120px);">
             <div>
               <span>
-                <i class="el-icon-star-on" style="color:#F56C6C"></i>机构营业执照或身份证复印件（请上传小于2M的图片；机构或企业请上传营业执照）
+                <i class="el-icon-star-on" style="color:#F56C6C"></i>机构营业执照或身份证复印件（请上传小于2M的图片；机构或企业请上传营业执照；文件格式为jpg，pdf）
               </span>
               <el-upload
                 class="upload-demo"
@@ -96,7 +99,7 @@
             </div>
             <div>
               <span>
-                <i class="el-icon-star-on" style="color:#F56C6C"></i>入驻“淘测”平台承诺书（可上传扫描件或图片，大小不超过5M）
+                <i class="el-icon-star-on" style="color:#F56C6C"></i>入驻“淘测”平台承诺书（可上传扫描件或图片，大小不超过5M；文件格式为jpg，pdf）
               </span>
               <span>
                 <el-link type="primary">模板下载</el-link>

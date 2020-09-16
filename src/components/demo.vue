@@ -53,13 +53,16 @@ export default {
   background: white;
 }
 #box {
-  width: 500%;
+  width: 300%;
+  color: #409EFF;
+  font-size: 15px;
 }
 #box div {
   float: left;
 }
 #marquee {
   margin: 0 16px 0 0;
+  
 }
 #node {
   position: absolute;

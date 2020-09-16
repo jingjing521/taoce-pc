@@ -276,12 +276,6 @@
       <li>
         <router-link to="/collection">收藏夹</router-link>
       </li>
-      <li>
-        <router-link to="/news">新闻中心</router-link>
-      </li>
-      <li>
-        <router-link to="/institution">机构展示</router-link>
-      </li>
       <li @click="goChat()">在线客服</li>
       <li @click="goTop">返回顶部</li>
     </ul>
@@ -317,7 +311,7 @@ export default {
     } else {
       this.$fetch("/api/category/oms/getIndexCategoryList").then((response) => {
         if (response.code == 0) {
-          this.categoryList = response.data[0].categoryList;
+          this.categoryList = response.data[1].categoryList;
           this.categoryList.forEach((v, i) => {
             v.itemName = v.cname;
             v.categoryList.forEach((x, y) => {
@@ -613,7 +607,7 @@ export default {
   float: left;
 }
 .index-menu-wrap {
-  height: 624px;
+  /* height: 624px; */
   background: #fff;
 }
 .index-menu-wrap .index-menu-title {
@@ -628,7 +622,7 @@ export default {
 }
 .index-menu-wrap .index-menu-list {
   box-sizing: border-box;
-  height: 500px;
+  /* height: 500px; */
   position: relative;
 }
 .index-menu-item {
@@ -777,14 +771,14 @@ export default {
   position: fixed;
   right: 10px;
   margin: auto;
-  top: 200px;
+  top: 300px;
   background: #ff6a00;
   color: #fff;
   z-index: 9;
 }
 .navSideList li {
   border-bottom: 1px solid #f1f1f1;
-  line-height: 50px;
+  line-height: 40px;
   padding: 10px;
   text-align: center;
   cursor: pointer;

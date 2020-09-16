@@ -29,8 +29,7 @@ export default {
     };
   },
   mounted() {},
-  created() {
-    console.log("呼呼呼呼呼", this.$route.query.id);
+  created() { 
     this.getInfo(this.$route.query.id);
   },
   methods: {

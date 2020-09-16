@@ -7,7 +7,8 @@
     </div>
     <div class="bg-white padding" style="font-size:14px;">
       <div class="margin-bottom">当前余额：¥{{userInfo.androidBalance}}</div>
-      <div>充值金额：
+      <div>
+        充值金额：
         <el-input
           v-model="ruleForm.rechargeAmount"
           placeholder="请输入充值金额"
@@ -17,45 +18,54 @@
       </div>
       <div style="margin-top: 20px">
         <el-radio-group v-model="ruleForm.payType">
-          <el-radio label="1" border="" style="display:block;">支付宝</el-radio>
-          <el-radio label="2" border="" style="display:block;">微信</el-radio>
-          <el-radio label="3" border="" style="display:block;">线下汇款</el-radio>
+          <el-radio label="1" border style="display:block;">支付宝</el-radio>
+          <el-radio label="2" border style="display:block;">微信</el-radio>
+          <el-radio label="3" border style="display:block;">线下汇款</el-radio>
         </el-radio-group>
       </div>
       <!-- 线上汇款  -->
 
       <el-card class="box-card margin-bottom" v-if="ruleForm.payType == 3">
         <div slot="header" class="clearfix">
-          <span>温馨提示：</span> 
+          <span>温馨提示：</span>
         </div>
         <div class="text item">
-          受银行处理时间影响，线下汇款方式到账会有延误，强烈建议采用支付宝、微信实时到账。<br />
-          线下汇款直接向上海华道检测的专属账户汇款，系统会将汇款直接匹配到您的淘测账户。各种方式的到账时间一般为：招行1-2天，跨行2-5天（具体到账时间以银行的实际到账时间为准）。
+          受银行处理时间影响，线下汇款方式到账会有延误，强烈建议采用支付宝、微信实时到账。
+          <br />线下汇款直接向上海华道检测的专属账户汇款，系统会将汇款直接匹配到您的淘测账户。各种方式的到账时间一般为：交行1-2天，跨行2-5天（具体到账时间以银行的实际到账时间为准）。
           请避免北京时间21：00-00：00进行汇款，否则受银行出账时间影响，可能出现延迟一天到账情况。
-        </div> 
+          <br />淘测网余额提现仅支持原路返回，请谨慎选择充值/付款的账号。
+          <br />
+        </div>
       </el-card>
 
       <el-card class="box-card margin-bottom" v-if="ruleForm.payType == 3">
         <div slot="header" class="clearfix">
-          <span>请您通过网银转账户,或者自行到银行进行汇款， 汇款账户如下：</span> 
+          <span>请您通过网银转账,或者自行到银行进行汇款， 汇款账户如下：</span>
         </div>
-        <div class="text item">
-           开户名称：{{personalBankNo.khmc}}
-        </div>
-        <div class="text item">
-           开户银行：{{personalBankNo.khyh}}
-        </div>
-        <div class="text item item1">
-           专属汇款账户：<input type="text" :value="personalBankNo.zsbankno" disabled>
-        </div>
-        <div class="text item item1">
+        <div>
+          <div style="display:flex;justify-content: space-between;">
+            <div class="text item">开户名称：{{personalBankNo.khmc}}</div>
+            <div class="text item" style="color:red">专属账号电子证明下载</div>
+          </div>
+
+          <div class="text item">开户银行：{{personalBankNo.khyh}}</div>
+          <div class="text item item1">
+            专属汇款账户：
+            <input type="text" :value="personalBankNo.zsbankno" disabled />
+          </div>
+          <div class="text item item1">
             将以上账户，免费发送到手机：{{userInfo.mobile}}
-            <el-button size="small" type="warning" plain @click="sendPersonalBankNoToSm" v-show="show">发送短信</el-button>
-            <el-button size="small" type="warning" plain  v-show="!show" disabled>{{sum}}s重新发送</el-button>
-        </div> 
-
+            <el-button
+              size="small"
+              type="warning"
+              plain
+              @click="sendPersonalBankNoToSm"
+              v-show="show"
+            >发送短信</el-button>
+            <el-button size="small" type="warning" plain v-show="!show" disabled>{{sum}}s重新发送</el-button>
+          </div>
+        </div>
       </el-card>
-
 
       <div>
         <el-button type="info" size="small" @click="back">取消充值</el-button>
@@ -74,12 +84,12 @@
     </el-dialog>
   </div>
 </template>
-<script> 
+<script>
 import vueQr from "vue-qr";
 import { isEmpty } from "@/utils";
 export default {
   components: {
-    vueQr
+    vueQr,
   },
   data() {
     return {
@@ -89,14 +99,14 @@ export default {
       ruleForm: {
         device: 2,
         rechargeAmount: "",
-        payType: "1"
+        payType: "1",
       },
       html: "",
       dialogVisible: false,
       codeUrl: "",
       imageUrl: "",
       userInfo: {},
-      personalBankNo:{}
+      personalBankNo: {},
     };
   },
   created() {
@@ -109,9 +119,9 @@ export default {
   },
   methods: {
     // 发送短信
-    sendPersonalBankNoToSm(){
+    sendPersonalBankNoToSm() {
       var _this = this;
-      this.$fetch("/api/user/sendPersonalBankNoToSm", {}).then(response => {
+      this.$fetch("/api/user/sendPersonalBankNoToSm", {}).then((response) => {
         if (response.code == 0) {
           var time_count = 120;
           if (!_this.timer) {
@@ -134,20 +144,22 @@ export default {
       });
     },
 
-
-    back(){
+    back() {
       this.$router.go(-1);
     },
-    wxSave(){
+    wxSave() {
       this.dialogVisible = false;
-      this.ruleForm =  { device: 2, rechargeAmount: "", payType: "1" }
+      this.ruleForm = { device: 2, rechargeAmount: "", payType: "1" };
     },
     getUserInfo() {
       var _this = this;
-      this.$fetch("/api/user/userInfo").then(response => {
+      this.$fetch("/api/user/userInfo").then((response) => {
         if (response.code == 0) {
           _this.userInfo = response.data;
-          _this.userInfo.mobile = response.data.mobile.slice(0,3)+"****"+response.data.mobile.slice(7)
+          _this.userInfo.mobile =
+            response.data.mobile.slice(0, 3) +
+            "****" +
+            response.data.mobile.slice(7);
         } else {
           _this.$message.error(response.msg);
         }
@@ -156,7 +168,7 @@ export default {
     // 充值
     recharge() {
       var _this = this;
-      if(isEmpty(_this.ruleForm.rechargeAmount)){
+      if (isEmpty(_this.ruleForm.rechargeAmount)) {
         _this.$message.error("请输入充值");
         return;
       }
@@ -164,7 +176,7 @@ export default {
         _this.$message.info("线下汇款功能暂未开发");
         return;
       }
-      this.$put("/api/order/chargeOrder", this.ruleForm).then(response => { 
+      this.$put("/api/order/chargeOrder", this.ruleForm).then((response) => {
         if (response.code == 0) {
           if (_this.ruleForm.payType != "3") {
             _this.rechargeOrder(response.data);
@@ -176,12 +188,20 @@ export default {
     },
     rechargeOrder(orderSn) {
       var _this = this;
-      this.$fetch( "/api/order/chargeOrderPay?device=web&orderSn=" + orderSn + "&payType=" + this.ruleForm.payType,
-        {}).then(response => {
+      this.$fetch(
+        "/api/order/chargeOrderPay?device=web&orderSn=" +
+          orderSn +
+          "&payType=" +
+          this.ruleForm.payType,
+        {}
+      ).then((response) => {
         console.log(response);
         if (_this.ruleForm.payType == "1") {
           _this.html = response;
-          let routerData = this.$router.resolve({ path: "/payGateWay", query: { htmlData: response } }); 
+          let routerData = this.$router.resolve({
+            path: "/payGateWay",
+            query: { htmlData: response },
+          });
           window.open(routerData.href, "_blank");
         }
         if (response.code == 0) {
@@ -195,18 +215,18 @@ export default {
         }
       });
     },
-    getPersonalBankNo(){
+    getPersonalBankNo() {
       var _this = this;
-      this.$fetch( "/api/user/getPersonalBankNo", {}).then(response => {
-         console.log(response);
+      this.$fetch("/api/user/getPersonalBankNo", {}).then((response) => {
+        console.log(response);
         if (response.code == 0) {
-           _this.personalBankNo = response.data
+          _this.personalBankNo = response.data;
         } else {
           _this.$message.error(response.msg);
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
@@ -231,15 +251,15 @@ export default {
   width: 600px;
   height: 50px;
 }
-#balance-box .item{
+#balance-box .item {
   line-height: 35px;
   font-size: 15px;
 }
-#balance-box .item1{
+#balance-box .item1 {
   margin-left: 70px;
   color: #999;
 }
-#balance-box .item1 input{
+#balance-box .item1 input {
   color: #999;
 }
 </style>

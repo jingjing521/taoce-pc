@@ -22,11 +22,8 @@
               style="cursor: pointer;"
             >退出</span>
           </div>
-          <!-- <div>
-            共发布服务方案 xx条  累计成交量xx单   已入驻机构xx家  
-          </div>-->
-          <div>
-            <demo :lists="lists"></demo>
+          <div style="width:300px">
+            <demo :lists="lists" v-if="lists.length > 0"></demo>
           </div>
           <div>
             <span class="padding-right cursor-pointer" @click="goUrl('/product')">我要检测</span>
@@ -179,9 +176,9 @@ export default {
     getStatisticsIndex() {
       var _this = this;
       this.$fetch(  "/api/order/statisticsIndex",{} ).then((response) => {
-        console.log(response)
-        if(response.code == '0'){
-          _this.lists = [ "共发布服务方案" + response.fbfws + "条,累计成交量" + response.onum +"单,已入驻机构"+response.rzjgs+"家"]
+        console.log("首页统计数据",response)
+        if(response.code == 0){
+          _this.lists = [ "共发布服务方案" + response.data.fbfws + "条,累计成交量" + response.data.onum +"单,已入驻机构"+response.data.rzjgs+"家"]
         }
       });
     },

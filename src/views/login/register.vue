@@ -28,13 +28,13 @@
                 </el-form-item>
                 <el-form-item label="" prop="isagree" style="width:1000px;"> 
                   <el-checkbox label="阅读并同意" v-model="form.isagree"></el-checkbox>
-                  <router-link to="/agreement" style="margin-right:3px;color:#409EFF">
+                  <router-link :to="{path:'/agreement',query:{id:'10'}}" target="_blank" style="margin-right:3px;color:#409EFF">
                     《淘测用户注册协议》
                   </router-link>
-                  <router-link to="/agreement" style="margin-right:3px;color:#409EFF">
+                  <router-link :to="{path:'/agreement',query:{id:'7'}}" target="_blank"  style="margin-right:3px;color:#409EFF">
                     《隐私政策》
                   </router-link>
-                  <router-link to="/agreement" style="margin-right:3px;color:#409EFF">
+                  <router-link :to="{path:'/agreement',query:{id:'6'}}" target="_blank"  style="margin-right:3px;color:#409EFF">
                     《平台法律声明》
                   </router-link>  
                 </el-form-item> 
