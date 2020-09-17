@@ -5,17 +5,11 @@
         <!-- 商品/分类 -->
         <el-row :gutter="0" style="position: relative;padding-top:10px;">
           <!-- 分类 -->
-          <el-col
-            :span="5"
-            style="background:#f5f5f5;box-shadow: 0 -4px 30px 2px rgba(0, 0, 0, 0.1);"
-          >
+          <el-col :span="5" style="background:#f5f5f5;box-shadow: 0 -4px 30px 2px rgba(0, 0, 0, 0.1);">
             <div class="index-slot-left index-menu" @mouseleave="dow = false">
               <div class="page-slot page-slot-0">
                 <div style="height:auto;display:block;min-height:0;">
-                  <div
-                    class="ace-floor"
-                    style="margin-top:undefinedpx;margin-bottom:undefinedpx;padding:0px 0px 0px;background-color:transparent;"
-                  >
+                  <div class="ace-floor" style="margin-top:undefinedpx;margin-bottom:undefinedpx;padding:0px 0px 0px;background-color:transparent;">
                     <div class="ace-grid">
                       <div class="ace-grid-row">
                         <div
@@ -311,7 +305,7 @@ export default {
     } else {
       this.$fetch("/api/category/oms/getIndexCategoryList").then((response) => {
         if (response.code == 0) {
-          this.categoryList = response.data[1].categoryList;
+          this.categoryList = response.data[0].categoryList;
           this.categoryList.forEach((v, i) => {
             v.itemName = v.cname;
             v.categoryList.forEach((x, y) => {
@@ -678,9 +672,9 @@ export default {
   line-height: 40px;
   font-size: 13px;
   color: #ff6a00;
-  position: absolute;
+  /* position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 0; */
   cursor: pointer;
   text-decoration: none;
 }
