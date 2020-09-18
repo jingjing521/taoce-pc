@@ -127,7 +127,7 @@
                       />
                     </div>
                     <div class="text-lg" style="color:red">¥{{item.goods_price}}</div>
-                    <div class="text-df">{{item.goods_name}}</div>
+                    <div class="text-df" style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 44px;">{{item.goods_name}}</div>
                     <div class="text-sm" style="color:#666">{{item.jgmc}}</div>
                   </div>
                 </el-col>

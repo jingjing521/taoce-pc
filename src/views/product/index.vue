@@ -696,6 +696,12 @@ export default {
   font-size: 15px;
   color: #303133;
   font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 44px;
 }
 .des {
   line-height: 30px;

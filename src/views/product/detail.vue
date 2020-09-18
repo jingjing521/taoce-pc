@@ -7,7 +7,7 @@
       style="margin-left:0;margin-right:0"
     >
       <el-col :span="12">
-        <div style="border:1px solid #ccc;heigth:500px">
+        <div style="border:1px solid #ccc;height:500spx">
           <img :src="goodsDetail.goodsImg" alt style="width:100%;height:100%;" />
         </div>
         <div
@@ -715,12 +715,12 @@ export default {
 .sp-mc {
   font-size: 20px;
   font-weight: 700;
-  line-height: 60px;
-  overflow: hidden;
+  line-height: 30px;
+  /* overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; */
   max-width: 95%;
 }
 .sp-item span {

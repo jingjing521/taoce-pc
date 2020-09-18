@@ -12,7 +12,7 @@
                       <img :src="item.goodsImg"  style="width:100%;height:160px;margin:auto;" class="goods-item-img">
                     </div>
                     <div class="text-lg" style="color:red;padding-top:10px">¥{{item.goodsPrice}}</div>
-                    <div class="text-df" style="padding: 5px 0">{{item.goodsName}}</div>
+                    <div class="text-df" style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 44px;" >{{item.goodsName}}</div>
                 </div>
                 <el-button style="padding: 8px 0" type="text" @click.native.prevent="cancleGoodsColle(item.id)">取消收藏</el-button>
               </div>
