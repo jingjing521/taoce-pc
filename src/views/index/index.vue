@@ -31,6 +31,7 @@
                                   <div
                                     class
                                     v-for="(item,index) in categoryList"
+                                    v-if="index < 8"
                                     :key="index"
                                     @mouseover="selectStyle(item.id,index)"
                                     :class=" (dow && oneid === item.id) ? 'item-active index-menu-item' : 'index-menu-item'"

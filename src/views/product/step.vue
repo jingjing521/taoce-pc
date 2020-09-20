@@ -249,7 +249,7 @@
       <el-card class="box-card margin-bottom">
         <div class="agree">
           <span>产品服务协议</span>
-          <router-link to="/agreement" target="_blank">
+          <router-link :to="{path:'/agreement',query:{id:'14'}}" target="_blank">
             <el-button type="text">查看详情</el-button>
           </router-link>
         </div>

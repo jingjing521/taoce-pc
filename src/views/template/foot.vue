@@ -185,6 +185,6 @@ export default {
   padding-bottom: 20px;
 }
 #footer .link-list span {
-  padding-right: 50px;
+  padding-right: 30px;
 }
 </style>
