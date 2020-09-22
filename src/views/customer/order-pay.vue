@@ -98,7 +98,8 @@ export default {
       html: "",
       dialogVisible: false,
       codeUrl: "",
-      personalBankNo:{}
+      personalBankNo:{},
+      timer:null
     };
   },
   created() {
@@ -141,6 +142,9 @@ export default {
     cancle() {
       this.$router.go(-1);
     },
+    getOrderDetail(){
+
+    },
     // 立即支付 /api/order/payOrder
     pay() {
       var _this = this;
@@ -152,6 +156,10 @@ export default {
             _this.dialogVisible = true;
             var codeUrl = response.data.codeUrl;
             _this.codeUrl = codeUrl;
+            // 定时查询订单状态 看是否支付成功
+            _this.timer = setInterval(() => {
+               _this.getOrderDetail();
+            }, 1000);
           } else if (_this.onLinePay == "1") {
             _this.html = response;
             let routerData = this.$router.resolve({ path: "/payGateWay", query: { htmlData: response }});
