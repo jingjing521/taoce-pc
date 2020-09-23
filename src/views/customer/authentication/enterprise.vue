@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item label="营业执照" prop="imageUrl" ref="image">
           <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess1" :before-upload="beforeAvatarUpload" :disabled="type == '1'" >
-            <img v-if="ruleForm.businessLicense" :src="ruleForm.businessLicense+'?x-oss-process=image/resize,w_300,h_300/quality,q_90/watermark,image_MjAyMDA5MjIvNTRkZGU2YThhMzkxNDI2YmI4NzYzZTIxZjZhYTFjZjYucG5n,t_90,g_se,x_10,y_10'" class="avatar">
+            <img v-if="ruleForm.businessLicense" :src="ruleForm.businessLicense+'?x-oss-process=image/resize,w_300,h_300/quality,q_90/watermark,image_MjAyMDA5MjMvMmFjMzliNTI1ZDVjNDQ3OTg1OWQxYjE2MDM3NjkyZjcuanBn,t_90,g_se,x_10,y_10'" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div style="width: 600px; line-height: 25px; color: red;" >提示：请上传小于4M的营业执照副本图片（JPG、JPEG、PNG、BMP格式），请确保边框完整，字体清晰，亮度均匀，否则可能无法通过核验；</div>

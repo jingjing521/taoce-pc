@@ -7,7 +7,7 @@
       style="margin-left:0;margin-right:0"
     >
       <el-col :span="12">
-        <div style="border:1px solid #ccc;height:500spx">
+        <div style="border:1px solid #ccc;height:500px">
           <img :src="goodsDetail.goodsImg" alt style="width:100%;height:100%;" />
         </div>
         <div

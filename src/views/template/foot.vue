@@ -27,35 +27,29 @@
           </div>
           <div>
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="7">
                 <div class="st">新手指南</div>
                 <ul>
                   <li>
                     <router-link :to="{path:'/agreement',query:{id:'2'}}" target="_blank">买家入门</router-link>
                   </li>
-                  <li>
-                    <router-link :to="{path:'/agreement',query:{id:'3'}}" target="_blank">卖家入门</router-link>
-                  </li>
+                   <li><router-link :to="{path:'/agreement',query:{id:'5'}}" target="_blank">支付流程</router-link></li>
                   <li>
                     <router-link :to="{path:'/agreement',query:{id:'4'}}" target="_blank">帮助中心</router-link>
                   </li>
                 </ul>
-              </el-col>
-              <el-col :span="6">
-                <div class="st">买家服务</div>
+              </el-col> 
+              <el-col :span="7">
+                <div class="st">商家服务</div>
                 <ul>
-                  <li><router-link :to="{path:'/agreement',query:{id:'5'}}" target="_blank">支付流程</router-link></li>
-                  <li><router-link :to="{path:'/agreement',query:{id:'9'}}" target="_blank">投诉举报</router-link></li>
-                </ul>
-              </el-col>
-              <el-col :span="6">
-                <div class="st">卖家服务</div>
-                <ul>
+                  <li>
+                    <router-link :to="{path:'/agreement',query:{id:'3'}}" target="_blank">卖家入门</router-link>
+                  </li>
                   <li><router-link :to="{path:'/shopJoinApply'}" target="_blank">我要开店</router-link></li>
                   <li><router-link :to="{path:'/agreement',query:{id:'9'}}" target="_blank">投诉举报</router-link></li>
                 </ul>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="7">
                 <div class="st">平台服务</div>
                 <ul>
                   <li><router-link :to="{path:'/agreement',query:{id:'6'}}" target="_blank">法律声明</router-link></li>
@@ -156,14 +150,12 @@ export default {
 #footer ul li{
   font-size: 12px;
   line-height: 25px;
-  text-align: left;
   padding-left: 15px;
 }
 #footer .st{
   font-size: 14px;
   font-weight: bold;
   line-height: 35px;
-  text-align: left;
   padding-left: 15px;
 }
 #footer .footer-item {
